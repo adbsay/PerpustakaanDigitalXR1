@@ -1,0 +1,69 @@
+PrismaClientValidationError: 
+Invalid `this.prisma.book.findMany()` invocation in
+C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0a3qj7c._.js:730:46
+
+  727     return books.map(this.mapToModel);
+  728 }
+  729 async findByPublisher(publisherId) {
+→ 730     const books = await this.prisma.book.findMany({
+            where: {
+              publisherId: "cmszrdcpo0000ksbvpzjf7d22"
+            },
+            include: {
+              publisher: {
+                select: {
+                  name: true
+                }
+              },
+              category: {
+              ~~~~~~~~
+                select: {
+                  name: true
+                }
+              },
+              ratings: {
+                select: {
+                  score: true
+                }
+              },
+              _count: {
+                select: {
+                  views: true
+                }
+              },
+          ?   views?: true
+            },
+            orderBy: {
+              createdAt: "desc"
+            }
+          })
+
+Unknown field `category` for include statement on model `Book`. Available options are marked with ?.
+    at ar (C:\Users\adibw\libra\node_modules\@prisma\client\runtime\client.js:10:1374)
+    at Jr.handleRequestError (C:\Users\adibw\libra\node_modules\@prisma\client\runtime\client.js:65:7929)
+    at Jr.handleAndLogRequestError (C:\Users\adibw\libra\node_modules\@prisma\client\runtime\client.js:65:7581)
+    at Jr.request (C:\Users\adibw\libra\node_modules\@prisma\client\runtime\client.js:65:7288)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async a (C:\Users\adibw\libra\node_modules\@prisma\client\runtime\client.js:99:6862)
+    at async BookRepository.findByPublisher (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0a3qj7c._.js:730:23)
+    at async AnalyticsService.getPublisherStats (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0bbmpij._.js:1263:23)
+    at async GET (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0bbmpij._.js:141:23)
+    at async AppRouteRouteModule.do (C:\Users\adibw\libra\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:42793)
+    at async AppRouteRouteModule.handle (C:\Users\adibw\libra\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:50547)
+    at async responseGenerator (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0wneb5-._.js:13060:30)
+    at async AppRouteRouteModule.handleResponse (C:\Users\adibw\libra\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:250160)
+    at async handleResponse (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0wneb5-._.js:13132:32)
+    at async Module.handler (C:\Users\adibw\libra\.next\dev\server\chunks\[root-of-the-server]__0wneb5-._.js:13252:9)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\adibw\libra\node_modules\next\dist\server\base-server.js:1537:9)
+    at async DevServer.renderPageComponent (C:\Users\adibw\libra\node_modules\next\dist\server\base-server.js:1589:24)
+    at async DevServer.renderToResponseImpl (C:\Users\adibw\libra\node_modules\next\dist\server\base-server.js:1639:32)
+    at async DevServer.pipeImpl (C:\Users\adibw\libra\node_modules\next\dist\server\base-server.js:1088:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\adibw\libra\node_modules\next\dist\server\next-server.js:338:17)
+    at async DevServer.handleRequestImpl (C:\Users\adibw\libra\node_modules\next\dist\server\base-server.js:979:17)
+    at async C:\Users\adibw\libra\node_modules\next\dist\server\dev\next-dev-server.js:426:20
+    at async Span.traceAsyncFn (C:\Users\adibw\libra\node_modules\next\dist\trace\trace.js:164:20)
+    at async DevServer.handleRequest (C:\Users\adibw\libra\node_modules\next\dist\server\dev\next-dev-server.js:422:24)
+    at async invokeRender (C:\Users\adibw\libra\node_modules\next\dist\server\lib\router-server.js:306:21)
+    at async handleRequest (C:\Users\adibw\libra\node_modules\next\dist\server\lib\router-server.js:508:24)
+    at async requestHandlerImpl (C:\Users\adibw\libra\node_modules\next\dist\server\lib\router-server.js:565:13)
+    at async Server.requestListener (C:\Users\adibw\libra\node_modules\next\dist\server\lib\start-server.js:225:13)
