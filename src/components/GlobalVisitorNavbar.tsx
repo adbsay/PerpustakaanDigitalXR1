@@ -41,12 +41,35 @@ export default function GlobalVisitorNavbar() {
 
       {/* Links Column */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', fontSize: '13px', fontWeight: 600 }}>
-          <VisitorNavLink href="/">HOME</VisitorNavLink>
-          <VisitorNavLink href="/kategori">CATEGORIES</VisitorNavLink>
-          <VisitorNavLink href="/tentang-kami">ABOUT</VisitorNavLink>
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'center', fontSize: '14px', fontWeight: 500 }}>
+          <VisitorNavLink href="/">Beranda</VisitorNavLink>
+          <VisitorNavLink href="/kategori">Kategori</VisitorNavLink>
+          <VisitorNavLink href="/tentang-kami">Tentang</VisitorNavLink>
           <VisitorNavLink href="/faq">FAQ</VisitorNavLink>
-          <VisitorNavLink href="/kontak">CONTACT</VisitorNavLink>
+          <VisitorNavLink href="/kontak">Kontak</VisitorNavLink>
+
+          <Link href="/publisher/login" style={{
+            padding: '6px 16px',
+            borderRadius: '99px',
+            border: '1px solid #EAEAEA',
+            color: '#4B5563',
+            textDecoration: 'none',
+            fontSize: '13px',
+            fontWeight: 500,
+            transition: 'all 0.2s ease',
+            marginLeft: '8px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#000000';
+            e.currentTarget.style.color = '#000000';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = '#EAEAEA';
+            e.currentTarget.style.color = '#4B5563';
+          }}
+          >
+            Ruang Penerbit
+          </Link>
         </div>
       </div>
     </nav>
@@ -110,8 +133,8 @@ function NavbarSearch() {
       border: '1px solid #EAEAEA', 
       borderRadius: '99px',
       padding: '4px 16px',
-      width: '500px',
-      maxWidth: '100%',
+      width: '100%',
+      maxWidth: '448px',
       transition: 'border-color 0.2s ease'
     }}>
       <Image src="/search.svg" alt="Search Icon" width={16} height={16} style={{ opacity: 0.6, flexShrink: 0 }} />
@@ -129,7 +152,7 @@ function NavbarSearch() {
         }}
       />
       <button type="submit" style={{ display: 'none' }}></button>
-      {inputValue && (
+      {inputValue ? (
         <div 
           onMouseDown={(e) => e.preventDefault()} // prevent blur before click
           onClick={handleClear}
@@ -143,6 +166,16 @@ function NavbarSearch() {
           title="Hapus Pencarian"
         >
           ✕
+        </div>
+      ) : (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '4px 6px', borderRadius: '4px', border: '1px solid #EAEAEA',
+          background: '#FFFFFF', color: '#9CA3AF',
+          fontSize: '10px', fontWeight: 600, flexShrink: 0,
+          marginLeft: '4px', fontFamily: 'inherit'
+        }}>
+          Ctrl K
         </div>
       )}
     </form>

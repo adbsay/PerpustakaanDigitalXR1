@@ -15,28 +15,26 @@ export default function VisitorNavLink({ href, children }: VisitorNavLinkProps) 
   return (
     <Link href={href} style={{ 
       position: 'relative',
-      color: '#1a1a1a', 
+      color: isActive ? '#000000' : '#4B5563', 
       textDecoration: 'none',
       display: 'inline-block',
-      padding: '4px 8px',
-      transition: 'transform 0.2s ease, text-shadow 0.2s ease',
+      padding: '4px 0px',
+      transition: 'color 0.2s ease',
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'scale(1.05)';
-      e.currentTarget.style.textShadow = '0 2px 4px rgba(0,0,0,0.1)';
+      e.currentTarget.style.color = '#000000';
     }}
     onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'scale(1)';
-      e.currentTarget.style.textShadow = 'none';
+      e.currentTarget.style.color = isActive ? '#000000' : '#4B5563';
     }}
     >
       {children}
       <span style={{
         position: 'absolute',
         bottom: 0,
-        left: '10%',
+        left: 0,
         transform: isActive ? 'scaleX(1)' : 'scaleX(0)',
-        width: '80%',
+        width: '100%',
         height: '2px',
         backgroundColor: '#C9A96E',
         transition: 'transform 0.3s ease',
