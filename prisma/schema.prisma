@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ADMIN TABLE
+// ============================================================
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auditLogs AuditLog[]
+
+  @@map("admins")
+}
+
+// ============================================================
+// PUBLISHER TABLE
+// ============================================================
+model Publisher {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  password     String
+  name         String
+  phone        String?
+  avatar       String?
+  status       PublisherStatus @default(ACTIVE)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  books        Book[]
+
+  @@map("publishers")
+}
+
+enum PublisherStatus {
+  ACTIVE
+  BANNED
+}
+
+// ============================================================
+// BOOK TABLE
+// ============================================================
+model Book {
+  id          String     @id @default(cuid())
+  title       String
+  author      String
+  categoryId  String?
+  description String?
+  coverImage  String?
+  pdfFile     String?
+  status      BookStatus @default(PENDING)
+  publisherId String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  publisher   Publisher  @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  ratings     Rating[]
+  views       BookView[]
+  reports     Report[]
+
+  @@map("books")
+}
+
+enum BookStatus {
+  PENDING
+  PUBLISHED
+  BANNED
+}
+
+// ============================================================
+// CATEGORY TABLE
+// ============================================================
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  books     Book[]
+
+  @@map("categories")
+}
+
+// ============================================================
+// AUDIT LOG TABLE
+// ============================================================
+model AuditLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}
+
+// ============================================================
+// REPORT TABLE
+// ============================================================
+model Report {
+  id        String       @id @default(cuid())
+  bookId    String
+  reason    String
+  status    ReportStatus @default(OPEN)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  book      Book         @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("reports")
+}
+
+enum ReportStatus {
+  OPEN
+  RESOLVED
+  REJECTED
+}
+
+// ============================================================
+// ANNOUNCEMENT TABLE
+// ============================================================
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("announcements")
+}
+
+// ============================================================
+// RATING TABLE (no login required)
+// ============================================================
+model Rating {
+  id        String   @id @default(cuid())
+  bookId    String
+  score     Int      // 1 - 5
+  createdAt DateTime @default(now())
+
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("ratings")
+}
+
+// ============================================================
+// BOOK VIEW TABLE (for analytics)
+// ============================================================
+model BookView {
+  id        String   @id @default(cuid())
+  bookId    String
+  date      DateTime @default(now())
+
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("book_views")
+}
