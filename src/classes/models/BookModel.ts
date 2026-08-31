@@ -16,6 +16,7 @@ export interface BookData {
   description: string | null;
   coverImage: string | null;
   pdfFile: string | null;
+  status: BookStatus;
   publisherId: string;
   publisherName?: string;
   publisherAvatar?: string | null;
@@ -97,10 +98,12 @@ export class BookModel extends BaseEntity {
       coverImage: this._coverImage,
       pdfFile: this._status === 'PUBLISHED' ? this._pdfFile : null,
       status: this._status,
+      publisherId: this._publisherId,
       publisherName: this._publisherName,
       publisherAvatar: this._publisherAvatar,
       averageRating: this._averageRating,
       totalViews: this._totalViews,
+      views: this._totalViews,
       createdAt: this.formatDate(this._createdAt),
     };
   }
@@ -141,6 +144,7 @@ export class BookModel extends BaseEntity {
       publisherAvatar: this._publisherAvatar,
       averageRating: this._averageRating,
       totalViews: this._totalViews,
+      views: this._totalViews,
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
     };

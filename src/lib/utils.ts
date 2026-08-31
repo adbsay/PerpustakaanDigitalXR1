@@ -26,7 +26,7 @@ export function generateFilename(originalName: string): string {
 export async function saveFile(
   buffer: Buffer,
   filename: string,
-  subdirectory: 'covers' | 'pdfs',
+  subdirectory: 'covers' | 'pdfs' | 'avatars' | 'banners' | string,
 ): Promise<string> {
   const uploadDir = path.join(process.cwd(), 'public', 'uploads', subdirectory);
 

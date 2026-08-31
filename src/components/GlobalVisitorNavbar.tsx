@@ -19,34 +19,70 @@ export default function GlobalVisitorNavbar() {
     <nav className="visitor-nav" style={{ 
       background: 'white', 
       borderBottom: '1px solid #EAEAEA',
-      display: 'flex', 
-      alignItems: 'center', 
-      padding: '16px 40px',
       position: 'sticky',
       top: 0,
-      zIndex: 100
+      zIndex: 100,
+      width: '100%'
     }}>
-      {/* Logo Column */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-        <Link href="/" className="visitor-nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: 700, fontSize: '18px', textDecoration: 'none', color: 'inherit' }}>
-          <Image src="/logo.svg" alt="Digital Library Logo" width={40} height={40} style={{ flexShrink: 0 }} />
-          <span>DIGITAL LIBRARY</span>
-        </Link>
-      </div>
+      <div style={{
+        maxWidth: '1240px',
+        margin: '0 auto',
+        padding: '12px 24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '36px',
+        width: '100%'
+      }}>
+        {/* Logo Column */}
+        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <Link href="/" className="visitor-nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 800, fontSize: '17px', textDecoration: 'none', color: '#0F172A', letterSpacing: '-0.02em' }}>
+            <Image src="/logo.svg" alt="Digital Library Logo" width={34} height={34} style={{ flexShrink: 0 }} />
+            <span>DIGITAL LIBRARY</span>
+          </Link>
+        </div>
 
-      {/* Search Column */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <NavbarSearch />
-      </div>
+        {/* Search Column (Centered with Generous Side Margins) */}
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', maxWidth: '380px', margin: '0 32px' }}>
+          <NavbarSearch />
+        </div>
 
-      {/* Links Column */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', fontSize: '13px', fontWeight: 600 }}>
-          <VisitorNavLink href="/">HOME</VisitorNavLink>
-          <VisitorNavLink href="/kategori">CATEGORIES</VisitorNavLink>
-          <VisitorNavLink href="/tentang-kami">ABOUT</VisitorNavLink>
-          <VisitorNavLink href="/faq">FAQ</VisitorNavLink>
-          <VisitorNavLink href="/kontak">CONTACT</VisitorNavLink>
+        {/* Links Column */}
+        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '22px', alignItems: 'center', fontSize: '14px', fontWeight: 600 }}>
+            <VisitorNavLink href="/">Beranda</VisitorNavLink>
+            <VisitorNavLink href="/kategori">Kategori</VisitorNavLink>
+            <VisitorNavLink href="/tentang-kami">Tentang</VisitorNavLink>
+            <VisitorNavLink href="/faq">FAQ</VisitorNavLink>
+            <VisitorNavLink href="/kontak">Kontak</VisitorNavLink>
+
+            <Link href="/publisher" style={{
+              padding: '7px 18px',
+              borderRadius: '999px',
+              border: '1px solid #CBD5E1',
+              color: '#334155',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: 700,
+              transition: 'all 0.2s ease',
+              marginLeft: '10px',
+              whiteSpace: 'nowrap',
+              background: '#FFFFFF'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#0F172A';
+              e.currentTarget.style.color = '#0F172A';
+              e.currentTarget.style.background = '#F8FAFC';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#CBD5E1';
+              e.currentTarget.style.color = '#334155';
+              e.currentTarget.style.background = '#FFFFFF';
+            }}
+            >
+              Ruang Penerbit
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
@@ -110,8 +146,8 @@ function NavbarSearch() {
       border: '1px solid #EAEAEA', 
       borderRadius: '99px',
       padding: '4px 16px',
-      width: '500px',
-      maxWidth: '100%',
+      width: '100%',
+      maxWidth: '448px',
       transition: 'border-color 0.2s ease'
     }}>
       <Image src="/search.svg" alt="Search Icon" width={16} height={16} style={{ opacity: 0.6, flexShrink: 0 }} />
@@ -129,7 +165,7 @@ function NavbarSearch() {
         }}
       />
       <button type="submit" style={{ display: 'none' }}></button>
-      {inputValue && (
+      {inputValue ? (
         <div 
           onMouseDown={(e) => e.preventDefault()} // prevent blur before click
           onClick={handleClear}
@@ -143,6 +179,16 @@ function NavbarSearch() {
           title="Hapus Pencarian"
         >
           ✕
+        </div>
+      ) : (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '4px 6px', borderRadius: '4px', border: '1px solid #EAEAEA',
+          background: '#FFFFFF', color: '#9CA3AF',
+          fontSize: '10px', fontWeight: 600, flexShrink: 0,
+          marginLeft: '4px', fontFamily: 'inherit'
+        }}>
+          Ctrl K
         </div>
       )}
     </form>

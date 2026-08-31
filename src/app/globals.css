@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
 /* ============================================================
    DESIGN SYSTEM — Digital Library
@@ -1427,4 +1428,35 @@ tbody td {
 
   h1 { font-size: 1.375rem; }
   h2 { font-size: 1.125rem; }
+}
+
+/* ============================================================
+   HERO PROMO BANNER 3D FLOAT & FLOOR SHADOW ANIMATIONS
+   ============================================================ */
+@keyframes heroFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes heroFloorShadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(0.92);
+    opacity: 0.6;
+  }
+}
+
+.animate-hero-float {
+  animation: heroFloat 4.5s ease-in-out infinite;
+}
+
+.animate-hero-floor-shadow {
+  animation: heroFloorShadow 4.5s ease-in-out infinite;
 }

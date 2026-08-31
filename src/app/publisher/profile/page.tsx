@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { Link as LinkIcon, BookOpen, ArrowLeft, Edit2, Star, X, Landmark, Upload, Info, Check, Image as ImageIcon, Camera, Globe, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 interface PublisherProfile {
   id: string;
@@ -8,46 +10,99 @@ interface PublisherProfile {
   email: string;
   phone: string | null;
   avatar: string | null;
+  bio?: string;
+  website?: string;
+  banner?: string | null; 
+}
+
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  coverImage: string | null;
 }
 
 export default function PublisherProfilePage() {
   const [profile, setProfile] = useState<PublisherProfile | null>(null);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Form State
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [bio, setBio] = useState('');
+  const [website, setWebsite] = useState('');
+  
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchProfileAndBooks = async () => {
+    const token = localStorage.getItem('publisher_token');
+    if (!token) return;
+    try {
+      const [resProfile, resBooks] = await Promise.all([
+        fetch('/api/publisher/auth/me', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch('/api/publisher/books', { headers: { Authorization: `Bearer ${token}` } })
+      ]);
+      
+      const jProfile = await resProfile.json();
+      const jBooks = await resBooks.json();
+      
+      if (jProfile.success) {
+        setProfile(jProfile.data);
+        setName(jProfile.data.name || '');
+        setAvatarPreview(jProfile.data.avatar);
+        setBio(jProfile.data.bio || '');
+        setWebsite(jProfile.data.website ? jProfile.data.website.replace(/^https?:\/\//, '') : '');
+        setBannerPreview(jProfile.data.banner || null);
+      }
+      
+      if (jBooks.success) {
+        setBooks(jBooks.data || []);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('publisher_token');
-      if (!token) return;
-      try {
-        const res = await fetch('/api/publisher/auth/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const j = await res.json();
-        if (j.success) {
-          setProfile(j.data);
-          setName(j.data.name);
-          setPhone(j.data.phone || '');
-          setAvatarPreview(j.data.avatar);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProfile();
+    fetchProfileAndBooks();
   }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Kunci scroll halaman ketika modal terbuka
+  useEffect(() => {
+    if (isEditing) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isEditing]);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBannerFile(file);
+      setBannerPreview(URL.createObjectURL(file));
     }
   };
 
@@ -57,10 +112,13 @@ export default function PublisherProfilePage() {
     const token = localStorage.getItem('publisher_token');
 
     try {
+      const fullWebsite = website.trim() ? (website.startsWith('http') ? website : `https://${website.trim()}`) : '';
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('phone', phone);
+      formData.append('bio', bio);
+      formData.append('website', fullWebsite);
       if (avatarFile) formData.append('avatar', avatarFile);
+      if (bannerFile) formData.append('banner', bannerFile); 
 
       const res = await fetch('/api/publisher/profile', {
         method: 'PATCH',
@@ -70,10 +128,10 @@ export default function PublisherProfilePage() {
 
       const j = await res.json();
       if (j.success) {
-        setMessage({ text: 'Profil berhasil diperbarui!', type: 'success' });
+        setProfile(j.data); 
         localStorage.setItem('publisher_user', JSON.stringify(j.data));
-        // Force layout re-render for sidebar update
         window.dispatchEvent(new Event('storage'));
+        setIsEditing(false);
       } else {
         setMessage({ text: j.error || 'Gagal menyimpan profil', type: 'error' });
       }
@@ -84,94 +142,673 @@ export default function PublisherProfilePage() {
     }
   };
 
-  if (loading) return <div style={{ padding: 40, textAlign: 'center' }}><div className="loading-spinner" style={{ margin: '0 auto' }}></div></div>;
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '240px' }}>
+        <div style={{ width: '32px', height: '32px', border: '3px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="page-header">
-        <h1 className="page-title">Profile Settings</h1>
-        <p className="page-subtitle">Kelola informasi akun penerbit kamu</p>
+    <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
+      
+      {/* Tombol Navigasi Kembali */}
+      <div style={{ marginBottom: '20px' }}>
+        <Link 
+          href="/publisher/dashboard" 
+          style={{ 
+            fontSize: '0.813rem', 
+            fontWeight: 700, 
+            color: '#64748B', 
+            textDecoration: 'none', 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            transition: 'color 0.15s ease'
+          }}
+        >
+          <ArrowLeft size={16} /> Kembali ke Dashboard
+        </Link>
       </div>
 
-      <div style={{ background: 'white', padding: 32, borderRadius: 16, border: '1px solid #EBEBEB', maxWidth: 600 }}>
+      {/* ==========================================
+          PROFILE CARD (READ-ONLY VIEW)
+          ========================================== */}
+      <div style={{
+        background: '#FFFFFF',
+        borderRadius: '20px',
+        border: '1px solid #E2E8F0',
+        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.02)',
+        position: 'relative',
+        overflow: 'hidden',
+        padding: '36px',
+        marginBottom: '32px'
+      }}>
         
-        {/* Avatar Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 32 }}>
-          <div 
-            style={{ 
-              width: 100, height: 100, borderRadius: '50%', background: '#F5F5F3', 
-              overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              border: '2px solid #EBEBEB', position: 'relative'
-            }}
-          >
-            {avatarPreview ? (
-              <img src={avatarPreview} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        {/* Banner Cover */}
+        {profile?.banner && (
+          <div style={{ position: 'absolute', inset: 0, height: '140px', width: '100%', opacity: 0.15 }}>
+            <img src={profile.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, #FFFFFF)' }} />
+          </div>
+        )}
+
+        {/* Edit Button */}
+        <button 
+          onClick={() => {
+            setIsEditing(true);
+            setMessage({ text: '', type: '' });
+          }}
+          className="btn-outline"
+          style={{
+            position: 'absolute',
+            top: '24px',
+            right: '24px',
+            padding: '8px 16px',
+            borderRadius: '10px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.813rem',
+            cursor: 'pointer',
+            zIndex: 10
+          }}
+          title="Edit Profil Institusi"
+        >
+          <Edit2 size={14} /> Edit Profil
+        </button>
+        
+        {/* Profile Content */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+          
+          {/* Avatar */}
+          <div style={{
+            width: '96px',
+            height: '96px',
+            borderRadius: '50%',
+            background: '#0F172A',
+            color: '#FFFFFF',
+            border: '3px solid #FFFFFF',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2rem',
+            fontWeight: 800,
+            overflow: 'hidden',
+            flexShrink: 0
+          }}>
+            {profile?.avatar ? (
+              <img src={profile.avatar} alt={profile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <span style={{ fontSize: 40 }}>👤</span>
+              profile?.name.charAt(0).toUpperCase() || 'P'
             )}
           </div>
-          <div>
-            <input 
-              type="file" 
-              accept="image/*" 
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: 'none' }} 
-            />
-            <button className="btn btn-ghost" onClick={() => fileInputRef.current?.click()} style={{ marginBottom: 8 }}>
-              Pilih Foto Baru
-            </button>
-            <div style={{ fontSize: '0.75rem', color: '#9B9B9B' }}>JPG, PNG max 5MB. Rasio 1:1 disarankan.</div>
+          
+          {/* Details */}
+          <div style={{ flex: 1, minWidth: '280px' }}>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 6px' }}>
+              {profile?.name}
+            </h1>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '3px 10px',
+                background: '#EFF6FF',
+                color: '#2563EB',
+                border: '1px solid #DBEAFE',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 700
+              }}>
+                <BookOpen size={13} />
+                {books.length} Ebook Diterbitkan
+              </span>
+
+              <span style={{ fontSize: '0.813rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Mail size={14} color="#94A3B8" /> {profile?.email}
+              </span>
+            </div>
+
+            {profile?.bio && (
+              <p style={{ fontSize: '0.938rem', color: '#475569', lineHeight: 1.6, margin: '0 0 16px', maxWidth: '640px' }}>
+                {profile.bio}
+              </p>
+            )}
+
+            {profile?.website && (
+              <div>
+                <a 
+                  href={profile.website.startsWith('http') ? profile.website : `https://${profile.website}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.813rem',
+                    fontWeight: 700,
+                    color: '#2563EB',
+                    background: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <Globe size={13} /> {profile.website.replace(/^https?:\/\//, '')}
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Form Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div className="form-group">
-            <label className="form-label">Email (Tidak dapat diubah)</label>
-            <input type="email" className="form-input" value={profile?.email} disabled style={{ background: '#F9F9F9', color: '#9B9B9B' }} />
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Nama / Nama Penerbit</label>
-            <input 
-              type="text" 
-              className="form-input" 
-              value={name} 
-              onChange={e => setName(e.target.value)} 
-              placeholder="Masukkan nama penerbit" 
-            />
-          </div>
+      </div>
 
-          <div className="form-group">
-            <label className="form-label">Nomor WhatsApp / Telepon</label>
-            <input 
-              type="text" 
-              className="form-input" 
-              value={phone} 
-              onChange={e => setPhone(e.target.value)} 
-              placeholder="0812xxxxxx" 
-            />
-          </div>
-
-          {message.text && (
-            <div style={{
-              background: message.type === 'success' ? 'rgba(52, 199, 89, 0.1)' : 'rgba(255, 59, 48, 0.1)',
-              color: message.type === 'success' ? '#34C759' : '#FF3B30',
-              padding: '12px 16px', borderRadius: 8, fontSize: '0.875rem', fontWeight: 500
-            }}>
-              {message.type === 'success' ? '✅' : '⚠️'} {message.text}
-            </div>
-          )}
-
-          <div style={{ marginTop: 12 }}>
-            <button className="btn btn-primary btn-lg" onClick={handleSave} disabled={saving || !name}>
-              {saving ? 'Menyimpan...' : 'Simpan Perubahan'}
-            </button>
-          </div>
+      {/* ==========================================
+          KOLEKSI EBOOK PENERBIT
+          ========================================== */}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>Koleksi Ebook Anda</h2>
+          <span style={{ fontSize: '0.813rem', color: '#64748B', fontWeight: 600 }}>{books.length} Karya Terdaftar</span>
         </div>
         
+        {books.length > 0 ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px' }}>
+            {books.map((book) => (
+              <div 
+                key={book.id} 
+                style={{
+                  background: '#FFFFFF',
+                  padding: '12px',
+                  borderRadius: '14px',
+                  border: '1px solid #E2E8F0',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+                }}
+              >
+                <div style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '3/4',
+                  borderRadius: '10px',
+                  overflow: 'hidden',
+                  background: '#F8FAFC',
+                  border: '1px solid #F1F5F9',
+                  marginBottom: '10px'
+                }}>
+                  {book.coverImage ? (
+                    <img src={book.coverImage} alt={book.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94A3B8', fontSize: '0.75rem' }}>
+                      No Cover
+                    </div>
+                  )}
+                </div>
+                <h3 style={{ fontSize: '0.813rem', fontWeight: 700, color: '#0F172A', margin: '0 0 2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {book.title}
+                </h3>
+                <p style={{ fontSize: '0.688rem', color: '#64748B', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {book.author}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{
+            background: '#FFFFFF',
+            borderRadius: '16px',
+            border: '2px dashed #E2E8F0',
+            padding: '48px 24px',
+            textAlign: 'center'
+          }}>
+            <BookOpen size={36} color="#CBD5E1" style={{ margin: '0 auto 12px' }} />
+            <h3 style={{ fontSize: '0.938rem', fontWeight: 700, color: '#0F172A', margin: '0 0 4px' }}>Belum ada koleksi buku</h3>
+            <p style={{ fontSize: '0.813rem', color: '#64748B', margin: 0 }}>Ebook yang Anda terbitkan akan muncul di etalase publik ini.</p>
+          </div>
+        )}
       </div>
-    </>
+
+      {/* ==========================================
+          OVERLAY & MODAL EDIT PROFIL (ENTERPRISE SAAS)
+          ========================================== */}
+      {isEditing && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
+          }}
+          onClick={() => setIsEditing(false)}
+        >
+          
+          {/* Modal Card Container */}
+          <div 
+            style={{
+              width: '100%',
+              maxWidth: '860px',
+              maxHeight: '90vh',
+              background: '#FFFFFF',
+              borderRadius: '20px',
+              boxShadow: '0 25px 60px -15px rgba(0, 0, 0, 0.35)',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            
+            {/* 1. HEADER MODAL (STICKY TOP) */}
+            <div style={{
+              padding: '20px 28px',
+              borderBottom: '1px solid #F1F5F9',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: '#FFFFFF',
+              flexShrink: 0
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  background: '#EFF6FF',
+                  color: '#2563EB',
+                  border: '1px solid #DBEAFE',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <Landmark size={20} />
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                    Edit Profil Institusi
+                  </h2>
+                  <p style={{ fontSize: '0.75rem', color: '#64748B', margin: '2px 0 0' }}>
+                    Kelola detail etalase publik dan informasi legalitas penerbit Anda
+                  </p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setIsEditing(false)}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
+                  color: '#64748B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+                title="Tutup Modal"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Error / Status Message */}
+            {message.text && (
+              <div style={{ padding: '16px 28px 0', flexShrink: 0 }}>
+                <div style={{
+                  padding: '10px 14px',
+                  borderRadius: '10px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  background: message.type === 'success' ? '#ECFDF5' : '#FEF2F2',
+                  color: message.type === 'success' ? '#059669' : '#DC2626',
+                  border: `1px solid ${message.type === 'success' ? '#A7F3D0' : '#FECACA'}`
+                }}>
+                  {message.text}
+                </div>
+              </div>
+            )}
+
+            {/* 2. BODY MODAL (AREA SCROLL & 2-COLUMN GRID) */}
+            <div style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '28px',
+              background: '#FFFFFF',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '32px'
+            }}>
+              
+              {/* KOLOM KIRI: UPLOAD GAMBAR */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {/* Area Sampul */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.813rem', fontWeight: 700, color: '#334155', marginBottom: '8px' }}>
+                    Sampul Profil (Banner)
+                  </label>
+                  <div 
+                    onClick={() => bannerInputRef.current?.click()}
+                    style={{
+                      border: '2px dashed #CBD5E1',
+                      borderRadius: '12px',
+                      aspectRatio: '16/9',
+                      width: '100%',
+                      background: '#F8FAFC',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {bannerPreview ? (
+                      <>
+                        <img src={bannerPreview} alt="Sampul" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(0,0,0,0.4)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: 0,
+                          transition: 'opacity 0.2s'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.opacity = '0'; }}
+                        >
+                          <span style={{ background: '#FFFFFF', color: '#0F172A', fontSize: '0.75rem', fontWeight: 700, padding: '6px 12px', borderRadius: '6px' }}>
+                            Ganti Sampul
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ textAlign: 'center', padding: '16px', color: '#64748B' }}>
+                        <ImageIcon size={24} color="#94A3B8" style={{ margin: '0 auto 6px' }} />
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0F172A' }}>Upload Sampul</div>
+                        <div style={{ fontSize: '0.688rem', color: '#94A3B8' }}>Rasio 16:9 • Maks 2MB</div>
+                      </div>
+                    )}
+                  </div>
+                  <input type="file" accept="image/*" ref={bannerInputRef} onChange={handleBannerChange} style={{ display: 'none' }} />
+                </div>
+
+                {/* Area Logo */}
+                <div style={{ textAlign: 'center' }}>
+                  <label style={{ display: 'block', fontSize: '0.813rem', fontWeight: 700, color: '#334155', marginBottom: '8px' }}>
+                    Logo Institusi (1:1)
+                  </label>
+                  <div style={{ position: 'relative', width: '110px', height: '110px', margin: '0 auto' }}>
+                    <div style={{
+                      width: '110px',
+                      height: '110px',
+                      borderRadius: '50%',
+                      background: '#0F172A',
+                      color: '#FFFFFF',
+                      border: '2px solid #E2E8F0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+                    }}>
+                      {avatarPreview ? (
+                        <img src={avatarPreview} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ fontSize: '2.5rem', fontWeight: 800 }}>{name.charAt(0).toUpperCase() || 'P'}</span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      style={{
+                        position: 'absolute',
+                        bottom: '2px',
+                        right: '2px',
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: '#2563EB',
+                        color: '#FFFFFF',
+                        border: '2px solid #FFFFFF',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 6px rgba(37,99,235,0.4)'
+                      }}
+                      title="Ganti Logo"
+                    >
+                      <Camera size={14} />
+                    </button>
+                  </div>
+
+                  <button 
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#2563EB',
+                      fontSize: '0.813rem',
+                      fontWeight: 700,
+                      marginTop: '8px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Ganti Logo
+                  </button>
+                  <input type="file" accept="image/*" ref={fileInputRef} onChange={handleAvatarChange} style={{ display: 'none' }} />
+                </div>
+
+                {/* Tips Box */}
+                <div style={{
+                  background: '#EFF6FF',
+                  border: '1px solid #DBEAFE',
+                  borderRadius: '12px',
+                  padding: '12px 14px',
+                  fontSize: '0.75rem',
+                  color: '#1E40AF',
+                  lineHeight: 1.5,
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '8px'
+                }}>
+                  <Info size={16} color="#2563EB" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div>
+                    <strong style={{ display: 'block', color: '#1E3A8A', marginBottom: '2px' }}>Rekomendasi Format:</strong>
+                    Gunakan logo berlatar transparan (PNG) dan sampul beresolusi tinggi untuk etalase terbaik.
+                  </div>
+                </div>
+
+              </div>
+
+              {/* KOLOM KANAN: FORM DATA */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                
+                {/* Nama Tampilan */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.813rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                    Nama Tampilan Institusi
+                  </label>
+                  <input 
+                    type="text" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)} 
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      background: '#FFFFFF',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '10px',
+                      fontSize: '0.875rem',
+                      color: '#0F172A',
+                      outline: 'none',
+                      boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                    }}
+                    placeholder="Nama institusi atau penerbit" 
+                  />
+                </div>
+
+                {/* Bio Singkat */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.813rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                    Bio Singkat
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <textarea 
+                      value={bio} 
+                      onChange={(e) => setBio(e.target.value.slice(0, 160))} 
+                      rows={4} 
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px 28px',
+                        background: '#FFFFFF',
+                        border: '1px solid #CBD5E1',
+                        borderRadius: '10px',
+                        fontSize: '0.875rem',
+                        color: '#0F172A',
+                        outline: 'none',
+                        resize: 'none',
+                        lineHeight: 1.5,
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                      }}
+                      placeholder="Deskripsikan fokus publikasi, sejarah singkat, atau visi literasi Anda..." 
+                    />
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '12px',
+                      fontSize: '0.688rem',
+                      fontWeight: 700,
+                      color: '#94A3B8',
+                      background: '#FFFFFF',
+                      padding: '0 4px'
+                    }}>
+                      {bio.length}/160
+                    </span>
+                  </div>
+                </div>
+
+                {/* Tautan Eksternal */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.813rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                    Tautan Eksternal (Website)
+                  </label>
+                  <div style={{ display: 'flex', borderRadius: '10px', overflow: 'hidden', border: '1px solid #CBD5E1', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}>
+                    <span style={{
+                      padding: '10px 14px',
+                      background: '#F8FAFC',
+                      borderRight: '1px solid #CBD5E1',
+                      color: '#64748B',
+                      fontSize: '0.813rem',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      https://
+                    </span>
+                    <input 
+                      type="text" 
+                      value={website} 
+                      onChange={(e) => setWebsite(e.target.value)} 
+                      style={{
+                        flex: 1,
+                        padding: '10px 14px',
+                        background: '#FFFFFF',
+                        border: 'none',
+                        fontSize: '0.875rem',
+                        color: '#0F172A',
+                        outline: 'none'
+                      }}
+                      placeholder="penerbit-resmi.id" 
+                    />
+                  </div>
+                </div>
+
+                {/* Info Akun Terkait */}
+                <div style={{ background: '#F8FAFC', borderRadius: '10px', padding: '12px 14px', border: '1px solid #E2E8F0' }}>
+                  <div style={{ fontSize: '0.688rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '2px' }}>
+                    Email Akun Terdaftar
+                  </div>
+                  <div style={{ fontSize: '0.813rem', fontWeight: 700, color: '#334155' }}>
+                    {profile?.email}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* 3. FOOTER MODAL (STICKY BOTTOM - ACTION BAR) */}
+            <div style={{
+              padding: '16px 28px',
+              background: '#F8FAFC',
+              borderTop: '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px',
+              flexShrink: 0
+            }}>
+              <button 
+                type="button"
+                onClick={() => setIsEditing(false)} 
+                disabled={saving}
+                className="btn-outline"
+                style={{
+                  padding: '9px 18px',
+                  borderRadius: '10px',
+                  fontSize: '0.813rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Batal
+              </button>
+              
+              <button 
+                type="button"
+                onClick={handleSave} 
+                disabled={saving || !name.trim()} 
+                className="btn-primary"
+                style={{
+                  padding: '9px 20px',
+                  borderRadius: '10px',
+                  fontSize: '0.813rem',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: (saving || !name.trim()) ? 'not-allowed' : 'pointer',
+                  opacity: (saving || !name.trim()) ? 0.6 : 1,
+                  boxShadow: '0 1px 3px rgba(37,99,235,0.3)'
+                }}
+              >
+                <Check size={15} strokeWidth={2.5} />
+                {saving ? 'Menyimpan...' : 'Simpan Perubahan'}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+    </div>
   );
 }

@@ -2,27 +2,34 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 
-export default function PublisherPublicLayout({ children }: { children: React.ReactNode }) {
+interface PublisherPublicLayoutProps {
+  children: React.ReactNode;
+  activePage?: 'beranda' | 'tentang' | 'faq' | 'kontak';
+  onNavigate?: (page: 'beranda' | 'tentang' | 'faq' | 'kontak') => void;
+  isAuthPage?: boolean;
+  onAuthClick?: (mode: 'login' | 'register') => void;
+}
+
+export default function PublisherPublicLayout({ 
+  children, 
+  activePage, 
+  onNavigate,
+  isAuthPage = false,
+  onAuthClick
+}: PublisherPublicLayoutProps) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
   
   const isLandingPage = pathname === '/publisher';
-  const authType = searchParams.get('auth');
-  const isAuthOpen = isLandingPage && (authType === 'login' || authType === 'register');
-  
-  const viewType = searchParams.get('view');
-  const isViewOpen = isLandingPage && (viewType === 'tentang-kami' || viewType === 'faq' || viewType === 'kontak');
+  const isTransparentNavbar = pathname === '/publisher' || pathname === '/publisher/tentang-kami' || pathname === '/publisher/faq';
 
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    // If we are on the landing page, check if already logged in.
-    // If yes, do a full-page redirect immediately so we never show the split-screen.
+    // If on landing page, check if already logged in
     if (isLandingPage) {
       const token = typeof window !== 'undefined' ? localStorage.getItem('publisher_token') : null;
       if (token) {
@@ -32,10 +39,8 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
           .then(r => r.json())
           .then(j => {
             if (j.success) {
-              // Valid session — go straight to dashboard (full page navigation)
               router.replace('/publisher/dashboard');
             } else {
-              // Token invalid/expired — remove it and show landing normally
               localStorage.removeItem('publisher_token');
               localStorage.removeItem('publisher_user');
               setIsCheckingAuth(false);
@@ -50,24 +55,10 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
     }
   }, [isLandingPage, router]);
 
-  useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      if (e.data === 'AUTH_SUCCESS') {
-        setIsRedirecting(true);
-        // Wait for panel close animation, then redirect
-        setTimeout(() => {
-          router.push('/publisher/dashboard');
-        }, 800);
-      }
-    };
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [router]);
-
   // While checking auth on landing page, show a blank/loading state to avoid flash
   if (isLandingPage && isCheckingAuth) {
     return (
-      <div style={{ minHeight: '100vh', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', background: '#020617', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: 40, height: 40, border: '3px solid rgba(255,255,255,0.2)', borderTop: '3px solid #fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -75,7 +66,8 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
   }
 
   return (
-    <div style={{ position: 'relative', fontFamily: 'var(--font-inter, sans-serif)', color: '#1a1a1a', background: '#FFFFFF', height: '100vh', width: '100%', display: 'flex', flexDirection: 'row', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', fontFamily: 'var(--font-inter, sans-serif)', color: '#1a1a1a', background: '#FFFFFF', minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
+      
       {/* Loading overlay when redirecting to dashboard */}
       {isRedirecting && (
         <div style={{
@@ -83,8 +75,7 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
           background: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          animation: 'overlayFadeIn 0.3s ease forwards'
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
           <div style={{
             width: 52, height: 52,
@@ -95,47 +86,22 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
           }} />
         </div>
       )}
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
 
+      <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
-
-        @keyframes overlayFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
         
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-          opacity: 0; /* starts hidden */
-        }
-
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
-
         .ios-btn {
           transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
         }
         
         .ios-btn:hover {
-          transform: scale(1.05);
+          transform: scale(1.04);
         }
         
         .ios-btn:active {
-          transform: scale(0.95);
+          transform: scale(0.96);
         }
 
         .nav-link {
@@ -144,144 +110,197 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
         }
 
         .nav-link:hover {
-          transform: scale(1.08);
           opacity: 0.8;
-        }
-
-        .nav-link:active {
-          transform: scale(0.95);
-          opacity: 0.6;
-        }
-
-        .main-container {
-           flex: 1; 
-           display: flex; 
-           flex-direction: column; 
-           transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-           position: relative;
-           overflow-y: auto;
-           overflow-x: hidden;
-           height: 100vh;
-           z-index: 0;
-           background: transparent;
-        }
-        .main-container.shrink {
-           margin-right: 450px;
-           border-radius: 0 24px 24px 0;
-           transform: scale(0.98);
-           box-shadow: 0 0 40px rgba(0,0,0,0.3);
-           overflow: hidden;
-        }
-        
-        .side-panel {
-            width: 450px;
-            background: #FFFFFF;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            transform: translateX(100%);
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 100;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-        }
-        .side-panel.open {
-            transform: translateX(0);
-        }
-
-        .top-panel {
-            position: absolute;
-            top: 80px; /* Below navbar */
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: transparent;
-            transform: translateY(-100%);
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            z-index: 5;
-            pointer-events: none;
-        }
-        .top-panel.open {
-            transform: translateY(0);
-            pointer-events: auto;
         }
       `}</style>
       
       {/* Main Content Area */}
-      <div className={`main-container ${isAuthOpen ? 'shrink' : ''}`}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', width: '100%' }}>
+        
+        {/* Background Image Layer for Landing */}
         {isLandingPage && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: -1 }}>
-            <Image
-              src="/background.png"
-              alt="Background"
-              fill
-              style={{ objectFit: 'cover' }}
-              quality={100}
-              priority
+          <div style={{ position: 'fixed', inset: 0, zIndex: 0 }}>
+            <div 
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: 'url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
             />
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(2, 6, 23, 0.85)' }} />
           </div>
         )}
 
         {/* Navbar */}
-        <nav className="animate-fade-in-up" style={{ 
-          position: 'relative', zIndex: 10,
+        <nav style={{ 
+          position: isTransparentNavbar ? 'absolute' : 'relative',
+          top: 0, left: 0, right: 0,
+          zIndex: 50,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-          padding: '20px 48px', 
-          background: isLandingPage ? 'rgba(0, 0, 0, 0.2)' : '#FFFFFF', 
-          backdropFilter: isLandingPage ? 'blur(10px)' : 'none',
-          WebkitBackdropFilter: isLandingPage ? 'blur(10px)' : 'none',
-          borderBottom: isLandingPage ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #EAEAEA',
-          color: isLandingPage ? '#FFFFFF' : '#1a1a1a'
+          padding: '24px 32px', 
+          background: isTransparentNavbar ? 'transparent' : '#FFFFFF', 
+          borderBottom: isTransparentNavbar ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #EAEAEA',
+          color: isTransparentNavbar ? '#FFFFFF' : '#1a1a1a'
         }}>
+          {/* Logo & App Name (Shared Layout Element - never disappears) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Link href="/publisher" className="ios-btn" style={{ display: 'flex' }}>
-              <img src="/logo.svg" alt="Digital Library Logo" style={{ width: '40px', height: '40px' }} />
+              <img src="/logo.svg" alt="Digital Library Logo" style={{ width: '36px', height: '36px' }} />
             </Link>
-            <Link href="/publisher" className="nav-link" style={{ fontWeight: 700, fontSize: '14px', lineHeight: 1.2, color: 'inherit', textDecoration: 'none' }}>
+            <Link href="/publisher" className="nav-link" style={{ fontWeight: 800, fontSize: '15px', lineHeight: 1.2, color: 'inherit', textDecoration: 'none', letterSpacing: '-0.01em' }}>
               PERPUSTAKAAN<br/>DIGITAL
             </Link>
           </div>
           
-          <div style={{ display: 'flex', gap: '32px', fontSize: '13px', fontWeight: 600 }}>
-            <Link href="/publisher" className="nav-link" style={{ color: 'inherit', textDecoration: 'none' }}>BERANDA</Link>
-            <Link href="?view=tentang-kami" className="nav-link" style={{ color: 'inherit', textDecoration: 'none' }}>TENTANG KAMI</Link>
-            <Link href="?view=faq" className="nav-link" style={{ color: 'inherit', textDecoration: 'none' }}>FAQ</Link>
-            <Link href="?view=kontak" className="nav-link" style={{ color: 'inherit', textDecoration: 'none' }}>KONTAK</Link>
-          </div>
+          {/* Right Navigation & Auth Actions (Fades out when isAuthPage is true) */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '32px',
+            opacity: isAuthPage ? 0 : 1,
+            transform: isAuthPage ? 'translateX(20px)' : 'translateX(0)',
+            pointerEvents: isAuthPage ? 'none' : 'auto',
+            transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}>
+            <div style={{ display: 'flex', gap: '32px', fontSize: '14px', fontWeight: 600 }}>
+              {onNavigate ? (
+                <>
+                  <button
+                    onClick={() => onNavigate('beranda')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isTransparentNavbar ? (activePage === 'beranda' ? '#60A5FA' : '#E2E8F0') : (activePage === 'beranda' ? '#2563EB' : 'inherit'),
+                      fontWeight: activePage === 'beranda' ? 800 : 600,
+                      fontSize: '14px',
+                      padding: 0,
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    Beranda
+                  </button>
+                  <button
+                    onClick={() => onNavigate('tentang')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isTransparentNavbar ? (activePage === 'tentang' ? '#60A5FA' : '#E2E8F0') : (activePage === 'tentang' ? '#2563EB' : 'inherit'),
+                      fontWeight: activePage === 'tentang' ? 800 : 600,
+                      fontSize: '14px',
+                      padding: 0,
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    Tentang Kami
+                  </button>
+                  <button
+                    onClick={() => onNavigate('faq')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isTransparentNavbar ? (activePage === 'faq' ? '#60A5FA' : '#E2E8F0') : (activePage === 'faq' ? '#2563EB' : 'inherit'),
+                      fontWeight: activePage === 'faq' ? 800 : 600,
+                      fontSize: '14px',
+                      padding: 0,
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    FAQ
+                  </button>
+                  <button
+                    onClick={() => onNavigate('kontak')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isTransparentNavbar ? (activePage === 'kontak' ? '#60A5FA' : '#E2E8F0') : (activePage === 'kontak' ? '#2563EB' : 'inherit'),
+                      fontWeight: activePage === 'kontak' ? 800 : 600,
+                      fontSize: '14px',
+                      padding: 0,
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    Kontak
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/publisher?view=beranda" className="nav-link" style={{ color: isTransparentNavbar ? '#E2E8F0' : 'inherit', textDecoration: 'none' }}>Beranda</Link>
+                  <Link href="/publisher?view=tentang" className="nav-link" style={{ color: isTransparentNavbar ? '#E2E8F0' : 'inherit', textDecoration: 'none' }}>Tentang Kami</Link>
+                  <Link href="/publisher?view=faq" className="nav-link" style={{ color: isTransparentNavbar ? '#E2E8F0' : 'inherit', textDecoration: 'none' }}>FAQ</Link>
+                  <Link href="/publisher?view=kontak" className="nav-link" style={{ color: isTransparentNavbar ? '#E2E8F0' : 'inherit', textDecoration: 'none' }}>Kontak</Link>
+                </>
+              )}
+            </div>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <Link href="?auth=login" className="ios-btn" style={{
-              display: 'inline-block',
-              padding: '10px 24px', 
-              border: isLandingPage ? '1px solid rgba(255, 255, 255, 0.5)' : '1px solid #EAEAEA', 
-              borderRadius: '6px', 
-              fontSize: '13px', fontWeight: 600, color: 'inherit', textDecoration: 'none',
-              background: isLandingPage ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
-            }}>
-              MASUK
-            </Link>
-            <Link href="?auth=register" className="ios-btn" style={{
-              display: 'inline-block',
-              padding: '10px 24px', background: 'rgba(0, 0, 0, 0.4)', borderRadius: '6px', 
-              fontSize: '13px', fontWeight: 600, color: '#FFFFFF', textDecoration: 'none',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)'
-            }}>
-              DAFTAR
-            </Link>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              {onAuthClick ? (
+                <>
+                  <button 
+                    onClick={() => onAuthClick('login')} 
+                    className="ios-btn" 
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '8px 16px', 
+                      fontSize: '14px', fontWeight: 600, 
+                      color: isTransparentNavbar ? '#FFFFFF' : '#1a1a1a', 
+                      transition: 'color 0.2s ease'
+                    }}
+                  >
+                    Masuk
+                  </button>
+                  <button 
+                    onClick={() => onAuthClick('register')} 
+                    className="ios-btn" 
+                    style={{
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '10px 24px', 
+                      background: '#2563EB', 
+                      borderRadius: '999px', 
+                      fontSize: '14px', fontWeight: 700, color: '#FFFFFF',
+                      boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    Daftar
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/publisher/auth/login" className="ios-btn" style={{
+                    display: 'inline-block',
+                    padding: '8px 16px', 
+                    fontSize: '14px', fontWeight: 600, 
+                    color: isTransparentNavbar ? '#FFFFFF' : '#1a1a1a', 
+                    textDecoration: 'none',
+                    transition: 'color 0.2s ease'
+                  }}>
+                    Masuk
+                  </Link>
+                  <Link href="/publisher/auth/register" className="ios-btn" style={{
+                    display: 'inline-block',
+                    padding: '10px 24px', 
+                    background: '#2563EB', 
+                    borderRadius: '999px', 
+                    fontSize: '14px', fontWeight: 700, color: '#FFFFFF', textDecoration: 'none',
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
+                    transition: 'all 0.2s ease'
+                  }}>
+                    Daftar
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </nav>
-
-        {/* Top Overlay Panel for Views */}
-        <div className={`top-panel ${isViewOpen ? 'open' : ''}`}>
-          {isViewOpen && (
-            <iframe 
-              src={`/publisher/${viewType}?embedded=true`} 
-              style={{ width: '100%', height: '100%', border: 'none' }}
-            />
-          )}
-        </div>
 
         {/* Main Content */}
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -289,43 +308,28 @@ export default function PublisherPublicLayout({ children }: { children: React.Re
         </main>
 
         {/* Footer */}
-        <footer style={{ 
-          position: 'relative', zIndex: 10,
-          background: isLandingPage ? 'transparent' : '#FFFFFF', 
-          borderTop: isLandingPage ? 'none' : '1px solid #EAEAEA', 
-          padding: '40px 48px', marginTop: 'auto'
-        }}>
-
-          <div style={{ 
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            fontSize: '11px', color: '#999'
+        {!isAuthPage && (
+          <footer style={{ 
+            position: 'relative', zIndex: 10,
+            background: isLandingPage ? 'transparent' : '#FFFFFF', 
+            borderTop: isLandingPage ? 'none' : '1px solid #EAEAEA', 
+            padding: '40px 48px', marginTop: 'auto'
           }}>
-            <div>Copyright © Perpustakaan Digital. All rights reserved.</div>
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Legal</Link>
-              <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Pages</Link>
-              <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Legal pages</Link>
+            <div style={{ 
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              fontSize: '11px', color: '#999', flexWrap: 'wrap', gap: '12px'
+            }}>
+              <div>Copyright © Perpustakaan Digital. All rights reserved.</div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Kebijakan Privasi</Link>
+                <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Syarat & Ketentuan</Link>
+                <Link href="#" className="nav-link" style={{ color: '#999', textDecoration: 'none' }}>Bantuan</Link>
+              </div>
             </div>
-          </div>
-        </footer>
-      </div>
-
-      {/* Right Side Panel for Auth */}
-      <div className={`side-panel ${isAuthOpen ? 'open' : ''}`}>
-        {isAuthOpen && (
-          <>
-            <div style={{ padding: '16px', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'flex-end' }}>
-               <Link href="/publisher" style={{ padding: '8px', cursor: 'pointer', fontSize: '20px', textDecoration: 'none', color: '#333' }}>
-                 ✕
-               </Link>
-            </div>
-            <iframe 
-              src={`/publisher/auth/${authType}?embedded=true`} 
-              style={{ width: '100%', height: 'calc(100% - 60px)', border: 'none' }}
-            />
-          </>
+          </footer>
         )}
       </div>
+
     </div>
   );
 }

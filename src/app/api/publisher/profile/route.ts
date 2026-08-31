@@ -9,7 +9,7 @@ export async function PATCH(req: NextRequest) {
 
   try {
     const { fields, files } = await parseFormData(req);
-    const { name, phone } = fields;
+    const { name, phone, bio, website } = fields;
     
     let avatarPath: string | undefined;
     if (files.avatar) {
@@ -17,11 +17,20 @@ export async function PATCH(req: NextRequest) {
       avatarPath = await saveFile(files.avatar.buffer, filename, 'avatars');
     }
 
+    let bannerPath: string | undefined;
+    if (files.banner) {
+      const filename = generateFilename(files.banner.originalName);
+      bannerPath = await saveFile(files.banner.buffer, filename, 'banners');
+    }
+
     const repo = createPublisherRepository();
     const updateData: any = {};
     if (name) updateData.name = name;
     if (phone !== undefined) updateData.phone = phone;
+    if (bio !== undefined) updateData.bio = bio;
+    if (website !== undefined) updateData.website = website;
     if (avatarPath) updateData.avatar = avatarPath;
+    if (bannerPath) updateData.banner = bannerPath;
 
     const updated = await repo.update(publisher.id, updateData);
     return successResponse(updated.getProfile());

@@ -349,6 +349,21 @@ export default function UploadPage() {
             </div>
           </div>
 
+          {/* Panduan Hak Cipta */}
+          <div style={{ background: '#FFFDF5', padding: '24px', borderRadius: '16px', border: '1px solid #F5E6CC', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1A1A1A', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>⚖️</span> Panduan Hak Cipta
+            </h3>
+            <p style={{ fontSize: '13px', color: '#555', lineHeight: '1.6', marginBottom: '12px' }}>
+              Sebagai penerbit, Anda wajib memastikan bahwa seluruh materi (naskah dan sampul) yang diunggah <strong>tidak melanggar hak cipta</strong> pihak ketiga.
+            </p>
+            <ul style={{ fontSize: '13px', color: '#555', lineHeight: '1.6', paddingLeft: '20px', margin: 0 }}>
+              <li style={{ marginBottom: '8px' }}>Pastikan Anda memiliki izin resmi atau lisensi atas buku yang diterbitkan.</li>
+              <li style={{ marginBottom: '8px' }}>Dilarang mengunggah konten bajakan, plagiat, atau yang mengandung unsur ilegal.</li>
+              <li>Pelanggaran hak cipta dapat mengakibatkan penghapusan karya secara sepihak dan pemblokiran akun penerbit.</li>
+            </ul>
+          </div>
+
         </div>
       </main>
     </div>

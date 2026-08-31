@@ -36,6 +36,10 @@ export class BookService {
     return this.bookRepository.findPending();
   }
 
+  public async adminSearchBooks(query?: string, status?: string): Promise<BookModel[]> {
+    return this.bookRepository.adminSearch(query, status);
+  }
+
   public async searchBooks(query: string): Promise<BookModel[]> {
     if (!query.trim()) return this.bookRepository.findPublished();
     return this.bookRepository.search(query);

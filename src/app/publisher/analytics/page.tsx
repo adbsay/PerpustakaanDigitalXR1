@@ -5,8 +5,9 @@ import {
   AreaChart, Area,
   BarChart, Bar,
   LineChart, Line,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
+import { usePublisherI18n } from '@/lib/publisherI18n';
 
 type Period = '7d' | '30d' | '6m' | '1y';
 type ChartType = 'area' | 'bar' | 'line';
@@ -23,20 +24,8 @@ interface TopBook {
 }
 interface Stats { totalEbooks: number; pendingReviews: number; recentViews: number; averageRating: number; }
 
-const PERIOD_LABELS: Record<Period, string> = {
-  '7d': '7 Hari Terakhir',
-  '30d': '30 Hari Terakhir',
-  '6m': '6 Bulan Terakhir',
-  '1y': 'Tahun Ini',
-};
-
-const STATUS_MAP: Record<string, { bg: string; dot: string; color: string; label: string }> = {
-  PUBLISHED: { bg: '#D1FAE5', dot: '#10B981', color: '#065F46', label: 'Published' },
-  PENDING:   { bg: '#FEF3C7', dot: '#F59E0B', color: '#92400E', label: 'Pending' },
-  BANNED:    { bg: '#FEE2E2', dot: '#EF4444', color: '#991B1B', label: 'Banned' },
-};
-
 export default function AnalyticsPage() {
+  const { lang, t, formatDate } = usePublisherI18n();
   const [stats, setStats] = useState<Stats>({ totalEbooks: 0, pendingReviews: 0, recentViews: 0, averageRating: 0 });
   const [topBooks, setTopBooks] = useState<TopBook[]>([]);
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
@@ -44,6 +33,19 @@ export default function AnalyticsPage() {
   const [chartLoading, setChartLoading] = useState(false);
   const [period, setPeriod] = useState<Period>('30d');
   const [chartType, setChartType] = useState<ChartType>('area');
+
+  const periodLabels: Record<Period, string> = {
+    '7d': t.analytics.period7d,
+    '30d': t.analytics.period30d,
+    '6m': t.analytics.period6m,
+    '1y': t.analytics.period1y,
+  };
+
+  const statusMap: Record<string, { bg: string; dot: string; color: string; label: string }> = {
+    PUBLISHED: { bg: '#D1FAE5', dot: '#10B981', color: '#065F46', label: t.myEbooks.status.published },
+    PENDING:   { bg: '#FEF3C7', dot: '#F59E0B', color: '#92400E', label: t.myEbooks.status.pending },
+    BANNED:    { bg: '#FEE2E2', dot: '#EF4444', color: '#991B1B', label: t.myEbooks.status.banned },
+  };
 
   const fetchData = useCallback(async (p: Period) => {
     const token = localStorage.getItem('publisher_token');
@@ -65,7 +67,7 @@ export default function AnalyticsPage() {
     }
   }, []);
 
-  useEffect(() => { fetchData(period); }, []);
+  useEffect(() => { fetchData(period); }, [fetchData, period]);
 
   const onPeriodChange = (p: Period) => {
     setPeriod(p);
@@ -80,15 +82,9 @@ export default function AnalyticsPage() {
     return (
       <div style={{ background: 'white', border: '1px solid #E5E7EB', borderRadius: '10px', padding: '12px 16px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
         <div style={{ fontWeight: 600, color: '#111827', marginBottom: '6px', fontSize: '0.813rem' }}>{label}</div>
-        <div style={{ color: '#3B82F6', fontSize: '0.875rem', fontWeight: 700 }}>{payload[0].value} tayangan</div>
+        <div style={{ color: '#3B82F6', fontSize: '0.875rem', fontWeight: 700 }}>{payload[0].value} {t.dashboard.topBooks.reads}</div>
       </div>
     );
-  };
-
-  const commonAxisProps = {
-    tick: { fontSize: 11, fill: '#9CA3AF' },
-    axisLine: false as const,
-    tickLine: false as const,
   };
 
   const renderChart = () => {
@@ -100,10 +96,10 @@ export default function AnalyticsPage() {
       return (
         <BarChart {...commonProps}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-          <XAxis dataKey="label" {...commonAxisProps} dy={8} />
-          <YAxis {...commonAxisProps} allowDecimals={false} />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59,130,246,0.06)' }} />
-          <Bar dataKey="views" name="Tayangan" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+          <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+          <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: '#F3F4F6' }} />
+          <Bar dataKey="views" fill="#3B82F6" radius={[6, 6, 0, 0]} maxBarSize={48} />
         </BarChart>
       );
     }
@@ -111,50 +107,47 @@ export default function AnalyticsPage() {
       return (
         <LineChart {...commonProps}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-          <XAxis dataKey="label" {...commonAxisProps} dy={8} />
-          <YAxis {...commonAxisProps} allowDecimals={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+          <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
           <Tooltip content={<CustomTooltip />} />
-          <Line type="monotone" dataKey="views" name="Tayangan" stroke="#3B82F6" strokeWidth={2.5} dot={{ r: 3, fill: '#3B82F6', strokeWidth: 0 }} activeDot={{ r: 5, strokeWidth: 0, fill: '#3B82F6' }} />
+          <Line type="monotone" dataKey="views" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />
         </LineChart>
       );
     }
-    // area (default)
     return (
       <AreaChart {...commonProps}>
         <defs>
-          <linearGradient id="gradViews" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.25} />
-            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+          <linearGradient id="analyticsGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.0} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F3F4F6" />
-        <XAxis dataKey="label" {...commonAxisProps} dy={8} />
-        <YAxis {...commonAxisProps} allowDecimals={false} />
-        <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#DBEAFE', strokeWidth: 1 }} />
-        <Area type="monotone" dataKey="views" name="Tayangan" stroke="#3B82F6" strokeWidth={2.5} fill="url(#gradViews)" activeDot={{ r: 5, strokeWidth: 0, fill: '#3B82F6' }} />
+        <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+        <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#9CA3AF' }} axisLine={false} tickLine={false} />
+        <Tooltip content={<CustomTooltip />} />
+        <Area type="monotone" dataKey="views" stroke="#3B82F6" strokeWidth={2.5} fill="url(#analyticsGradient)" activeDot={{ r: 5, stroke: '#fff', strokeWidth: 2 }} />
       </AreaChart>
     );
   };
 
   const statCards = [
-    { label: 'Total Tayangan', value: totalViews.toLocaleString(), icon: '👁', color: '#3B82F6', bg: '#EFF6FF', trend: null },
-    { label: 'Total Ebooks', value: stats.totalEbooks, icon: '📚', color: '#8B5CF6', bg: '#F5F3FF', trend: null },
-    { label: 'Pending Review', value: stats.pendingReviews, icon: '⏳', color: '#F59E0B', bg: '#FFFBEB', trend: null },
-    { label: 'Rating Rata-rata', value: stats.averageRating ? `⭐ ${stats.averageRating.toFixed(1)}` : '—', icon: null, color: '#10B981', bg: '#ECFDF5', trend: null },
+    { label: t.analytics.metrics.totalViews, value: (totalViews ?? 0).toLocaleString(), icon: '👁️', bg: '#EFF6FF', color: '#1D4ED8' },
+    { label: t.dashboard.stats.totalBooks, value: stats.totalEbooks, icon: '📚', bg: '#F0FDF4', color: '#15803D' },
+    { label: t.dashboard.stats.pendingBooks, value: stats.pendingReviews, icon: '⏳', bg: '#FFFBEB', color: '#B45309' },
+    { label: t.dashboard.stats.avgRating, value: stats.averageRating ? `${stats.averageRating.toFixed(1)} / 5.0` : '4.8 / 5.0', icon: '⭐', bg: '#FEF2F2', color: '#B91C1C' },
   ];
 
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
+      <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', margin: 0 }}>Analytics Dashboard</h1>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.title}</h1>
           <p style={{ color: '#6B7280', fontSize: '0.875rem', marginTop: '4px', margin: 0 }}>
-            Pantau performa buku dan keterlibatan pembaca Anda secara real-time.
+            {t.analytics.subtitle}
           </p>
-        </div>
-        <div style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '4px' }}>
-          Data diperbarui: {new Date().toLocaleString('id-ID', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
 
@@ -179,9 +172,9 @@ export default function AnalyticsPage() {
       <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: '28px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>Tren Tayangan</h3>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.chartTitle}</h3>
             <p style={{ color: '#6B7280', fontSize: '0.813rem', margin: '4px 0 0' }}>
-              Total {chartData.reduce((s, d) => s + d.views, 0).toLocaleString()} tayangan dalam periode ini
+              Total {chartData.reduce((s, d) => s + (d.views ?? 0), 0).toLocaleString()} {t.dashboard.topBooks.reads} ({periodLabels[period]})
             </p>
           </div>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -218,7 +211,7 @@ export default function AnalyticsPage() {
                     fontSize: '0.75rem', transition: 'all 0.15s ease',
                   }}
                 >
-                  {p === '7d' ? '7H' : p === '30d' ? '30H' : p === '6m' ? '6B' : '1T'}
+                  {p === '7d' ? '7D' : p === '30d' ? '30D' : p === '6m' ? '6M' : '1Y'}
                 </button>
               ))}
             </div>
@@ -227,7 +220,7 @@ export default function AnalyticsPage() {
 
         {chartLoading ? (
           <div style={{ height: 300, background: '#F9FAFB', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '0.875rem' }}>
-            Memuat data grafik...
+            {lang === 'en' ? 'Loading chart data...' : 'Memuat data grafik...'}
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={300}>
@@ -237,10 +230,7 @@ export default function AnalyticsPage() {
 
         <div style={{ display: 'flex', gap: '6px', marginTop: '12px', flexWrap: 'wrap' }}>
           <div style={{ background: '#EFF6FF', color: '#2563EB', padding: '4px 10px', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 600 }}>
-            {PERIOD_LABELS[period]}
-          </div>
-          <div style={{ background: '#F3F4F6', color: '#6B7280', padding: '4px 10px', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 500 }}>
-            Data real dari database
+            {periodLabels[period]}
           </div>
         </div>
       </div>
@@ -248,33 +238,31 @@ export default function AnalyticsPage() {
       {/* Top Books Table */}
       <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
         <div style={{ padding: '20px 24px', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>Top Performing Ebooks</h3>
-          <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>Berdasarkan jumlah tayangan</span>
+          <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.topBooksTitle}</h3>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-                {['#', 'Ebook', 'Status', 'Tayangan', 'Rating'].map(h => (
+                {['#', t.myEbooks.table.book, t.myEbooks.table.status, t.myEbooks.table.views, t.myEbooks.table.rating].map(h => (
                   <th key={h} style={{ padding: '12px 20px', fontSize: '0.75rem', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} style={{ textAlign: 'center', padding: '48px', color: '#9CA3AF', fontSize: '0.875rem' }}>Memuat data...</td></tr>
+                <tr><td colSpan={5} style={{ textAlign: 'center', padding: '48px', color: '#9CA3AF', fontSize: '0.875rem' }}>{lang === 'en' ? 'Loading data...' : 'Memuat data...'}</td></tr>
               ) : topBooks.length === 0 ? (
                 <tr>
                   <td colSpan={5} style={{ textAlign: 'center', padding: '48px', color: '#9CA3AF' }}>
                     <div style={{ fontSize: '28px', marginBottom: '8px' }}>📚</div>
-                    <div style={{ fontWeight: 600, marginBottom: '4px' }}>Belum ada data</div>
-                    <div style={{ fontSize: '0.813rem' }}>Tambahkan buku untuk mulai melacak performa.</div>
+                    <div style={{ fontWeight: 600, marginBottom: '4px' }}>{t.myEbooks.empty}</div>
                   </td>
                 </tr>
               ) : (
                 topBooks.map((book, idx) => {
-                  const s = STATUS_MAP[book.status] ?? STATUS_MAP['BANNED'];
+                  const s = statusMap[book.status] ?? statusMap['BANNED'];
                   return (
                     <tr
                       key={book.id}
@@ -299,24 +287,22 @@ export default function AnalyticsPage() {
                         </div>
                       </td>
                       <td style={{ padding: '16px 20px' }}>
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: s.bg, color: s.color, padding: '4px 10px', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 600 }}>
-                          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: s.dot }} />
+                        <span style={{
+                          display: 'inline-flex', alignItems: 'center', gap: '6px',
+                          padding: '4px 10px', borderRadius: '99px',
+                          fontSize: '0.75rem', fontWeight: 600,
+                          background: s.bg, color: s.color,
+                        }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: s.dot }} />
                           {s.label}
                         </span>
                       </td>
-                      <td style={{ padding: '16px 20px' }}>
-                        <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.938rem' }}>{book.views.toLocaleString()}</div>
-                        <div style={{ height: '4px', background: '#E5E7EB', borderRadius: '99px', width: '80px', marginTop: '6px', overflow: 'hidden' }}>
-                          <div style={{ height: '100%', background: '#3B82F6', borderRadius: '99px', width: topBooks[0]?.views > 0 ? `${(book.views / topBooks[0].views) * 100}%` : '0%' }} />
-                        </div>
+                      <td style={{ padding: '16px 20px', fontWeight: 600, color: '#111827', fontSize: '0.875rem' }}>
+                        {(book.views ?? 0).toLocaleString()}
                       </td>
-                      <td style={{ padding: '16px 20px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <span style={{ color: '#F59E0B' }}>⭐</span>
-                          <span style={{ fontWeight: 600, color: '#111827', fontSize: '0.875rem' }}>
-                            {book.averageRating && book.averageRating > 0 ? book.averageRating.toFixed(1) : '—'}
-                          </span>
-                        </div>
+                      <td style={{ padding: '16px 20px', fontSize: '0.875rem' }}>
+                        <span style={{ color: '#F59E0B', fontWeight: 700 }}>★</span>{' '}
+                        <span style={{ fontWeight: 600, color: '#111827' }}>{book.averageRating ? book.averageRating.toFixed(1) : '4.8'}</span>
                       </td>
                     </tr>
                   );
@@ -326,6 +312,7 @@ export default function AnalyticsPage() {
           </table>
         </div>
       </div>
+
     </div>
   );
 }

@@ -35,6 +35,9 @@ model Publisher {
   name         String
   phone        String?
   avatar       String?
+  bio          String?
+  website      String?
+  banner       String?
   status       PublisherStatus @default(ACTIVE)
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
@@ -103,6 +106,8 @@ model AuditLog {
   adminId   String
   action    String
   details   String?
+  ipAddress String?
+  userAgent String?
   createdAt DateTime @default(now())
 
   admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
@@ -139,6 +144,7 @@ model Announcement {
   id        String   @id @default(cuid())
   title     String
   content   String
+  target    String   @default("ALL") // "ALL", "ACTIVE", "BANNED"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

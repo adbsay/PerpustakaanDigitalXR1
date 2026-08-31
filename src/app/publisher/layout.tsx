@@ -1,40 +1,81 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import { LayoutDashboard, BookOpen, BarChart3, Plus, Bell, User, Settings, HelpCircle, LogOut } from 'lucide-react';
+import { NotificationProvider } from '@/context/NotificationContext';
 
-interface User {
+interface UserData {
   id: string;
   name: string;
   email: string;
   avatar: string | null;
 }
 
-const navItems = [
-  { label: 'Dashboard', href: '/publisher/dashboard' },
-  { label: 'My Ebooks', href: '/publisher/my-ebooks' },
-  { label: 'Analytics', href: '/publisher/analytics' },
-];
-
 export default function PublisherLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [isBanned, setIsBanned] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [hasSeenNotifs, setHasSeenNotifs] = useState(false);
+  const [lang, setLang] = useState<'id' | 'en'>('id');
 
-  // Page transition
-  const [transitionOrigin, setTransitionOrigin] = useState<string>('center top');
-  const [animKey, setAnimKey] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  // Store previous children so old page stays visible behind the new one
-  const prevChildrenRef = useRef<React.ReactNode>(null);
+  useEffect(() => {
+    try {
+      const savedPrefs = localStorage.getItem('publisher_preferences');
+      if (savedPrefs) {
+        const parsed = JSON.parse(savedPrefs);
+        if (parsed.language === 'en' || parsed.language === 'id') {
+          setLang(parsed.language);
+        }
+      }
+    } catch {}
+  }, []);
 
-  // Skip navbar for public pages
+  const navLabels = {
+    id: {
+      dashboard: 'Dashboard',
+      myEbooks: 'Katalog Ebook',
+      analytics: 'Analitik',
+      upload: 'Upload Ebook',
+      notifTitle: 'Notifikasi Penerbit',
+      noNotif: 'Tidak ada notifikasi baru',
+      profile: 'Profil Penerbit',
+      settings: 'Pengaturan Akun',
+      help: 'Pusat Bantuan',
+      logout: 'Keluar',
+      bannedTitle: 'Akun Dinonaktifkan',
+      bannedDesc: 'Akses akun Publisher Anda telah dinonaktifkan oleh Administrator sistem. Silakan hubungi tim dukungan jika Anda memerlukan klarifikasi lebih lanjut.',
+      bannedLogout: 'Keluar dari Sistem'
+    },
+    en: {
+      dashboard: 'Dashboard',
+      myEbooks: 'My Ebooks',
+      analytics: 'Analytics',
+      upload: 'Upload Ebook',
+      notifTitle: 'Publisher Notifications',
+      noNotif: 'No new notifications',
+      profile: 'Publisher Profile',
+      settings: 'Account Settings',
+      help: 'Help Center',
+      logout: 'Log out',
+      bannedTitle: 'Account Deactivated',
+      bannedDesc: 'Your publisher account access has been suspended by the system administrator. Please reach out to support for further information.',
+      bannedLogout: 'Log out from System'
+    }
+  }[lang];
+
+  const navItems = [
+    { label: navLabels.dashboard, href: '/publisher/dashboard', icon: LayoutDashboard },
+    { label: navLabels.myEbooks, href: '/publisher/my-ebooks', icon: BookOpen },
+    { label: navLabels.analytics, href: '/publisher/analytics', icon: BarChart3 },
+  ];
+
+  // Skip navbar for public / auth pages
   const isAuthPage = pathname?.includes('/publisher/auth');
   const publicPaths = ['/publisher', '/publisher/tentang-kami', '/publisher/faq', '/publisher/kontak'];
   const isPublicPage = isAuthPage || (pathname && publicPaths.includes(pathname));
@@ -65,14 +106,13 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
             const notifJson = await notifRes.json();
             if (notifJson.success) {
               setNotifications(prev => {
-                // If there are new notifications, show the badge again
                 if (prev.length !== notifJson.data.length) {
                   setHasSeenNotifs(false);
                 }
                 return notifJson.data;
               });
             }
-          } catch(e) {}
+          } catch {}
           
         } else {
           if (j.error === 'BANNED') {
@@ -81,15 +121,15 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
             router.push('/publisher/auth/login');
           }
         }
-      } catch (e) {
+      } catch {
         // Silently ignore network errors during poll
       }
     };
 
     checkAuth();
-    const interval = setInterval(checkAuth, 10000);
+    const interval = setInterval(checkAuth, 12000);
     return () => clearInterval(interval);
-  }, [pathname]);
+  }, [pathname, isPublicPage, router]);
 
   const handleLogout = async () => {
     await fetch('/api/publisher/auth/me', { method: 'POST' });
@@ -99,48 +139,21 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
     router.push('/publisher');
   };
 
-  // Handle nav click with page transition
-  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href === pathname) return;
-    e.preventDefault();
-
-    // Get click position relative to main content area
-    const mainEl = document.getElementById('pub-main-content');
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mainRect = mainEl?.getBoundingClientRect() || { left: 0, top: 0 };
-
-    const originX = rect.left + rect.width / 2 - mainRect.left;
-    const originY = rect.top + rect.height / 2 - mainRect.top;
-
-    // Save current children as "old page"
-    prevChildrenRef.current = children;
-
-    setTransitionOrigin(`${originX}px ${originY}px`);
-    setIsAnimating(true);
-    setAnimKey(prev => prev + 1);
-
-    // Navigate
-    router.push(href);
-  }, [pathname, router, children]);
-
-  // Clear animation state after it finishes
-  const handleAnimEnd = useCallback(() => {
-    setIsAnimating(false);
-    prevChildrenRef.current = null;
-  }, []);
-
   if (isPublicPage) return <>{children}</>;
 
   if (isBanned) {
     return (
-      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' }}>
-        <div style={{ background: 'white', padding: 40, borderRadius: 24, maxWidth: 420, textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
-          <div style={{ fontSize: 72, marginBottom: 16 }}>🚫</div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 12, color: '#1A1A1A' }}>Akun Diblokir</h2>
-          <p style={{ color: '#6B6B6B', fontSize: '0.938rem', marginBottom: 32, lineHeight: 1.6 }}>
-            Mohon maaf, akses akun Publisher Anda telah dinonaktifkan oleh Administrator karena melanggar kebijakan kami. Anda tidak lagi dapat mengelola buku atau mengakses dashboard.
+      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15, 23, 42, 0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+        <div style={{ background: 'white', padding: '40px', borderRadius: '24px', maxWidth: '420px', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+          <div style={{ fontSize: '64px', marginBottom: '16px' }}>🚫</div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '12px', color: '#0F172A' }}>Akun Dinonaktifkan</h2>
+          <p style={{ color: '#64748B', fontSize: '0.938rem', marginBottom: '32px', lineHeight: 1.6 }}>
+            Akses akun Publisher Anda telah dinonaktifkan oleh Administrator sistem. Silakan hubungi tim dukungan jika Anda memerlukan klarifikasi lebih lanjut.
           </p>
-          <button className="btn btn-primary btn-lg" style={{ width: '100%', background: '#FF3B30', border: 'none' }} onClick={handleLogout}>
+          <button 
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-colors duration-150 active:scale-[0.98] active:bg-red-800"
+            onClick={handleLogout}
+          >
             Keluar dari Sistem
           </button>
         </div>
@@ -149,51 +162,78 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F9F9F9', display: 'flex', flexDirection: 'column' }}>
+    <NotificationProvider>
+      <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', flexDirection: 'column' }}>
+      
+      {/* GLOBAL SAAS TACTILE STYLES */}
       <style>{`
-        @keyframes pub-page-zoom-in {
+        @keyframes subtleFadeIn {
           0% {
-            transform: scale(0);
             opacity: 0;
-            border-radius: 16px;
-          }
-          40% {
-            opacity: 1;
-            border-radius: 12px;
           }
           100% {
-            transform: scale(1);
             opacity: 1;
-            border-radius: 0px;
           }
         }
 
-        .pub-nav-link {
-          transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-          position: relative;
+        .pub-main-area {
+          animation: subtleFadeIn 0.15s ease-out forwards;
         }
-        .pub-nav-link:hover {
-          transform: translateY(-1px);
-          color: #1A1A1A !important;
-          background: #F4F3F0 !important;
+
+        /* Tactile B2B SaaS Button Styles */
+        .btn-primary {
+          background-color: #2563EB;
+          color: #FFFFFF;
+          font-weight: 600;
+          transition: background-color 150ms ease, transform 150ms ease;
         }
-        .pub-nav-link:active {
-          transform: scale(0.95);
+        .btn-primary:hover {
+          background-color: #1D4ED8;
+        }
+        .btn-primary:active {
+          transform: scale(0.98);
+          background-color: #1E40AF;
+        }
+
+        .btn-outline {
+          background-color: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          color: #334155;
+          font-weight: 600;
+          transition: background-color 150ms ease, transform 150ms ease, border-color 150ms ease;
+        }
+        .btn-outline:hover {
+          background-color: #F8FAFC;
+          border-color: #CBD5E1;
+        }
+        .btn-outline:active {
+          transform: scale(0.98);
+        }
+
+        .btn-destructive {
+          color: #DC2626;
+          transition: background-color 150ms ease, transform 150ms ease;
+        }
+        .btn-destructive:hover {
+          background-color: #FEF2F2;
+        }
+        .btn-destructive:active {
+          transform: scale(0.98);
         }
       `}</style>
 
-      {/* ---- NAVBAR ---- */}
+      {/* ---- TOP NAVBAR ---- */}
       <nav style={{ 
         height: '70px', 
         background: '#FFFFFF', 
-        borderBottom: '1px solid #EBEBEB', 
+        borderBottom: '1px solid #E2E8F0', 
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)'
       }}>
         <div style={{ 
-          maxWidth: '1200px', 
+          maxWidth: '1360px', 
           margin: '0 auto', 
           height: '100%', 
           padding: '0 24px',
@@ -201,115 +241,130 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
           alignItems: 'center', 
           justifyContent: 'space-between' 
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '48px' }}>
+          
+          {/* Left: Logo & Nav Links */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '36px' }}>
+            
             {/* Logo */}
-            <a
+            <Link
               href="/publisher/dashboard"
-              onClick={(e) => handleNavClick(e, '/publisher/dashboard')}
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', cursor: 'pointer' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
             >
-              <img src="/logo.svg" alt="Digital Library Logo" style={{ width: '32px', height: '32px' }} />
-              <div style={{ fontSize: '1rem', fontWeight: 600, color: '#1A1A1A', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                Digital Library
+              <img src="/logo.svg" alt="Digital Library Logo" style={{ width: '30px', height: '30px' }} />
+              <div style={{ fontSize: '0.938rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                PERPUSTAKAAN DIGITAL
                 <span style={{
-                  fontSize: '0.688rem', fontWeight: 700, color: '#6B6B6B', background: '#F4F3F0',
-                  padding: '3px 9px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.04em'
-                }}>Publisher</span>
+                  fontSize: '0.625rem', fontWeight: 800, color: '#2563EB', background: '#EFF6FF',
+                  padding: '2px 7px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.06em',
+                  border: '1px solid #DBEAFE'
+                }}>
+                  Publisher
+                </span>
               </div>
-            </a>
+            </Link>
 
-            {/* Links */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Nav Tabs */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               {navItems.map(item => {
                 const isActive = pathname === item.href;
+                const Icon = item.icon;
                 return (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    className="pub-nav-link"
                     style={{
-                      fontSize: '0.875rem',
-                      fontWeight: isActive ? 600 : 500,
-                      color: isActive ? '#1A1A1A' : '#6B6B6B',
+                      fontSize: '0.813rem',
+                      fontWeight: isActive ? 700 : 500,
+                      color: isActive ? '#1D4ED8' : '#64748B',
                       textDecoration: 'none',
-                      padding: '8px 16px',
-                      borderRadius: '6px',
-                      background: isActive ? '#F4F3F0' : 'transparent',
+                      padding: '8px 14px',
+                      borderRadius: '8px',
+                      background: isActive ? '#EFF6FF' : 'transparent',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      transition: 'color 150ms ease, background-color 150ms ease'
                     }}
                   >
+                    <Icon size={16} color={isActive ? '#2563EB' : '#94A3B8'} strokeWidth={isActive ? 2.2 : 1.8} />
                     {item.label}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
+
           </div>
 
-          {/* User Profile & Notifications */}
+          {/* Right: Actions, Notification, Profile */}
           {user && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
 
-              {/* Upload New — primary action */}
-              <a
+              {/* Upload Button */}
+              <Link
                 href="/publisher/upload"
-                onClick={(e) => handleNavClick(e, '/publisher/upload')}
+                className="btn-primary"
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '6px', background: '#1A1A1A', color: '#FFFFFF',
-                  fontSize: '0.875rem', fontWeight: 600, padding: '9px 16px', borderRadius: '6px',
-                  textDecoration: 'none', transition: 'background 0.2s ease'
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '0.813rem',
+                  padding: '8px 16px',
+                  borderRadius: '10px',
+                  textDecoration: 'none',
+                  boxShadow: '0 1px 3px rgba(37,99,235,0.2)'
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#000000'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = '#1A1A1A'; }}
               >
-                Upload New
-              </a>
+                <Plus size={16} strokeWidth={2.5} />
+                {navLabels.upload}
+              </Link>
 
               {/* Notification Bell */}
               <div style={{ position: 'relative' }}>
                 <button
                   onClick={() => { setIsNotifOpen(!isNotifOpen); setIsDropdownOpen(false); setHasSeenNotifs(true); }}
+                  className="btn-outline"
                   style={{ 
-                    background: 'white', border: '1px solid #EBEBEB', borderRadius: '50%',
-                    width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', transition: 'all 0.2s', position: 'relative'
+                    borderRadius: '50%',
+                    width: '36px', height: '36px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', position: 'relative',
+                    padding: 0
                   }}
+                  title={navLabels.notifTitle}
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4B4B4B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
-                    <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
-                  </svg>
+                  <Bell size={16} color="#64748B" />
                   {notifications.length > 0 && !hasSeenNotifs && (
                     <span style={{
-                      position: 'absolute', top: '2px', right: '2px', background: '#FF3B30',
-                      width: '9px', height: '9px', borderRadius: '50%', border: '1.5px solid #FFFFFF'
+                      position: 'absolute', top: '7px', right: '7px', background: '#EF4444',
+                      width: '8px', height: '8px', borderRadius: '50%', border: '1.5px solid #FFFFFF'
                     }} />
                   )}
                 </button>
 
                 {isNotifOpen && (
-                  <div style={{
+                  <div style={{ 
                     position: 'absolute', top: '100%', right: 0, marginTop: '8px', 
-                    background: 'white', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', 
-                    border: '1px solid #EBEBEB', width: '280px', zIndex: 100 
+                    background: '#FFFFFF', borderRadius: '14px', boxShadow: '0 12px 30px rgba(0,0,0,0.08)', 
+                    border: '1px solid #E2E8F0', width: '300px', zIndex: 100, overflow: 'hidden'
                   }}>
-                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #F4F3F0', fontWeight: 600, fontSize: '0.875rem' }}>
-                      Notifikasi
+                    <div style={{ padding: '14px 16px', borderBottom: '1px solid #F1F5F9', fontWeight: 800, fontSize: '0.875rem', color: '#0F172A' }}>
+                      {navLabels.notifTitle}
                     </div>
                     <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                       {notifications.length === 0 ? (
-                        <div style={{ padding: '24px 16px', textAlign: 'center', color: '#9B9B9B', fontSize: '0.813rem' }}>
-                          Tidak ada notifikasi baru
+                        <div style={{ padding: '28px 16px', textAlign: 'center', color: '#94A3B8', fontSize: '0.813rem' }}>
+                          {navLabels.noNotif}
                         </div>
                       ) : (
                         notifications.map((notif: any, i: number) => (
                           <div key={i} style={{ 
-                            padding: '12px 16px', borderBottom: i < notifications.length - 1 ? '1px solid #F4F3F0' : 'none',
+                            padding: '12px 16px', borderBottom: i < notifications.length - 1 ? '1px solid #F8FAFC' : 'none',
                             fontSize: '0.813rem'
                           }}>
-                            <div style={{ fontWeight: 600, color: '#1A1A1A', marginBottom: '4px' }}>
-                              Buku &quot;{notif.title}&quot; {notif.status === 'PUBLISHED' ? 'disetujui' : 'ditolak'}
+                            <div style={{ fontWeight: 700, color: '#0F172A', marginBottom: '3px' }}>
+                              Ebook &quot;{notif.title}&quot; {notif.status === 'PUBLISHED' ? (lang === 'en' ? 'has been approved' : 'telah disetujui') : (lang === 'en' ? 'was rejected' : 'ditolak')}
                             </div>
-                            <div style={{ color: '#6B6B6B', fontSize: '0.75rem' }}>{new Date(notif.updatedAt).toLocaleDateString()}</div>
+                            <div style={{ color: '#94A3B8', fontSize: '0.688rem' }}>{new Date(notif.updatedAt).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID')}</div>
                           </div>
                         ))
                       )}
@@ -318,103 +373,136 @@ export default function PublisherLayout({ children }: { children: React.ReactNod
                 )}
               </div>
 
+              {/* User Dropdown */}
               <div style={{ position: 'relative' }}>
                 <button 
                   onClick={() => { setIsDropdownOpen(!isDropdownOpen); setIsNotifOpen(false); }}
-                style={{ 
-                  display: 'flex', alignItems: 'center', gap: '10px', background: 'transparent', 
-                  border: 'none', cursor: 'pointer', padding: '6px 10px', borderRadius: '8px',
-                  transition: 'background 0.2s ease'
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = '#F4F3F0'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-              >
-                <div style={{ 
-                  width: '24px', height: '24px', borderRadius: '50%', background: '#F4F3F0', 
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' 
-                }}>
-                  {user.avatar ? <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: '12px' }}>👤</span>}
-                </div>
-                <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1A1A1A' }}>{user.name}</span>
-                <span style={{ fontSize: '0.7rem', color: '#6B6B6B', marginLeft: '4px' }}>▼</span>
-              </button>
+                  className="btn-outline"
+                  style={{ 
+                    display: 'flex', alignItems: 'center', gap: '8px', 
+                    padding: '5px 10px 5px 6px', borderRadius: '10px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{ 
+                    width: '26px', height: '26px', borderRadius: '50%', background: '#0F172A', 
+                    color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+                    fontSize: '0.75rem', fontWeight: 800
+                  }}>
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      user.name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <span style={{ fontSize: '0.813rem', fontWeight: 700, color: '#0F172A', maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {user.name}
+                  </span>
+                  <span style={{ fontSize: '0.625rem', color: '#94A3B8' }}>▼</span>
+                </button>
 
-              {/* Dropdown */}
-              {isDropdownOpen && (
-                <div style={{ 
-                  position: 'absolute', top: '100%', right: 0, marginTop: '8px', 
-                  background: 'white', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', 
-                  border: '1px solid #EBEBEB', width: '200px', overflow: 'hidden', zIndex: 100 
-                }}>
-                  <div style={{ padding: '16px', borderBottom: '1px solid #F4F3F0' }}>
-                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1A1A1A', marginBottom: '2px' }}>{user.name}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#6B6B6B', wordBreak: 'break-all' }}>{user.email}</div>
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div style={{ 
+                    position: 'absolute', top: '100%', right: 0, marginTop: '8px', 
+                    background: '#FFFFFF', borderRadius: '14px', 
+                    boxShadow: '0 12px 30px rgba(0,0,0,0.1)', 
+                    border: '1px solid #E2E8F0', width: '220px', overflow: 'hidden', zIndex: 100,
+                    padding: '4px'
+                  }}>
+                    <div style={{ padding: '12px 14px', borderBottom: '1px solid #F1F5F9' }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', marginBottom: '2px' }}>{user.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: '#64748B', wordBreak: 'break-all' }}>{user.email}</div>
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '4px 0' }}>
+                      <Link 
+                        href="/publisher/profile"
+                        onClick={() => setIsDropdownOpen(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px',
+                          fontSize: '0.813rem', color: '#334155', textDecoration: 'none', fontWeight: 500,
+                          transition: 'background-color 150ms ease'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#F8FAFC'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <User size={15} color="#64748B" />
+                        {navLabels.profile}
+                      </Link>
+
+                      <Link 
+                        href="/publisher/settings"
+                        onClick={() => setIsDropdownOpen(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px',
+                          fontSize: '0.813rem', color: '#334155', textDecoration: 'none', fontWeight: 500,
+                          transition: 'background-color 150ms ease'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#F8FAFC'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <Settings size={15} color="#64748B" />
+                        {navLabels.settings}
+                      </Link>
+
+                      <Link 
+                        href="/publisher/help"
+                        onClick={() => setIsDropdownOpen(false)}
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px',
+                          fontSize: '0.813rem', color: '#334155', textDecoration: 'none', fontWeight: 500,
+                          transition: 'background-color 150ms ease'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = '#F8FAFC'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <HelpCircle size={15} color="#64748B" />
+                        {navLabels.help}
+                      </Link>
+
+                      <div style={{ borderTop: '1px solid #F1F5F9', margin: '4px 0' }} />
+
+                      <button 
+                        onClick={handleLogout} 
+                        className="btn-destructive"
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px',
+                          fontSize: '0.813rem', fontWeight: 600, background: 'none', border: 'none', 
+                          cursor: 'pointer', width: '100%', textAlign: 'left'
+                        }}
+                      >
+                        <LogOut size={15} color="#DC2626" />
+                        {navLabels.logout}
+                      </button>
+                    </div>
                   </div>
-                  <div style={{ padding: '8px' }}>
-                    <a href="/publisher/profile"
-                      onClick={(e) => { setIsDropdownOpen(false); handleNavClick(e, '/publisher/profile'); }}
-                      style={{ 
-                        display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', borderRadius: '8px',
-                        fontSize: '0.875rem', color: '#1A1A1A', textDecoration: 'none', transition: 'background 0.2s' 
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = '#F4F3F0'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
-                      <span style={{ width: '16px', textAlign: 'center' }}>👤</span> Profil Saya
-                    </a>
-                    <button onClick={handleLogout} style={{ 
-                      display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', borderRadius: '8px',
-                      fontSize: '0.875rem', color: '#FF3B30', background: 'none', border: 'none', 
-                      cursor: 'pointer', width: '100%', textAlign: 'left', transition: 'background 0.2s' 
-                    }}
-                      onMouseEnter={(e) => e.currentTarget.style.background = '#FFF5F5'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
-                      <span style={{ width: '16px', textAlign: 'center' }}>🚪</span> Keluar
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
+
             </div>
-          </div>
           )}
+
         </div>
       </nav>
 
-      {/* ---- MAIN ---- */}
-      <div id="pub-main-content" style={{ flex: 1, position: 'relative', overflow: 'hidden', minHeight: 0 }}>
-        {/* Old page — stays visible behind during animation */}
-        {isAnimating && prevChildrenRef.current && (
-          <div style={{
-            position: 'absolute', inset: 0, zIndex: 0,
-            background: '#F9F9F9', overflowY: 'auto'
-          }}>
-            <div style={{ padding: '32px 24px', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-              {prevChildrenRef.current}
-            </div>
-          </div>
-        )}
-
-        {/* Current page — animated zoom-in when transitioning */}
-        <div
-          key={animKey}
-          onAnimationEnd={handleAnimEnd}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 1,
-            background: '#F9F9F9',
-            overflowY: isAnimating ? 'hidden' : 'auto',
-            transformOrigin: transitionOrigin,
-            animation: isAnimating ? 'pub-page-zoom-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards' : 'none',
-            boxShadow: isAnimating ? '0 25px 60px rgba(0,0,0,0.12)' : 'none',
+      {/* ---- MAIN AREA WITH RAPID SUBTLE FADE TRANSITION (150ms) ---- */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <main 
+          key={pathname}
+          className="pub-main-area"
+          style={{ 
+            flex: 1, 
+            padding: '28px 32px 64px', 
+            maxWidth: '1600px', 
+            margin: '0 auto', 
+            width: '100%' 
           }}
         >
-          <main style={{ padding: '32px 24px', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-            {children}
-          </main>
-        </div>
+          {children}
+        </main>
       </div>
     </div>
-  );
+  </NotificationProvider>
+);
 }

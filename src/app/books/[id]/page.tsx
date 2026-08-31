@@ -13,6 +13,7 @@ interface Book {
   description: string | null;
   coverImage: string | null;
   pdfFile: string | null;
+  publisherId?: string | null;
   publisherName: string | null;
   publisherAvatar: string | null;
   averageRating: number;
@@ -30,13 +31,31 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [ratingDone, setRatingDone] = useState(false);
   const [bookId, setBookId] = useState('');
   const [toast, setToast] = useState('');
+  const [fromUrl, setFromUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const fromParam = sp.get('from');
+      if (fromParam) {
+        setFromUrl(decodeURIComponent(fromParam));
+      }
+    }
     params.then(p => {
       setBookId(p.id);
       fetchBook(p.id);
     });
   }, []);
+
+  const handleBack = () => {
+    if (fromUrl) {
+      router.push(fromUrl);
+    } else if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  };
 
   const fetchBook = async (id: string) => {
     try {
@@ -459,7 +478,28 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
 
         {/* Navbar */}
         <div className="bdp-nav">
-          <Link href="/">← KEMBALI</Link>
+          <button 
+            onClick={handleBack}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#1A1A1A',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              letterSpacing: '0.5px',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: 0,
+              fontFamily: 'inherit',
+              transition: 'opacity 0.2s'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
+          >
+            ← {fromUrl && fromUrl.includes('/penerbit/') ? 'KEMBALI KE PENERBIT' : 'KEMBALI'}
+          </button>
           <span style={{ opacity: 0.3 }}>|</span>
           <span style={{ opacity: 0.6 }}>{book.title}</span>
         </div>
@@ -534,14 +574,31 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               
               <div className="info-group">
                 <div className="info-label">Penerbit</div>
-                <div className="pub-profile">
-                  {book.publisherAvatar ? (
-                    <img src={book.publisherAvatar} alt="Publisher" className="pub-avatar" style={{ objectFit: 'cover' }} />
-                  ) : (
-                    <div className="pub-avatar">{pubInitials}</div>
-                  )}
-                  <div className="info-value">{book.publisherName || 'Anonim'}</div>
-                </div>
+                {book.publisherId ? (
+                  <Link 
+                    href={`/penerbit/${book.publisherId}`} 
+                    className="pub-profile"
+                    style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '10px' }}
+                  >
+                    {book.publisherAvatar ? (
+                      <img src={book.publisherAvatar} alt="Publisher" className="pub-avatar" style={{ objectFit: 'cover' }} />
+                    ) : (
+                      <div className="pub-avatar">{pubInitials}</div>
+                    )}
+                    <div className="info-value" style={{ color: '#2563EB', fontWeight: 700 }}>
+                      {book.publisherName || 'Anonim'} ↗
+                    </div>
+                  </Link>
+                ) : (
+                  <div className="pub-profile">
+                    {book.publisherAvatar ? (
+                      <img src={book.publisherAvatar} alt="Publisher" className="pub-avatar" style={{ objectFit: 'cover' }} />
+                    ) : (
+                      <div className="pub-avatar">{pubInitials}</div>
+                    )}
+                    <div className="info-value">{book.publisherName || 'Anonim'}</div>
+                  </div>
+                )}
               </div>
 
               <div className="info-group">

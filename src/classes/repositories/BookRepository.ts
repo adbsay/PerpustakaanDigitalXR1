@@ -192,6 +192,32 @@ export class BookRepository extends BaseRepository<BookModel> {
     return this.prisma.bookView.count();
   }
 
+  public async adminSearch(query?: string, status?: string): Promise<BookModel[]> {
+    const where: any = {};
+    if (query) {
+      where.OR = [
+        { title: { contains: query, mode: 'insensitive' } },
+        { author: { contains: query, mode: 'insensitive' } },
+        { publisher: { name: { contains: query, mode: 'insensitive' } } }
+      ];
+    }
+    if (status && status !== 'ALL') {
+      where.status = status;
+    }
+    
+    const books = await this.prisma.book.findMany({
+      where,
+      include: {
+        publisher: { select: { name: true, avatar: true } },
+        category: { select: { name: true } },
+        ratings: { select: { score: true } },
+        _count: { select: { views: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    return books.map(b => this.mapToModel(b as any));
+  }
+
   // Private helper — map Prisma record to BookModel
   private mapToModel(book: {
     id: string;

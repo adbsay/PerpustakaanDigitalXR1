@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { usePublisherI18n } from '@/lib/publisherI18n';
 
 interface Book {
   id: string;
@@ -18,12 +19,12 @@ interface Book {
   averageRating?: number;
 }
 
-const statusBadge = (status: string) => {
+const statusBadge = (status: string, labels: any) => {
   const map: Record<string, { bg: string; color: string; label: string }> = {
-    PUBLISHED: { bg: 'rgba(52,199,89,0.1)', color: '#2E7D32', label: 'Published' },
-    PENDING:   { bg: 'rgba(255,149,0,0.1)',  color: '#E65100', label: 'Pending Review' },
-    BANNED:    { bg: 'rgba(255,59,48,0.1)',   color: '#C62828', label: 'Banned' },
-    DRAFT:     { bg: '#F5F5F5',               color: '#616161', label: 'Draft' },
+    PUBLISHED: { bg: 'rgba(52,199,89,0.1)', color: '#2E7D32', label: labels.status.published },
+    PENDING:   { bg: 'rgba(255,149,0,0.1)',  color: '#E65100', label: labels.status.pending },
+    BANNED:    { bg: 'rgba(255,59,48,0.1)',   color: '#C62828', label: labels.status.banned },
+    DRAFT:     { bg: '#F5F5F5',               color: '#616161', label: labels.status.draft },
   };
   const s = map[status] ?? map['DRAFT'];
   return (
@@ -38,11 +39,12 @@ const statusBadge = (status: string) => {
   );
 };
 
-function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
+function ActionMenu({ bookId, bookTitle, deletingId, onDelete, labels }: {
   bookId: string;
   bookTitle: string;
   deletingId: string;
   onDelete: (id: string, title: string) => void;
+  labels: any;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -68,7 +70,7 @@ function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
     <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
       <button
         onClick={(e) => { e.stopPropagation(); setOpen(v => !v); }}
-        title="Lihat aksi"
+        title={labels.table.actions}
         style={{
           background: open ? '#EBEBEB' : 'transparent',
           border: '1px solid #EAEAEA',
@@ -99,7 +101,7 @@ function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             onClick={() => setOpen(false)}
           >
-            <span>&#9999;&#65039;</span> Edit Ebook
+            <span>&#9999;&#65039;</span> {labels.actions.edit}
           </Link>
 
           <div style={{ height: '1px', background: '#F0F0F0' }} />
@@ -110,7 +112,7 @@ function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
             onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = 'transparent'; el.style.color = '#1A1A1A'; }}
             onClick={() => { setOpen(false); router.push('/publisher/analytics'); }}
           >
-            <span>&#128202;</span> View Analytics
+            <span>&#128202;</span> {labels.actions.view}
           </button>
 
           <div style={{ height: '1px', background: '#F0F0F0' }} />
@@ -122,7 +124,7 @@ function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
             onClick={() => { setOpen(false); onDelete(bookId, bookTitle); }}
             disabled={deletingId === bookId}
           >
-            <span>&#128465;</span> {deletingId === bookId ? 'Menghapus...' : 'Hapus Ebook'}
+            <span>&#128465;</span> {deletingId === bookId ? labels.actions.deleting : labels.actions.delete}
           </button>
         </div>
       )}
@@ -131,6 +133,7 @@ function ActionMenu({ bookId, bookTitle, deletingId, onDelete }: {
 }
 
 export default function MyEbooksPage() {
+  const { lang, t, formatDate } = usePublisherI18n();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState('');
@@ -160,7 +163,7 @@ export default function MyEbooksPage() {
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (!confirm(`Hapus "${title}"? Tindakan ini tidak bisa dibatalkan.`)) return;
+    if (!confirm(`${t.myEbooks.actions.confirmDeleteDesc} (${title})`)) return;
 
     const token = localStorage.getItem('publisher_token');
     setDeletingId(id);
@@ -173,7 +176,7 @@ export default function MyEbooksPage() {
       const json = await res.json();
       if (json.success) {
         setBooks(prev => prev.filter(b => b.id !== id));
-        showToast('Ebook berhasil dihapus');
+        showToast(lang === 'en' ? 'Ebook successfully deleted' : 'Ebook berhasil dihapus');
       }
     } finally {
       setDeletingId('');
@@ -195,11 +198,11 @@ export default function MyEbooksPage() {
     <>
       <div className="page-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h1 className="page-title">My Ebooks</h1>
-          <p className="page-subtitle">Kelola, perbarui, dan pantau performa koleksi buku yang telah Anda terbitkan.</p>
+          <h1 className="page-title">{t.myEbooks.title}</h1>
+          <p className="page-subtitle">{t.myEbooks.subtitle}</p>
         </div>
         <Link href="/publisher/upload" id="add-ebook-btn" className="btn btn-primary">
-          + Add New Ebook
+          + {t.myEbooks.addNew}
         </Link>
       </div>
 
@@ -207,7 +210,7 @@ export default function MyEbooksPage() {
         <div style={{ display: 'flex', gap: '12px', flex: 1, minWidth: '300px' }}>
           <input
             type="text"
-            placeholder="Cari judul buku..."
+            placeholder={t.myEbooks.searchPlaceholder}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             style={{ padding: '10px 16px', borderRadius: '8px', border: '1px solid #EAEAEA', flex: '1 1 auto', maxWidth: '400px', fontSize: '0.875rem' }}
@@ -217,10 +220,10 @@ export default function MyEbooksPage() {
             onChange={e => setStatusFilter(e.target.value)}
             style={{ padding: '10px 16px', borderRadius: '8px', border: '1px solid #EAEAEA', background: 'white', fontSize: '0.875rem' }}
           >
-            <option value="ALL">Semua Status</option>
-            <option value="PUBLISHED">Published</option>
-            <option value="PENDING">Pending Review</option>
-            <option value="DRAFT">Draft</option>
+            <option value="ALL">{t.myEbooks.tabs.all}</option>
+            <option value="PUBLISHED">{t.myEbooks.tabs.published}</option>
+            <option value="PENDING">{t.myEbooks.tabs.pending}</option>
+            <option value="DRAFT">{t.myEbooks.tabs.draft}</option>
           </select>
         </div>
         <div style={{ display: 'flex', gap: '4px', background: '#F4F3F0', padding: '4px', borderRadius: '8px' }}>
@@ -254,26 +257,26 @@ export default function MyEbooksPage() {
       ) : books.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state-icon">📚</div>
-            <div className="empty-state-title">Belum ada ebook</div>
-            <div className="empty-state-text">Upload ebook pertama kamu sekarang</div>
+            <div className="empty-state-title">{t.myEbooks.empty}</div>
+            <div className="empty-state-text">{lang === 'en' ? 'Upload your first ebook now' : 'Upload ebook pertama kamu sekarang'}</div>
             <Link href="/publisher/upload" className="btn btn-primary" style={{ marginTop: 16 }}>
-              Upload Ebook
+              {t.nav.upload}
             </Link>
           </div>
       ) : filteredBooks.length === 0 ? (
           <div className="empty-state" style={{ padding: '64px 0' }}>
-            <div className="empty-state-title">Tidak ada hasil ditemukan</div>
-            <div className="empty-state-text">Coba sesuaikan pencarian atau filter status.</div>
+            <div className="empty-state-title">{lang === 'en' ? 'No matching ebooks found' : 'Tidak ada hasil ditemukan'}</div>
+            <div className="empty-state-text">{lang === 'en' ? 'Try adjusting your search or status filter.' : 'Coba sesuaikan pencarian atau filter status.'}</div>
           </div>
       ) : viewMode === 'list' ? (
           <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #EAEAEA' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
                 <thead>
                   <tr style={{ background: '#F9F9F9', borderBottom: '1px solid #EAEAEA' }}>
-                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>Buku</th>
-                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>Status</th>
-                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>Performa</th>
-                    <th style={{ padding: '16px', textAlign: 'right', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>Aksi</th>
+                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>{t.myEbooks.table.book}</th>
+                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>{t.myEbooks.table.status}</th>
+                    <th style={{ padding: '16px', textAlign: 'left', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>{t.myEbooks.table.views}</th>
+                    <th style={{ padding: '16px', textAlign: 'right', color: '#6B6B6B', fontWeight: 600, fontSize: '0.875rem' }}>{t.myEbooks.table.actions}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -291,7 +294,7 @@ export default function MyEbooksPage() {
                         </div>
                       </td>
                       <td style={{ padding: '16px' }}>
-                        {statusBadge(book.status)}
+                        {statusBadge(book.status, t.myEbooks)}
                       </td>
                       <td style={{ padding: '16px' }}>
                          <div style={{ display: 'flex', gap: '12px' }}>
@@ -305,6 +308,7 @@ export default function MyEbooksPage() {
                           bookTitle={book.title}
                           deletingId={deletingId}
                           onDelete={handleDelete}
+                          labels={t.myEbooks}
                         />
                       </td>
                     </tr>
@@ -322,6 +326,7 @@ export default function MyEbooksPage() {
                     bookTitle={book.title}
                     deletingId={deletingId}
                     onDelete={handleDelete}
+                    labels={t.myEbooks}
                   />
                 </div>
 
@@ -335,7 +340,7 @@ export default function MyEbooksPage() {
                   <div className="ebook-card-title" style={{ paddingRight: 24 }}>{book.title}</div>
                   <div className="ebook-card-author">by {book.author}</div>
                   <div style={{ marginTop: 8 }}>
-                    {statusBadge(book.status)}
+                    {statusBadge(book.status, t.myEbooks)}
                   </div>
                   
                   <div style={{ display: 'flex', gap: '16px', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #F0F0F0' }}>

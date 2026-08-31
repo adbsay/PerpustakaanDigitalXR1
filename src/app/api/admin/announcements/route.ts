@@ -24,18 +24,18 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { title, content } = body;
+    const { title, content, target = 'ALL' } = body;
     if (!title || !content) return errorResponse('Title and content are required');
 
     const announcement = await prisma.announcement.create({
-      data: { title, content }
+      data: { title, content, target }
     });
 
     await prisma.auditLog.create({
       data: {
         adminId: admin.id,
         action: 'CREATE_ANNOUNCEMENT',
-        details: `Created announcement: ${title}`
+        details: `Created announcement: ${title} to ${target}`
       }
     });
 

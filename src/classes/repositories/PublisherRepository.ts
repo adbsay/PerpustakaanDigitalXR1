@@ -19,6 +19,9 @@ export interface UpdatePublisherInput {
   name?: string;
   phone?: string;
   avatar?: string;
+  bio?: string;
+  website?: string;
+  banner?: string;
   status?: PublisherStatus;
   password?: string;
 }
@@ -123,6 +126,9 @@ export class PublisherRepository extends BaseRepository<UserModel> {
     name: string;
     phone: string | null;
     avatar: string | null;
+    bio: string | null;
+    website: string | null;
+    banner: string | null;
     status: PublisherStatus;
     createdAt: Date;
     updatedAt: Date;
@@ -135,6 +141,9 @@ export class PublisherRepository extends BaseRepository<UserModel> {
       name: publisher.name,
       phone: publisher.phone,
       avatar: publisher.avatar,
+      bio: publisher.bio,
+      website: publisher.website,
+      banner: publisher.banner,
       status: publisher.status,
       createdAt: publisher.createdAt,
       updatedAt: publisher.updatedAt,
