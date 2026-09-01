@@ -1462,15 +1462,33 @@ tbody td {
 }
 
 /* ============================================================
+   ADMIN PANEL — MOBILE-ONLY / DESKTOP-ONLY ELEMENT VISIBILITY
+   (Plain CSS instead of Tailwind lg: utilities — more reliable
+   in this project than relying on lg:hidden / hidden lg:block)
+   ============================================================ */
+@media (min-width: 1024px) {
+  .admin-mobile-header,
+  .admin-mobile-backdrop,
+  .admin-mobile-close {
+    display: none !important;
+  }
+}
+@media (max-width: 1023px) {
+  .admin-desktop-toggle {
+    display: none !important;
+  }
+}
+
+/* ============================================================
    ADMIN PANEL RESPONSIVE SIDEBAR & MAIN LAYOUT
    ============================================================ */
 @media (max-width: 1023px) {
   .admin-sidebar {
     position: fixed !important;
-    top: 0 !important;
+    top: 60px !important;
     left: 0 !important;
     bottom: 0 !important;
-    height: 100vh !important;
+    height: calc(100vh - 60px) !important;
     width: min(300px, 80vw) !important;
     transform: translateX(-100%) !important;
     z-index: 999 !important;

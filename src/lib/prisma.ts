@@ -5,8 +5,11 @@ import { PrismaPg } from '@prisma/adapter-pg';
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrismaClient(): PrismaClient {
-  const adapter = new PrismaPg(process.env.DATABASE_URL as string);
-  return new PrismaClient({ adapter } as ConstructorParameters<typeof PrismaClient>[0]);
+  const adapter = new PrismaPg({
+    connectionString: process.env.DATABASE_URL as string,
+    connectionTimeoutMillis: 5000,
+  });
+  return new PrismaClient({ adapter });
 }
 
 export const prisma = globalForPrisma.prisma || createPrismaClient();

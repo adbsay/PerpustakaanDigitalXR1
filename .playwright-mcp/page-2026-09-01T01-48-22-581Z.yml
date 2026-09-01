@@ -1,7 +1,0 @@
-- navigation [ref=f27e2]:
-  - generic [ref=f27e3]:
-    - link [ref=f27e5] [cursor=pointer]:
-      - /url: /
-      - img "Digital Library Logo" [ref=f27e6]
-    - button "Buka pencarian" [ref=f27e9] [cursor=pointer]
-    - button "Buka menu navigasi" [ref=f27e14] [cursor=pointer]

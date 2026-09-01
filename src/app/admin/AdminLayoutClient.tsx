@@ -74,7 +74,13 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           }
         });
     }
-  }, [pathname, isAuthPage, router]);
+    // Auth check runs once when entering the admin section (layout mounts once
+    // and persists across sibling route navigation in the App Router).
+    // Re-running this on every pathname change caused overlapping /auth/me
+    // requests during fast sidebar navigation, which could intermittently
+    // fail and bounce the user to /admin/auth/login -> back to /admin/dashboard.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthPage]);
 
   // Close mobile drawer on route change
   useEffect(() => {
@@ -98,7 +104,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F8FAFC', ...( { '--sidebar-width': `${sidebarWidth}px` } as any ) }}>
       
       {/* MOBILE TOP APP BAR (< 1024px) */}
-      <header className="lg:hidden" style={{
+      <header className="admin-mobile-header" style={{
         height: '60px',
         background: '#FFFFFF',
         borderBottom: '1px solid #E2E8F0',
@@ -166,7 +172,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       {mobileOpen && (
         <div 
           onClick={() => setMobileOpen(false)}
-          className="lg:hidden"
+          className="admin-mobile-backdrop"
           style={{
             position: 'fixed',
             inset: 0,
@@ -245,7 +251,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             {/* Mobile close button (X) inside drawer */}
             <button
               type="button"
-              className="lg:hidden"
+              className="admin-mobile-close"
               onClick={() => setMobileOpen(false)}
               aria-label="Tutup menu navigasi"
               style={{
@@ -267,7 +273,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           </div>
 
           {/* DESKTOP COLLAPSE TOGGLE BUTTON (Hidden on mobile) */}
-          <div className="hidden lg:block" style={{ position: 'absolute', top: '22px', right: '-13px', zIndex: 100 }}>
+          <div className="admin-desktop-toggle" style={{ position: 'absolute', top: '22px', right: '-13px', zIndex: 100 }}>
             <button 
               onClick={() => setIsCollapsed(!isCollapsed)}
               aria-label={isCollapsed ? 'Perluas Sidebar' : 'Ciutkan Sidebar'}
