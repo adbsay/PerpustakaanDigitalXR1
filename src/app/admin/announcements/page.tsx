@@ -27,15 +27,17 @@ export default function AdminAnnouncementsPage() {
   const [deleteModalData, setDeleteModalData] = useState<Announcement | null>(null);
 
   const fetchAnnouncements = async () => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
     setLoading(true);
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     try {
-      const res = await fetch('/api/admin/announcements', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch('/api/admin/announcements', { headers });
       const json = await res.json();
-      if (json.success) setAnnouncements(json.data);
+      if (json.success && json.data) setAnnouncements(json.data);
+    } catch (e) {
+      console.error('Failed to fetch announcements', e);
     } finally {
       setLoading(false);
     }
@@ -52,15 +54,15 @@ export default function AdminAnnouncementsPage() {
   };
 
   const executeBroadcast = async () => {
-    const token = localStorage.getItem('admin_token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     setIsSubmitting(true);
     try {
       const res = await fetch('/api/admin/announcements', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
+        headers,
         body: JSON.stringify({ title, content, target })
       });
       const json = await res.json();
@@ -82,11 +84,14 @@ export default function AdminAnnouncementsPage() {
 
   const executeDelete = async () => {
     if (!deleteModalData) return;
-    const token = localStorage.getItem('admin_token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     try {
       await fetch(`/api/admin/announcements?id=${deleteModalData.id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        headers
       });
       setDeleteModalData(null);
       fetchAnnouncements();
@@ -127,21 +132,16 @@ export default function AdminAnnouncementsPage() {
       </div>
 
       {/* TWO COLUMNS: TABLE (LEFT) & FORM (RIGHT) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1.8fr) minmax(320px, 1.2fr)',
-        gap: '24px',
-        alignItems: 'start'
-      }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.2fr] gap-6 items-start">
         
         {/* ======================================================== */}
         {/* LEFT COLUMN: RIWAYAT PENGUMUMAN TABLE                    */}
         {/* ======================================================== */}
         <div style={{
           background: '#FFFFFF',
-          borderRadius: '18px',
+          borderRadius: '16px',
           border: '1px solid #E2E8F0',
-          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.02)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column'
@@ -149,21 +149,21 @@ export default function AdminAnnouncementsPage() {
           
           {/* Header Bar */}
           <div style={{
-            padding: '16px 20px',
+            padding: '14px 18px',
             borderBottom: '1px solid #F1F5F9',
             background: '#F8FAFC',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '0.938rem', fontWeight: 800, color: '#0F172A' }}>Riwayat Pengumuman</span>
               <span style={{
-                fontSize: '0.688rem',
+                fontSize: '0.625rem',
                 fontWeight: 700,
                 background: '#E2E8F0',
                 color: '#334155',
-                padding: '2px 8px',
+                padding: '2px 7px',
                 borderRadius: '6px'
               }}>
                 {announcements.length} Siaran
@@ -171,8 +171,8 @@ export default function AdminAnnouncementsPage() {
             </div>
           </div>
 
-          {/* Table */}
-          <div style={{ overflowX: 'auto', minHeight: '380px' }}>
+          {/* DESKTOP TABLE (hidden on mobile) */}
+          <div className="hidden lg:block" style={{ overflowX: 'auto', minHeight: '340px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
@@ -335,6 +335,139 @@ export default function AdminAnnouncementsPage() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* MOBILE CARD LIST VIEW (block on < 1024px) */}
+          <div className="block lg:hidden" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  border: '2px solid #0F172A',
+                  borderTopColor: 'transparent',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite',
+                  margin: '0 auto'
+                }} />
+              </div>
+            ) : announcements.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px 16px', color: '#94A3B8' }}>
+                <Megaphone size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+                <p style={{ fontSize: '0.813rem', fontWeight: 600, margin: 0 }}>
+                  Belum ada siaran pengumuman.
+                </p>
+              </div>
+            ) : (
+              announcements.map((ann) => (
+                <div 
+                  key={ann.id}
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '14px',
+                    border: '1px solid #E2E8F0',
+                    padding: '14px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px'
+                  }}
+                >
+                  {/* Top Row: Icon + Title + Target */}
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: '#F1F5F9',
+                        color: '#0F172A',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <Megaphone size={15} />
+                      </div>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+                        {ann.title}
+                      </div>
+                    </div>
+
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      color: '#334155',
+                      fontSize: '0.625rem',
+                      fontWeight: 800,
+                      borderRadius: '5px',
+                      textTransform: 'uppercase',
+                      flexShrink: 0
+                    }}>
+                      {getTargetLabel(ann.target || 'ALL')}
+                    </span>
+                  </div>
+
+                  {/* Content Preview */}
+                  <p style={{ fontSize: '0.781rem', color: '#475569', margin: 0, lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {ann.content}
+                  </p>
+
+                  {/* Bottom Row: Date & Actions */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid #F8FAFC' }}>
+                    <span style={{ fontSize: '0.719rem', color: '#94A3B8', fontWeight: 600 }}>
+                      {new Date(ann.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button 
+                        onClick={() => setViewModalData(ann)}
+                        style={{
+                          padding: '5px 10px',
+                          borderRadius: '7px',
+                          background: '#F1F5F9',
+                          border: '1px solid #E2E8F0',
+                          color: '#334155',
+                          fontSize: '0.719rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        <Eye size={12} />
+                        Lihat
+                      </button>
+                      <button 
+                        onClick={() => setDeleteModalData(ann)}
+                        style={{
+                          padding: '5px 10px',
+                          borderRadius: '7px',
+                          background: '#FEF2F2',
+                          border: '1px solid #FECACA',
+                          color: '#DC2626',
+                          fontSize: '0.719rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}
+                      >
+                        <Trash2 size={12} />
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              ))
+            )}
           </div>
 
         </div>

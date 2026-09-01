@@ -1,0 +1,83 @@
+- generic [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - banner [ref=f13e4]:
+      - generic [ref=f13e5]:
+        - img "Digital Library" [ref=f13e6]
+        - generic [ref=f13e7]: Publisher
+        - generic [ref=f13e8]: PORTAL
+      - link "A" [ref=f13e39] [cursor=pointer]:
+        - /url: /publisher/profile
+    - main [ref=f13e13]:
+      - generic [ref=f13e14]:
+        - link "Kembali ke Dashboard" [ref=f13e41] [cursor=pointer]:
+          - /url: /publisher/dashboard
+        - generic [ref=f13e44]:
+          - button "Edit Profil" [active] [ref=f13e45] [cursor=pointer]
+          - generic [ref=f13e48]:
+            - generic [ref=f13e49]: A
+            - generic [ref=f13e50]:
+              - heading "Adib Ilyas Publisher" [level=1] [ref=f13e51]
+              - generic [ref=f13e52]:
+                - generic [ref=f13e53]: 0 Ebook Diterbitkan
+                - generic [ref=f13e56]: demo.publisher@libra.id
+        - generic [ref=f13e60]:
+          - generic [ref=f13e61]:
+            - heading "Koleksi Ebook Anda" [level=2] [ref=f13e62]
+            - generic [ref=f13e63]: 0 Karya Terdaftar
+          - generic [ref=f13e64]:
+            - heading "Belum ada koleksi buku" [level=3] [ref=f13e67]
+            - paragraph [ref=f13e68]: Ebook yang Anda terbitkan akan muncul di etalase publik ini.
+        - generic [ref=f13e70]:
+          - generic [ref=f13e71]:
+            - generic [ref=f13e76]:
+              - heading "Edit Profil Institusi" [level=2] [ref=f13e77]
+              - paragraph [ref=f13e78]: Kelola detail etalase publik dan informasi penerbit
+            - button "Tutup Modal" [ref=f13e79] [cursor=pointer]
+          - generic [ref=f13e83]:
+            - generic [ref=f13e84]:
+              - generic [ref=f13e85]:
+                - generic [ref=f13e86]: Sampul Profil (Banner)
+                - generic [ref=f13e88] [cursor=pointer]:
+                  - generic [ref=f13e93]: Upload Sampul
+                  - generic [ref=f13e94]: Rasio 16:9 • Maks 2MB
+              - generic [ref=f13e95]:
+                - generic [ref=f13e96]: Logo Institusi (1:1)
+                - generic [ref=f13e97]:
+                  - generic [ref=f13e98]: A
+                  - button "Ganti Logo" [ref=f13e100] [cursor=pointer]
+                - button "Ganti Logo" [ref=f13e104] [cursor=pointer]
+              - generic [ref=f13e108]:
+                - strong [ref=f13e109]: "Rekomendasi Format:"
+                - text: Gunakan logo PNG transparan dan gambar beresolusi tajam.
+            - generic [ref=f13e110]:
+              - generic [ref=f13e111]:
+                - generic [ref=f13e112]: Nama Tampilan Institusi
+                - textbox "Nama institusi atau penerbit" [ref=f13e113]: Adib Ilyas Publisher
+              - generic [ref=f13e114]:
+                - generic [ref=f13e115]: Bio Singkat
+                - generic [ref=f13e116]:
+                  - textbox "Deskripsikan fokus publikasi, sejarah singkat, atau visi literasi Anda..." [ref=f13e117]
+                  - generic [ref=f13e118]: 0/160
+              - generic [ref=f13e119]:
+                - generic [ref=f13e120]: Tautan Eksternal (Website)
+                - generic [ref=f13e121]:
+                  - generic [ref=f13e122]: https://
+                  - textbox "penerbit-resmi.id" [ref=f13e123]
+              - generic [ref=f13e124]:
+                - generic [ref=f13e125]: Email Akun Terdaftar
+                - generic [ref=f13e126]: demo.publisher@libra.id
+          - generic [ref=f13e127]:
+            - button "Batal" [ref=f13e128] [cursor=pointer]
+            - button "Simpan Perubahan" [ref=f13e129] [cursor=pointer]
+    - navigation [ref=f13e16]:
+      - link "Home" [ref=f13e17] [cursor=pointer]:
+        - /url: /publisher/dashboard
+      - link "Katalog" [ref=f13e24] [cursor=pointer]:
+        - /url: /publisher/my-ebooks
+      - link "Statistik" [ref=f13e28] [cursor=pointer]:
+        - /url: /publisher/analytics
+      - link "Profil" [ref=f13e32] [cursor=pointer]:
+        - /url: /publisher/profile
+    - link "Upload Ebook" [ref=f13e37] [cursor=pointer]:
+      - /url: /publisher/upload
+  - alert [ref=f13e132]

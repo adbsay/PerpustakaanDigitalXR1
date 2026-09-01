@@ -1,0 +1,79 @@
+- generic [ref=f39e3]:
+  - banner [ref=f39e4]:
+    - generic [ref=f39e5]:
+      - img "Digital Library" [ref=f39e6]
+      - generic [ref=f39e7]: Publisher
+      - generic [ref=f39e8]: PORTAL
+    - button "User Menu" [ref=f39e10] [cursor=pointer]:
+      - generic [ref=f39e11]: P
+  - main [ref=f39e13]:
+    - generic [ref=f39e14]:
+      - generic [ref=f39e21]:
+        - generic [ref=f39e22]:
+          - generic [ref=f39e23]: Pengumuman Penting Administrator
+          - generic [ref=f39e24]: Siaran Langsung
+        - generic [ref=f39e25]: Pemeliharaan server pembaca format digital dijadwalkan akhir pekan ini. Seluruh katalog tetap dapat diakses normal.
+      - generic [ref=f39e27]:
+        - heading "Ruang Kerja Penerbit" [level=1] [ref=f39e28]
+        - paragraph [ref=f39e29]: Pantau performa publikasi, analitik pembaca, dan aktivitas kurasi karya Anda.
+      - generic [ref=f39e30]:
+        - generic [ref=f39e31]:
+          - generic [ref=f39e32]: Total Ebook Terbit
+          - generic [ref=f39e37]: —
+          - generic [ref=f39e38]: Belum ada data pembanding
+          - generic [ref=f39e39]: Semua buku yang diunggah
+        - generic [ref=f39e40]:
+          - generic [ref=f39e41]: Menunggu Kurasi
+          - generic [ref=f39e47]: —
+          - generic [ref=f39e48]: ✓ Semua disetujui
+          - generic [ref=f39e49]: Verifikasi kualitas
+        - generic [ref=f39e50]:
+          - generic [ref=f39e51]: Total Pembaca
+          - generic [ref=f39e57]: —
+          - generic [ref=f39e58]: Belum ada data pembanding
+          - generic [ref=f39e59]: Total pembaca buku
+        - generic [ref=f39e60]:
+          - generic [ref=f39e61]: Rating Rata-rata
+          - generic [ref=f39e66]: —
+          - generic [ref=f39e67]: Belum ada data pembanding
+          - generic [ref=f39e68]: Rata-rata ulasan
+      - generic [ref=f39e69]:
+        - generic [ref=f39e71]:
+          - heading "Tren Pembaca & Tayangan" [level=3] [ref=f39e72]
+          - combobox [ref=f39e73] [cursor=pointer]:
+            - option "7 Hari"
+            - option "30 Hari"
+            - option "6 Bulan" [selected]
+            - option "1 Tahun"
+        - generic [ref=f39e75]:
+          - generic [ref=f39e76]:
+            - heading "Katalog Terpopuler" [level=3] [ref=f39e77]
+            - link "Lihat Semua" [ref=f39e78] [cursor=pointer]:
+              - /url: /publisher/my-ebooks
+          - table [ref=f39e83]:
+            - rowgroup [ref=f39e84]:
+              - row [ref=f39e85]:
+                - columnheader "Karya / Judul" [ref=f39e86]
+                - columnheader "Status Kurasi" [ref=f39e87]
+                - columnheader "Pembaca" [ref=f39e88]
+            - rowgroup [ref=f39e89]:
+              - row [ref=f39e90]:
+                - cell "Belum ada ebook yang ditemukan." [ref=f39e91]
+      - generic [ref=f39e92]:
+        - generic [ref=f39e93]:
+          - heading "Aktivitas Kurasi Terbaru" [level=3] [ref=f39e97]
+          - generic [ref=f39e98]: Belum ada aktivitas kurasi terbaru.
+        - generic [ref=f39e100]:
+          - heading "Pengumuman Resmi" [level=3] [ref=f39e105]
+          - generic [ref=f39e106]: Tidak ada pengumuman baru.
+  - navigation [ref=f39e108]:
+    - link "Home" [ref=f39e109] [cursor=pointer]:
+      - /url: /publisher/dashboard
+    - link "Katalog" [ref=f39e116] [cursor=pointer]:
+      - /url: /publisher/my-ebooks
+    - link "Statistik" [ref=f39e120] [cursor=pointer]:
+      - /url: /publisher/analytics
+    - link "Profil" [ref=f39e124] [cursor=pointer]:
+      - /url: /publisher/profile
+  - link "Upload Ebook" [ref=f39e129] [cursor=pointer]:
+    - /url: /publisher/upload

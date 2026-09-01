@@ -1,0 +1,20 @@
+- generic [ref=f15e3]:
+  - banner [ref=f15e4]:
+    - generic [ref=f15e5]:
+      - img "Digital Library" [ref=f15e6]
+      - generic [ref=f15e7]: Publisher
+      - generic [ref=f15e8]: PORTAL
+    - link "P" [ref=f15e10] [cursor=pointer]:
+      - /url: /publisher/profile
+  - main [ref=f15e13]
+  - navigation [ref=f15e16]:
+    - link "Home" [ref=f15e17] [cursor=pointer]:
+      - /url: /publisher/dashboard
+    - link "Katalog" [ref=f15e24] [cursor=pointer]:
+      - /url: /publisher/my-ebooks
+    - link "Statistik" [ref=f15e28] [cursor=pointer]:
+      - /url: /publisher/analytics
+    - link "Profil" [ref=f15e32] [cursor=pointer]:
+      - /url: /publisher/profile
+  - link "Upload Ebook" [ref=f15e37] [cursor=pointer]:
+    - /url: /publisher/upload

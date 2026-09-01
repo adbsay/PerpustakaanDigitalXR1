@@ -1460,3 +1460,111 @@ tbody td {
 .animate-hero-floor-shadow {
   animation: heroFloorShadow 4.5s ease-in-out infinite;
 }
+
+/* ============================================================
+   ADMIN PANEL RESPONSIVE SIDEBAR & MAIN LAYOUT
+   ============================================================ */
+@media (max-width: 1023px) {
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    width: min(300px, 80vw) !important;
+    transform: translateX(-100%) !important;
+    z-index: 999 !important;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  .admin-sidebar.open {
+    transform: translateX(0) !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18) !important;
+  }
+  .admin-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 16px !important;
+  }
+
+  /* ============================================================
+     IOS-STYLE SPRING TOUCH & TAP MICRO-ANIMATIONS (MOBILE ONLY)
+     ============================================================ */
+  /* 1. All buttons, links, clickables */
+  button, 
+  a, 
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .btn {
+    -webkit-tap-highlight-color: transparent !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, filter 0.16s ease !important;
+  }
+
+  button:active, 
+  a:active, 
+  [role="button"]:active,
+  input[type="button"]:active,
+  input[type="submit"]:active,
+  .btn:active {
+    transform: scale(0.95) !important;
+    filter: brightness(0.96);
+  }
+
+  /* 2. Interactive stat cards, list cards, and table items */
+  .admin-main .grid > div,
+  .admin-main .block.lg\:hidden > div,
+  .admin-main [style*="border-radius: 14px"],
+  .admin-main [style*="border-radius: 16px"],
+  .admin-main [style*="border-radius: 18px"] {
+    -webkit-tap-highlight-color: transparent !important;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease !important;
+  }
+
+  .admin-main .grid > div:active,
+  .admin-main .block.lg\:hidden > div:active {
+    transform: scale(0.975) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* 3. Sidebar items tap feedback */
+  .admin-sidebar nav a,
+  .admin-sidebar button {
+    -webkit-tap-highlight-color: transparent !important;
+    transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease !important;
+  }
+
+  .admin-sidebar nav a:active,
+  .admin-sidebar button:active {
+    transform: scale(0.94) !important;
+  }
+
+  /* 4. Inputs smooth focus pop */
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  select:focus,
+  textarea:focus {
+    transform: scale(1.01) !important;
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.15s ease, box-shadow 0.15s ease !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    width: var(--sidebar-width, 240px) !important;
+    transform: none !important;
+    z-index: 90 !important;
+  }
+  .admin-main {
+    margin-left: var(--sidebar-width, 240px) !important;
+    width: calc(100% - var(--sidebar-width, 240px)) !important;
+    padding: 24px 32px !important;
+  }
+}
+
+

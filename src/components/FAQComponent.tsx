@@ -160,6 +160,55 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
           box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.08);
           border-color: #BFDBFE !important;
         }
+
+        /* 
+          =======================================================
+          CSS KHUSUS MOBILE UNTUK LAYOUT VERTIKAL & HEMAT RUANG 
+          =======================================================
+        */
+        @media (max-width: 768px) {
+          .faq-main-container { padding: 32px 16px 0 !important; }
+          .faq-header { margin-bottom: 24px !important; }
+          .faq-header h1 { font-size: 1.5rem !important; margin-bottom: 8px !important; }
+          .faq-header p { font-size: 0.875rem !important; }
+
+          .faq-search-wrap { margin-bottom: 24px !important; }
+          .faq-search-wrap input { padding: 12px 16px 12px 40px !important; font-size: 0.875rem !important; }
+          
+          /* KUNCI UTAMA: Bikin filter kategori horizontal scroll (tidak numpuk ke bawah) */
+          .faq-categories-container {
+            flex-wrap: nowrap !important;
+            justify-content: flex-start !important;
+            overflow-x: auto !important;
+            padding-bottom: 8px !important;
+            margin-bottom: 24px !important;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .faq-categories-container::-webkit-scrollbar { display: none; }
+          .faq-filter-btn {
+            flex-shrink: 0 !important;
+            padding: 8px 16px !important;
+            font-size: 0.813rem !important;
+          }
+
+          /* Accordion Compression */
+          .faq-list-container { margin-bottom: 32px !important; gap: 12px !important; }
+          .faq-item-btn { padding: 16px !important; gap: 12px !important; }
+          .faq-item-btn-text { font-size: 0.875rem !important; }
+          .faq-item-icon-circle { width: 28px !important; height: 28px !important; font-size: 14px !important; }
+          .faq-item-answer { padding: 0 16px 16px 56px !important; font-size: 0.813rem !important; }
+
+          /* Contact Banner Compression */
+          .faq-contact-banner {
+            flex-direction: column !important;
+            text-align: center !important;
+            padding: 24px 20px !important;
+            gap: 16px !important;
+          }
+          .faq-contact-info { flex-direction: column !important; gap: 12px !important; }
+          .faq-btn-scale { width: 100% !important; justify-content: center !important; }
+        }
       `}</style>
 
       {/* Decorative Blobs */}
@@ -196,14 +245,14 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
         backgroundSize: '20px 20px'
       }}></div>
 
-      <div style={{
+      <div className="faq-main-container" style={{
         maxWidth: '896px',
         margin: '0 auto',
         padding: '64px 24px 0',
         position: 'relative',
         zIndex: 10
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div className="faq-header" style={{ textAlign: 'center', marginBottom: '48px' }}>
           <h1 style={{
             fontSize: '36px',
             fontWeight: 800,
@@ -258,7 +307,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
         </div>
 
         {/* Categories */}
-        <div style={{
+        <div className="faq-categories-container" style={{
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',
@@ -297,7 +346,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
         </div>
 
         {/* FAQ List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px' }}>
+        <div className="faq-list-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '48px' }}>
           {filteredFAQs.length > 0 ? (
             filteredFAQs.map((faq, index) => {
               const isOpen = openIndex === index;
@@ -316,6 +365,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
                   }}
                 >
                   <button
+                    className="faq-item-btn"
                     onClick={() => toggleFaq(index)}
                     style={{
                       width: '100%',
@@ -331,7 +381,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                      <div style={{
+                      <div className="faq-item-icon-circle" style={{
                         flexShrink: 0,
                         width: '32px',
                         height: '32px',
@@ -346,7 +396,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
                       }}>
                         ?
                       </div>
-                      <span style={{
+                      <span className="faq-item-btn-text" style={{
                         fontSize: '16px',
                         fontWeight: 600,
                         color: isOpen ? '#1E40AF' : '#0F172A',
@@ -368,7 +418,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
                   </button>
                   
                   {isOpen && (
-                    <div style={{ padding: '0 24px 24px 72px', animation: 'fadeIn 0.3s ease' }}>
+                    <div className="faq-item-answer" style={{ padding: '0 24px 24px 72px', animation: 'fadeIn 0.3s ease' }}>
                       <style>{`
                         @keyframes fadeIn {
                           from { opacity: 0; transform: translateY(-10px); }
@@ -401,7 +451,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
         </div>
 
         {/* Contact Banner */}
-        <div style={{
+        <div className="faq-contact-banner" style={{
           backgroundColor: '#F8FAFC',
           borderRadius: '16px',
           padding: '24px 32px',
@@ -412,7 +462,7 @@ const FAQComponent: React.FC<FAQComponentProps> = ({ type }) => {
           boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
           background: 'linear-gradient(to right, #EFF6FF, #FFFFFF)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div className="faq-contact-info" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <div style={{
               width: '56px',
               height: '56px',

@@ -1,0 +1,90 @@
+[     215ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[     239ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js:776
+[     336ms] Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ScrollAndMaybeFocusHandler cacheNode={{rsc:{...}, ...}}>
+      <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:{...}, ...}}>
+        <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+          <LoadingBoundary name="kategori/" loading={null}>
+            <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <InnerLayoutRouter url="/kategori" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+                    <SegmentViewNode type="page" pagePath="kategori/p...">
+                      <SegmentTrieNode>
+                      <ClientPageRoot Component={function KategoriPage} serverProvidedParams={{...}}>
+                        <KategoriPage params={Promise} searchParams={Promise}>
+                          <div style={{width:"100%", ...}}>
+                            <main
++                             className="home-main-container"
+-                             className={null}
+                              style={{width:"100%",maxWidth:"1240px",padding:"48px 24px ...",margin:"0 auto",boxSizing:"border-box"}}
+                            >
+                              <div
++                               className="kategori-header-wrap"
+-                               className={null}
+                                style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",flexWrap:"wrap",gap:"20px", ...}}
+                              >
+                                <div>
+                                <div
+                                  style={{
++                                   display: "flex"
++                                   alignItems: "center"
++                                   background: "#FFFFFF"
++                                   border: "1px solid #E2E8F0"
++                                   borderRadius: "12px"
++                                   padding: "4px 12px"
++                                   width: "100%"
+-                                   width: "100%"
++                                   maxWidth: "280px"
++                                   boxShadow: "0 1px 2px rgba(0,0,0,0.02)"
++                                   boxSizing: "border-box"
+-                                   position: "relative"
+-                                   max-width: "280px"
+                                  }}
+                                >
+                                  <Search size={16} color="#94A3B8" style={{flexShrink:0, ...}}>
++                                   <svg
++                                     ref={null}
++                                     xmlns="http://www.w3.org/2000/svg"
++                                     width={16}
++                                     height={16}
++                                     viewBox="0 0 24 24"
++                                     fill="none"
++                                     stroke="#94A3B8"
++                                     strokeWidth={2}
++                                     strokeLinecap="round"
++                                     strokeLinejoin="round"
++                                     className="lucide lucide-search"
++                                     aria-hidden="true"
++                                     style={{flexShrink:0,marginRight:"8px"}}
++                                   >
+-                                   <div
+-                                     style={{position:"absolute",left:"12px",top:"50%",transform:"translateY...",color:"rgb(148, 1..."}}
+-                                   >
+                                  ...
+                              ...
+                    ...
+                  ...
+        ...
+
+    at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3120:56)
+    at beginWork (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:6585:918)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:761:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9385:97)
+    at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9381:58)
+    at renderRootConcurrent (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9364:71)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:8891:150)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:10085:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/node_modules_next_dist_compiled_1amofcm._.js:2647:64)

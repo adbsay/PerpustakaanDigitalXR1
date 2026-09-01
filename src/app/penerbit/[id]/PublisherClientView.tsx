@@ -75,8 +75,74 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
   return (
     <div style={{ minHeight: '100vh', background: '#FAFAF8', width: '100%', display: 'flex', justifyContent: 'center' }}>
       
+      <style>{`
+        /* --- MOBILE OPTIMIZATION - SEJAJAR & HEMAT RUANG --- */
+        @media (max-width: 768px) {
+          .pub-main-wrapper { padding: 20px 16px 80px !important; }
+          .pub-hero-card { margin-bottom: 24px !important; border-radius: 18px !important; }
+          .pub-banner { height: 110px !important; }
+          .pub-hero-content { padding: 0 20px 24px !important; }
+          
+          /* Menyusun ulang Avatar dan Statistik agar compact */
+          .pub-avatar-stats-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            margin-top: -40px !important;
+            gap: 16px !important;
+            margin-bottom: 16px !important;
+          }
+          .pub-avatar-wrapper {
+            width: 80px !important;
+            height: 80px !important;
+          }
+          
+          /* KUNCI: MEMAKSA STATISTIK SEJAJAR KE SAMPING (3 KOLOM) */
+          .pub-stats-container {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 8px !important;
+          }
+          .pub-stat-box {
+            padding: 10px 4px !important;
+            border-radius: 12px !important;
+          }
+          .pub-stat-number { font-size: 1.125rem !important; }
+          .pub-stat-label { font-size: 0.55rem !important; letter-spacing: 0 !important; }
+          
+          .pub-name-row { gap: 8px !important; margin-bottom: 8px !important; }
+          .pub-name { font-size: 1.4rem !important; }
+          .pub-bio { font-size: 0.813rem !important; margin-bottom: 16px !important; }
+          
+          .pub-contact-strip {
+            gap: 12px !important;
+            padding-top: 16px !important;
+            font-size: 0.75rem !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+          
+          .pub-book-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 20px !important;
+            padding-bottom: 12px !important;
+          }
+          .pub-book-search { max-width: 100% !important; }
+          
+          /* KUNCI: BUKU JADI 2 KOLOM AGAR TIDAK CAPE SCROLL */
+          .pub-book-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px 12px !important;
+          }
+          .pub-book-title { font-size: 0.813rem !important; }
+          .pub-book-author { font-size: 0.7rem !important; }
+        }
+      `}</style>
+
       {/* 1. GLOBAL CONTAINER PENENGAH TERKUNCI (MAX-WIDTH 1240PX & MARGIN AUTO) */}
-      <main style={{ width: '100%', maxWidth: '1240px', padding: '32px 24px 80px', margin: '0 auto', boxSizing: 'border-box' }}>
+      <main className="pub-main-wrapper" style={{ width: '100%', maxWidth: '1240px', padding: '32px 24px 80px', margin: '0 auto', boxSizing: 'border-box' }}>
         
         {/* Tombol Kembali ke Beranda */}
         <Link 
@@ -99,7 +165,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
         {/* ======================================================== */}
         {/* 2. HERO PUBLISHER PROFILE CARD (DENGAN BANNER, BIO & KONTAK) */}
         {/* ======================================================== */}
-        <div style={{
+        <div className="pub-hero-card" style={{
           background: '#FFFFFF',
           borderRadius: '24px',
           border: '1px solid #E2E8F0',
@@ -109,7 +175,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
         }}>
           
           {/* A. BANNER SAMPUL PENERBIT (16:9 / HIGH RES) */}
-          <div style={{
+          <div className="pub-banner" style={{
             position: 'relative',
             width: '100%',
             height: '220px',
@@ -129,10 +195,10 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
           </div>
 
           {/* B. BADGE AVATAR, IDENTITAS & DETAIL KONTAK LENGKAP */}
-          <div style={{ padding: '0 36px 36px', position: 'relative' }}>
+          <div className="pub-hero-content" style={{ padding: '0 36px 36px', position: 'relative' }}>
             
             {/* Header Flex: Avatar di kiri + Ringkasan Statistik di kanan */}
-            <div style={{
+            <div className="pub-avatar-stats-row" style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-end',
@@ -143,7 +209,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
             }}>
               
               {/* Avatar Penerbit */}
-              <div style={{
+              <div className="pub-avatar-wrapper" style={{
                 position: 'relative',
                 width: '112px',
                 height: '112px',
@@ -177,52 +243,52 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
               </div>
 
               {/* 3 Quick Stat Bento Badges */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <div className="pub-stats-container" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                 
                 {/* Total Ebook */}
-                <div style={{
+                <div className="pub-stat-box" style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '14px',
                   padding: '10px 18px',
                   textAlign: 'center'
                 }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1 }}>
+                  <div className="pub-stat-number" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1 }}>
                     {totalBooks}
                   </div>
-                  <div style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <div className="pub-stat-label" style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     Ebook Diterbitkan
                   </div>
                 </div>
 
                 {/* Total Pembaca / Views */}
-                <div style={{
+                <div className="pub-stat-box" style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '14px',
                   padding: '10px 18px',
                   textAlign: 'center'
                 }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1 }}>
+                  <div className="pub-stat-number" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1 }}>
                     {totalViews.toLocaleString()}
                   </div>
-                  <div style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <div className="pub-stat-label" style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     Total Pembaca
                   </div>
                 </div>
 
                 {/* Rating Koleksi */}
-                <div style={{
+                <div className="pub-stat-box" style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '14px',
                   padding: '10px 18px',
                   textAlign: 'center'
                 }}>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                  <div className="pub-stat-number" style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                     <Star size={16} color="#EAB308" fill="#EAB308" /> {avgRating}
                   </div>
-                  <div style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <div className="pub-stat-label" style={{ fontSize: '0.688rem', fontWeight: 700, color: '#64748B', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                     Rating Rata-rata
                   </div>
                 </div>
@@ -232,8 +298,8 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
             </div>
 
             {/* Nama & Badge Terverifikasi */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '8px' }}>
-              <h1 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+            <div className="pub-name-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '8px' }}>
+              <h1 className="pub-name" style={{ fontSize: '1.75rem', fontWeight: 900, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
                 {publisher.name}
               </h1>
               <span style={{
@@ -253,7 +319,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
             </div>
 
             {/* Deskripsi / Bio Profil Penerbit */}
-            <p style={{
+            <p className="pub-bio" style={{
               fontSize: '0.938rem',
               color: publisher.bio ? '#334155' : '#94A3B8',
               lineHeight: 1.6,
@@ -264,7 +330,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
             </p>
 
             {/* Strip Informasi Kontak & Metadata Resmi */}
-            <div style={{
+            <div className="pub-contact-strip" style={{
               display: 'flex',
               alignItems: 'center',
               flexWrap: 'wrap',
@@ -343,7 +409,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
         {/* ======================================================== */}
         <section style={{ width: '100%' }}>
           
-          <div style={{
+          <div className="pub-book-header" style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -363,7 +429,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
             </div>
 
             {/* LIVE SEARCH BAR DI PROFILE PENERBIT */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
+            <div className="pub-book-search" style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
               <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>
                 <Search size={16} />
               </div>
@@ -449,7 +515,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
               )}
             </div>
           ) : (
-            <div style={{
+            <div className="pub-book-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))',
               gap: '40px 24px',
@@ -503,7 +569,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
 
                     {/* Area Teks (Di Bawah Gambar - Center Aligned) */}
                     <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: '0 4px' }}>
-                      <h3 style={{
+                      <h3 className="pub-book-title" style={{
                         fontSize: '0.938rem',
                         fontWeight: 800,
                         color: '#0F172A',
@@ -519,7 +585,7 @@ export default function PublisherClientView({ publisher }: { publisher: Publishe
                         {book.title}
                       </h3>
                       
-                      <p style={{
+                      <p className="pub-book-author" style={{
                         fontSize: '0.813rem',
                         color: '#64748B',
                         margin: '0 0 6px',

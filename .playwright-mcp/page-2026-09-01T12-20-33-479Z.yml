@@ -1,0 +1,85 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - navigation [ref=f1e7]:
+      - generic [ref=f1e8]:
+        - link [ref=f1e9] [cursor=pointer]:
+          - /url: /publisher
+          - img "Digital Library Logo" [ref=f1e10]
+        - link "PERPUSTAKAAN DIGITAL" [ref=f1e11] [cursor=pointer]:
+          - /url: /publisher
+          - text: PERPUSTAKAANDIGITAL
+    - main [ref=f1e16]:
+      - generic [ref=f1e19]:
+        - button "Kembali ke Beranda" [ref=f1e20] [cursor=pointer]
+        - generic [ref=f1e23]:
+          - generic [ref=f1e24]:
+            - heading "Publisher Portal" [level=1] [ref=f1e25]
+            - paragraph [ref=f1e26]: Masuk ke dashboard publisher Anda
+          - generic [ref=f1e27]:
+            - generic [ref=f1e28]:
+              - generic [ref=f1e29]: Email Akun
+              - textbox "publisher@email.com" [ref=f1e30]
+            - generic [ref=f1e31]:
+              - generic [ref=f1e32]: Password
+              - textbox "••••••••" [ref=f1e33]
+            - button "Masuk Sekarang" [ref=f1e34] [cursor=pointer]
+            - generic [ref=f1e35]:
+              - text: Belum punya akun?
+              - button "Daftar sekarang" [ref=f1e36] [cursor=pointer]
+      - generic [ref=f1e37]:
+        - generic [ref=f1e38]:
+          - generic:
+            - generic: PUBLISHER PORTAL PERPUSTAKAAN DIGITAL
+            - heading "Gerbang Menuju Pengetahuan Global" [level=1]
+            - paragraph: Satu platform komprehensif untuk menerbitkan, mengkurasi, dan menyebarkan literatur ilmiah serta edukatif Anda ke panggung dunia tanpa batasan fisik.
+            - button "MULAI MENULIS"
+          - generic:
+            - generic: TENTANG KAMI
+            - heading "Membangun Ekosistem Literasi Digital Nusantara" [level=1]
+            - paragraph: Menghubungkan jutaan pembaca cerdas dengan karya tulis ilmiah, buku ajar, dan literatur bermutu dari penerbit terpercaya.
+          - generic:
+            - generic: PUSAT BANTUAN & FAQ
+            - heading "Pertanyaan yang Sering Diajukan" [level=1]
+            - paragraph: Temukan jawaban komprehensif seputar proses penerbitan, panduan berkas, hak cipta, dan pengelolaan akun.
+          - generic:
+            - generic: HUBUNGI KAMI
+            - heading "Mari Berkolaborasi Bersama" [level=1]
+            - paragraph: Tim kurator dan kemitraan kami siap membantu Anda mendistribusikan karya secara maksimal.
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - heading "Pusat Dukungan Mitra" [level=2]
+                    - paragraph: Ada pertanyaan mengenai kemitraan atau kendala sistem? Silakan hubungi kami melalui saluran berikut.
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Email Resmi
+                        - generic: support@perpustakaandigital.id
+                    - generic:
+                      - generic:
+                        - generic: Layanan Cepat
+                        - generic: +62 812-3456-7890
+                    - generic:
+                      - generic:
+                        - generic: Lokasi Kantor
+                        - generic: Gedung Literasi Indonesia Lt. 5, Jakarta
+                - generic:
+                  - heading "Kirim Pesan Langsung" [level=3]
+                  - generic:
+                    - generic:
+                      - generic: Nama Lengkap
+                      - textbox "Nama Anda"
+                    - generic:
+                      - generic: Alamat Email
+                      - textbox "email@domain.com"
+                    - generic:
+                      - generic: Subjek
+                      - textbox "Subjek pertanyaan"
+                    - generic:
+                      - generic: Pesan
+                      - textbox "Tuliskan pesan Anda..."
+                    - button "Kirim Pesan"
+  - alert [ref=f1e56]

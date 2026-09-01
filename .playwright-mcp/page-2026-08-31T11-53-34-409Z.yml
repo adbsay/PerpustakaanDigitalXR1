@@ -1,0 +1,34 @@
+- generic [ref=f7e3]:
+  - navigation [ref=f7e4]:
+    - generic [ref=f7e6]:
+      - link "Digital Library Logo PERPUSTAKAAN DIGITAL Publisher" [ref=f7e7] [cursor=pointer]:
+        - /url: /publisher/dashboard
+        - img "Digital Library Logo" [ref=f7e8]
+        - generic [ref=f7e9]:
+          - text: PERPUSTAKAAN DIGITAL
+          - generic [ref=f7e10]: Publisher
+      - generic [ref=f7e11]:
+        - link "Dashboard" [ref=f7e12] [cursor=pointer]:
+          - /url: /publisher/dashboard
+        - link "Katalog Ebook" [ref=f7e18] [cursor=pointer]:
+          - /url: /publisher/my-ebooks
+        - link "Analitik" [ref=f7e21] [cursor=pointer]:
+          - /url: /publisher/analytics
+  - main [ref=f7e25]:
+    - generic [ref=f7e26]:
+      - generic [ref=f7e27]:
+        - heading "Manajemen Katalog Ebook" [level=1] [ref=f7e28]
+        - paragraph [ref=f7e29]: Kelola seluruh berkas digital, pantau status kurasi, dan edit metadata karya Anda.
+      - link "+ Unggah Ebook Baru" [ref=f7e30] [cursor=pointer]:
+        - /url: /publisher/upload
+    - generic [ref=f7e31]:
+      - generic [ref=f7e32]:
+        - textbox "Cari judul ebook atau nama penulis..." [ref=f7e33]
+        - combobox [ref=f7e34]:
+          - option "Semua Ebook" [selected]
+          - option "Terbit (Published)"
+          - option "Menunggu Review"
+          - option "Draf"
+      - generic [ref=f7e35]:
+        - button "Grid" [ref=f7e36] [cursor=pointer]
+        - button "List" [ref=f7e37] [cursor=pointer]

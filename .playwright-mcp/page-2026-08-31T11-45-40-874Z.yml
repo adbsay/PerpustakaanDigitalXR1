@@ -1,0 +1,81 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e6]:
+      - link "Digital Library Logo PERPUSTAKAAN DIGITAL Publisher" [ref=e7] [cursor=pointer]:
+        - /url: /publisher/dashboard
+        - img "Digital Library Logo" [ref=e8]
+        - generic [ref=e9]:
+          - text: PERPUSTAKAAN DIGITAL
+          - generic [ref=e10]: Publisher
+      - generic [ref=e11]:
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /publisher/dashboard
+        - link "Katalog Ebook" [ref=e18] [cursor=pointer]:
+          - /url: /publisher/my-ebooks
+        - link "Analitik" [ref=e21] [cursor=pointer]:
+          - /url: /publisher/analytics
+  - main [ref=e25]:
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - generic [ref=e35]: Pengumuman Penting Administrator
+            - generic [ref=e36]: Siaran Langsung
+          - generic [ref=e37]: Pemeliharaan server pembaca format digital dijadwalkan akhir pekan ini. Seluruh katalog tetap dapat diakses normal.
+        - generic [ref=e38]: Dikelola via Pengaturan Notifikasi
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "Ruang Kerja Penerbit" [level=1] [ref=e44]
+          - paragraph [ref=e45]: Pantau performa publikasi, analitik pembaca, dan aktivitas kurasi karya Anda.
+        - link "Upload Ebook" [ref=e46] [cursor=pointer]:
+          - /url: /publisher/upload
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - generic [ref=e50]: Total Ebook Terbit
+          - generic [ref=e55]: —
+          - generic [ref=e56]: Belum ada data pembanding
+          - generic [ref=e57]: Semua buku yang diunggah
+        - generic [ref=e58]:
+          - generic [ref=e59]: Menunggu Kurasi
+          - generic [ref=e65]: —
+          - generic [ref=e66]: ✓ Semua disetujui
+          - generic [ref=e67]: Verifikasi kualitas
+        - generic [ref=e68]:
+          - generic [ref=e69]: Total Pembaca
+          - generic [ref=e75]: —
+          - generic [ref=e76]: Belum ada data pembanding
+          - generic [ref=e77]: Total pembaca buku
+        - generic [ref=e78]:
+          - generic [ref=e79]: Rating Rata-rata
+          - generic [ref=e84]: —
+          - generic [ref=e85]: Belum ada data pembanding
+          - generic [ref=e86]: Rata-rata ulasan
+      - generic [ref=e87]:
+        - generic [ref=e89]:
+          - heading "Tren Pembaca & Tayangan" [level=3] [ref=e90]
+          - combobox [ref=e91] [cursor=pointer]:
+            - option "7 Hari"
+            - option "30 Hari"
+            - option "6 Bulan" [selected]
+            - option "1 Tahun"
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - heading "Katalog Terpopuler" [level=3] [ref=e95]
+            - link "Lihat Semua" [ref=e96] [cursor=pointer]:
+              - /url: /publisher/my-ebooks
+          - table [ref=e101]:
+            - rowgroup [ref=e102]:
+              - row [ref=e103]:
+                - columnheader "Karya / Judul" [ref=e104]
+                - columnheader "Status Kurasi" [ref=e105]
+                - columnheader "Pembaca" [ref=e106]
+            - rowgroup [ref=e107]:
+              - row [ref=e108]:
+                - cell "Belum ada ebook yang ditemukan." [ref=e109]
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - heading "Aktivitas Kurasi Terbaru" [level=3] [ref=e115]
+          - generic [ref=e116]: Belum ada aktivitas kurasi terbaru.
+        - generic [ref=e118]:
+          - heading "Pengumuman Resmi" [level=3] [ref=e123]
+          - generic [ref=e124]: Tidak ada pengumuman baru.

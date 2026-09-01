@@ -1,0 +1,68 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e4]:
+    - navigation [ref=f12e8]:
+      - generic [ref=f12e9]:
+        - link [ref=f12e10] [cursor=pointer]:
+          - /url: /publisher
+          - img "Digital Library Logo" [ref=f12e11]
+        - link "PERPUSTAKAAN DIGITAL" [ref=f12e12] [cursor=pointer]:
+          - /url: /publisher
+          - text: PERPUSTAKAANDIGITAL
+    - main [ref=f12e13]:
+      - generic [ref=f12e16]:
+        - generic [ref=f12e17]: RUANG PENERBIT DIGITAL
+        - heading "Gerbang Menuju Pengetahuan Global" [level=2] [ref=f12e21]
+        - paragraph [ref=f12e22]: Publikasikan, kelola katalog, dan jangkau ratusan ribu pembaca akademik di seluruh penjuru dunia.
+        - generic [ref=f12e23]:
+          - generic [ref=f12e24]: © Perpustakaan Digital
+          - generic [ref=f12e25]: •
+          - generic [ref=f12e26]: Sistem Kurasi Mandiri
+      - generic [ref=f12e27]:
+        - button "Kembali ke Beranda" [ref=f12e28] [cursor=pointer]
+        - generic [ref=f12e31]:
+          - generic [ref=f12e32]:
+            - heading "Daftar Publisher" [level=1] [ref=f12e48]
+            - paragraph [ref=f12e34]: Mulai terbitkan karya terbaik Anda
+          - generic [ref=f12e49]:
+            - generic [ref=f12e50]:
+              - generic [ref=f12e51]: Nama Publisher
+              - textbox "Nama instansi atau nama penulis" [ref=f12e52]
+            - generic [ref=f12e53]:
+              - generic [ref=f12e54]: Email
+              - textbox "nama@email.com" [ref=f12e55]
+            - generic [ref=f12e56]:
+              - generic [ref=f12e57]: Nomor HP (WhatsApp)
+              - textbox "+62 812 xxxx xxxx" [ref=f12e58]
+            - generic [ref=f12e59]:
+              - generic [ref=f12e60]:
+                - generic [ref=f12e61]: Password
+                - textbox "Min. 8 char" [ref=f12e62]
+              - generic [ref=f12e63]:
+                - generic [ref=f12e64]: Konfirmasi
+                - textbox "Ulangi" [ref=f12e65]
+            - generic [ref=f12e66]:
+              - checkbox "Saya menyetujui Kebijakan Privasi & Syarat Layanan." [ref=f12e67] [cursor=pointer]
+              - generic [ref=f12e68] [cursor=pointer]: Saya menyetujui Kebijakan Privasi & Syarat Layanan.
+            - button "Daftar Akun Publisher" [ref=f12e69] [cursor=pointer]
+            - generic [ref=f12e70]:
+              - text: Sudah punya akun?
+              - button "Masuk di sini" [ref=f12e71] [cursor=pointer]
+      - generic [ref=f12e46]:
+        - generic:
+          - generic: PUBLISHER PORTAL PERPUSTAKAAN DIGITAL
+          - heading "Gerbang Menuju Pengetahuan Global" [level=1]
+          - paragraph: Satu platform komprehensif untuk menerbitkan, mengkurasi, dan menyebarkan literatur ilmiah serta edukatif Anda ke panggung dunia tanpa batasan fisik.
+          - button "MULAI MENULIS"
+        - generic:
+          - generic: TENTANG KAMI
+          - heading "Membangun Ekosistem Literasi Digital Nusantara" [level=1]
+          - paragraph: Menghubungkan jutaan pembaca cerdas dengan karya tulis ilmiah, buku ajar, dan literatur bermutu dari penerbit terpercaya.
+        - generic:
+          - generic: PUSAT BANTUAN & FAQ
+          - heading "Pertanyaan yang Sering Diajukan" [level=1]
+          - paragraph: Temukan jawaban komprehensif seputar proses penerbitan, panduan berkas, hak cipta, dan pengelolaan akun.
+        - generic:
+          - generic: HUBUNGI KAMI
+          - heading "Mari Berkolaborasi Bersama" [level=1]
+          - paragraph: Tim kurator dan kemitraan kami siap membantu Anda mendistribusikan karya secara maksimal.
+  - alert [ref=f12e47]

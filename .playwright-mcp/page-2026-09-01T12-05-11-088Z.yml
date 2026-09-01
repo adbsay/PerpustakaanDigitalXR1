@@ -1,0 +1,42 @@
+- generic [ref=f7e2]:
+  - generic [ref=f7e3]:
+    - generic [ref=f7e6]:
+      - img "Digital Library" [ref=f7e7]
+      - generic [ref=f7e8]: PERPUSTAKAAN DIGITAL
+    - generic [ref=f7e9]:
+      - generic [ref=f7e10]: KEMITRAAN PENERBIT DIGITAL
+      - heading "Daftarkan Karya Anda ke Panggung Dunia" [level=2] [ref=f7e14]
+      - paragraph [ref=f7e15]: Dapatkan hak akses penuh untuk mendistribusikan karya ilmiah, buku referensi, dan edukasi Anda secara aman.
+    - generic [ref=f7e16]: © Perpustakaan Digital. All rights reserved.
+  - generic [ref=f7e17]:
+    - link "Kembali ke Beranda" [ref=f7e18] [cursor=pointer]:
+      - /url: /publisher
+    - generic [ref=f7e21]:
+      - generic [ref=f7e22]:
+        - heading "Daftar Publisher" [level=1] [ref=f7e23]
+        - paragraph [ref=f7e24]: Mulai terbitkan dan distribusikan karya terbaik Anda
+      - generic [ref=f7e25]:
+        - generic [ref=f7e26]:
+          - generic [ref=f7e27]: Nama Publisher / Penerbit
+          - textbox "Nama instansi atau nama penulis" [ref=f7e28]
+        - generic [ref=f7e29]:
+          - generic [ref=f7e30]: Alamat Email
+          - textbox "nama@email.com" [ref=f7e31]
+        - generic [ref=f7e32]:
+          - generic [ref=f7e33]: Nomor HP (WhatsApp)
+          - textbox "+62 812 xxxx xxxx" [ref=f7e34]
+        - generic [ref=f7e35]:
+          - generic [ref=f7e36]:
+            - generic [ref=f7e37]: Password
+            - textbox "Minimal 8 karakter" [ref=f7e38]
+          - generic [ref=f7e39]:
+            - generic [ref=f7e40]: Konfirmasi
+            - textbox "Ulangi password" [ref=f7e41]
+        - generic [ref=f7e42]:
+          - checkbox "Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital." [ref=f7e43] [cursor=pointer]
+          - generic [ref=f7e44] [cursor=pointer]: Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital.
+        - button "Daftar Akun Publisher" [ref=f7e45] [cursor=pointer]
+        - generic [ref=f7e46]:
+          - text: Sudah punya akun?
+          - link "Masuk di sini" [ref=f7e47] [cursor=pointer]:
+            - /url: /publisher/auth/login

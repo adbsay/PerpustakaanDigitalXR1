@@ -1,0 +1,32 @@
+- generic [ref=f9e4]:
+  - link "Kembali ke Beranda" [ref=f9e5] [cursor=pointer]:
+    - /url: /publisher
+  - generic [ref=f9e8]:
+    - generic [ref=f9e9]:
+      - heading "Daftar Publisher" [level=1] [ref=f9e10]
+      - paragraph [ref=f9e11]: Mulai terbitkan dan distribusikan karya terbaik Anda
+    - generic [ref=f9e12]:
+      - generic [ref=f9e13]:
+        - generic [ref=f9e14]: Nama Publisher / Penerbit
+        - textbox "Nama instansi atau nama penulis" [ref=f9e15]
+      - generic [ref=f9e16]:
+        - generic [ref=f9e17]: Alamat Email
+        - textbox "nama@email.com" [ref=f9e18]
+      - generic [ref=f9e19]:
+        - generic [ref=f9e20]: Nomor HP (WhatsApp)
+        - textbox "+62 812 xxxx xxxx" [ref=f9e21]
+      - generic [ref=f9e22]:
+        - generic [ref=f9e23]:
+          - generic [ref=f9e24]: Password
+          - textbox "Minimal 8 karakter" [ref=f9e25]
+        - generic [ref=f9e26]:
+          - generic [ref=f9e27]: Konfirmasi
+          - textbox "Ulangi password" [ref=f9e28]
+      - generic [ref=f9e29]:
+        - checkbox "Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital." [ref=f9e30] [cursor=pointer]
+        - generic [ref=f9e31] [cursor=pointer]: Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital.
+      - button "Daftar Akun Publisher" [ref=f9e32] [cursor=pointer]
+      - generic [ref=f9e33]:
+        - text: Sudah punya akun?
+        - link "Masuk di sini" [ref=f9e34] [cursor=pointer]:
+          - /url: /publisher/auth/login

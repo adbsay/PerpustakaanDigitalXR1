@@ -1,0 +1,42 @@
+- generic [ref=f5e2]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e6]:
+      - img "Digital Library" [ref=f5e7]
+      - generic [ref=f5e8]: PERPUSTAKAAN DIGITAL
+    - generic [ref=f5e9]:
+      - generic [ref=f5e10]: KEMITRAAN PENERBIT DIGITAL
+      - heading "Daftarkan Karya Anda ke Panggung Dunia" [level=2] [ref=f5e14]
+      - paragraph [ref=f5e15]: Dapatkan hak akses penuh untuk mendistribusikan karya ilmiah, buku referensi, dan edukasi Anda secara aman.
+    - generic [ref=f5e16]: © Perpustakaan Digital. All rights reserved.
+  - generic [ref=f5e17]:
+    - link "Kembali ke Beranda" [ref=f5e18] [cursor=pointer]:
+      - /url: /publisher
+    - generic [ref=f5e21]:
+      - generic [ref=f5e22]:
+        - heading "Daftar Publisher" [level=1] [ref=f5e23]
+        - paragraph [ref=f5e24]: Mulai terbitkan dan distribusikan karya terbaik Anda
+      - generic [ref=f5e25]:
+        - generic [ref=f5e26]:
+          - generic [ref=f5e27]: Nama Publisher / Penerbit
+          - textbox "Nama instansi atau nama penulis" [ref=f5e28]
+        - generic [ref=f5e29]:
+          - generic [ref=f5e30]: Alamat Email
+          - textbox "nama@email.com" [ref=f5e31]
+        - generic [ref=f5e32]:
+          - generic [ref=f5e33]: Nomor HP (WhatsApp)
+          - textbox "+62 812 xxxx xxxx" [ref=f5e34]
+        - generic [ref=f5e35]:
+          - generic [ref=f5e36]:
+            - generic [ref=f5e37]: Password
+            - textbox "Min. 8 char" [ref=f5e38]
+          - generic [ref=f5e39]:
+            - generic [ref=f5e40]: Konfirmasi
+            - textbox "Ulangi" [ref=f5e41]
+        - generic [ref=f5e42]:
+          - checkbox "Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital." [ref=f5e43] [cursor=pointer]
+          - generic [ref=f5e44] [cursor=pointer]: Saya menyetujui Kebijakan Privasi dan Syarat Layanan Perpustakaan Digital.
+        - button "Daftar Akun Publisher" [ref=f5e45] [cursor=pointer]
+        - generic [ref=f5e46]:
+          - text: Sudah punya akun?
+          - link "Masuk di sini" [ref=f5e47] [cursor=pointer]:
+            - /url: /publisher/auth/login

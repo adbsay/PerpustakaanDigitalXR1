@@ -30,19 +30,18 @@ export default function AdminBooksPage() {
 
   const fetchBooks = useCallback(async () => {
     setLoading(true);
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
     const params = new URLSearchParams();
     if (search.trim()) params.append('search', search.trim());
     if (statusFilter !== 'ALL') params.append('status', statusFilter);
 
     try {
-      const res = await fetch(`/api/admin/books?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`/api/admin/books?${params.toString()}`, { headers });
       const json = await res.json();
-      if (json.success) setBooks(json.data);
+      if (json.success && json.data) setBooks(json.data);
     } catch (error) {
       console.error('Failed to fetch books', error);
     } finally {
@@ -67,15 +66,15 @@ export default function AdminBooksPage() {
       
     if (!confirm(confirmMsg)) return;
 
-    const token = localStorage.getItem('admin_token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     setActionLoading(true);
     try {
       const res = await fetch(`/api/admin/books/${id}`, {
         method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` 
-        },
+        headers,
         body: JSON.stringify({ action }),
       });
       const json = await res.json();
@@ -187,54 +186,103 @@ export default function AdminBooksPage() {
       }}>
         
         {/* FILTER & SEARCH HEADER */}
-        <div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid #F1F5F9',
-          background: '#F8FAFC',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          {/* Filter Pills */}
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {tabs.map(tab => {
-              const isActive = statusFilter === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setStatusFilter(tab.id)}
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '0.813rem',
-                    fontWeight: 700,
-                    borderRadius: '10px',
-                    border: isActive ? '1px solid #0F172A' : '1px solid #E2E8F0',
-                    background: isActive ? '#0F172A' : '#FFFFFF',
-                    color: isActive ? '#FFFFFF' : '#64748B',
-                    cursor: 'pointer',
-                    boxShadow: isActive ? '0 2px 6px rgba(15, 23, 42, 0.15)' : '0 1px 2px rgba(0,0,0,0.02)',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
+        <div className="p-3.5 sm:p-4 border-b border-slate-100 bg-slate-50 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
+          
+          {/* Left: Filter Pills (Horizontal single line on mobile & desktop) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', flexWrap: 'nowrap', paddingBottom: '2px' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748B', marginRight: '2px', textTransform: 'uppercase', letterSpacing: '0.04em', flexShrink: 0 }}>
+              Filter:
+            </span>
+
+            <button
+              onClick={() => setStatusFilter('ALL')}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                border: statusFilter === 'ALL' ? '1px solid #0F172A' : '1px solid #CBD5E1',
+                background: statusFilter === 'ALL' ? '#0F172A' : '#FFFFFF',
+                color: statusFilter === 'ALL' ? '#FFFFFF' : '#475569',
+                cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              Semua ({books.length})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('PENDING')}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                border: statusFilter === 'PENDING' ? '1px solid #D97706' : '1px solid #CBD5E1',
+                background: statusFilter === 'PENDING' ? '#FFFBEB' : '#FFFFFF',
+                color: statusFilter === 'PENDING' ? '#D97706' : '#475569',
+                cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              Menunggu ({books.filter(b => b.status === 'PENDING').length})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('PUBLISHED')}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                border: statusFilter === 'PUBLISHED' ? '1px solid #059669' : '1px solid #CBD5E1',
+                background: statusFilter === 'PUBLISHED' ? '#ECFDF5' : '#FFFFFF',
+                color: statusFilter === 'PUBLISHED' ? '#059669' : '#475569',
+                cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              Diterbitkan ({books.filter(b => b.status === 'PUBLISHED').length})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('BANNED')}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                border: statusFilter === 'BANNED' ? '1px solid #DC2626' : '1px solid #CBD5E1',
+                background: statusFilter === 'BANNED' ? '#FEF2F2' : '#FFFFFF',
+                color: statusFilter === 'BANNED' ? '#DC2626' : '#475569',
+                cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              Diblokir ({books.filter(b => b.status === 'BANNED').length})
+            </button>
           </div>
 
-          {/* Search Box */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
+          {/* Right: Search Box (Full width on mobile below filters, max 280px on desktop) */}
+          <div style={{ position: 'relative', width: '100%' }} className="lg:max-w-[280px]">
             <Search 
-              size={16} 
+              size={15} 
               style={{
                 position: 'absolute',
                 left: '14px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: '#94A3B8',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 2
               }} 
             />
             <input 
@@ -244,7 +292,7 @@ export default function AdminBooksPage() {
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '9px 16px 9px 40px',
+                padding: '9px 14px 9px 40px',
                 background: '#FFFFFF',
                 border: '1px solid #CBD5E1',
                 borderRadius: '10px',
@@ -266,7 +314,7 @@ export default function AdminBooksPage() {
                   border: 'none',
                   color: '#94A3B8',
                   cursor: 'pointer',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700
                 }}
               >
@@ -276,8 +324,8 @@ export default function AdminBooksPage() {
           </div>
         </div>
 
-        {/* TABLE */}
-        <div style={{ overflowX: 'auto', minHeight: '360px' }}>
+        {/* DESKTOP TABLE VIEW (hidden on mobile) */}
+        <div className="hidden lg:block" style={{ overflowX: 'auto', minHeight: '360px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
@@ -417,6 +465,101 @@ export default function AdminBooksPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* MOBILE CARD LIST VIEW (block on < 1024px) */}
+        <div className="block lg:hidden" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                border: '2px solid #0F172A',
+                borderTopColor: 'transparent',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+                margin: '0 auto'
+              }} />
+            </div>
+          ) : books.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 16px', color: '#94A3B8' }}>
+              <BookOpen size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+              <p style={{ fontSize: '0.813rem', fontWeight: 600, margin: 0 }}>
+                Tidak ada e-book yang cocok.
+              </p>
+            </div>
+          ) : (
+            books.map((book) => (
+              <div 
+                key={book.id}
+                style={{
+                  background: '#FFFFFF',
+                  borderRadius: '14px',
+                  border: '1px solid #E2E8F0',
+                  padding: '12px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'center'
+                }}
+              >
+                {/* Book Cover */}
+                <div style={{
+                  position: 'relative',
+                  width: '52px',
+                  height: '72px',
+                  borderRadius: '8px',
+                  overflow: 'hidden',
+                  background: '#F1F5F9',
+                  border: '1px solid #E2E8F0',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {book.coverImage ? (
+                    <Image src={book.coverImage} alt={book.title} fill style={{ objectFit: 'cover' }} />
+                  ) : (
+                    <BookOpen size={22} color="#94A3B8" />
+                  )}
+                </div>
+
+                {/* Book Info */}
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {book.title}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
+                    {book.author} • <span style={{ color: '#0F172A', fontWeight: 600 }}>{book.publisherName}</span>
+                  </div>
+                  <div style={{ marginTop: '2px' }}>
+                    {getStatusBadge(book.status)}
+                  </div>
+                </div>
+
+                {/* Tinjau Action Button */}
+                <button
+                  onClick={() => setReviewBook(book)}
+                  aria-label="Tinjau Konten E-book"
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '10px',
+                    background: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#0F172A',
+                    flexShrink: 0,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <Eye size={16} />
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
       </div>

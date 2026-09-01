@@ -1,30 +1,26 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Sparkles, Upload, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Sparkles, Upload } from 'lucide-react';
 
 export default function PublisherRegisterPage() {
   const router = useRouter();
-  const [step, setStep] = useState<1 | 2>(1);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [agreed, setAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+  const [step, setStep] = useState<1 | 2>(1);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('step') === '2') {
-        setStep(2);
-      }
-    }
-  }, []);
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +34,7 @@ export default function PublisherRegisterPage() {
     }
 
     if (!agreed) {
-      setError('Anda harus menyetujui Kebijakan Privasi dan Ketentuan Layanan');
+      setError('Anda harus menyetujui Kebijakan Privasi dan Syarat Layanan');
       setLoading(false);
       return;
     }
@@ -115,21 +111,12 @@ export default function PublisherRegisterPage() {
   };
 
   return (
-    // 1. GLOBAL LAYOUT (FULLSCREEN SPLIT)
-    <div className="w-full min-h-screen flex bg-white" style={{ minHeight: '100vh', display: 'flex', width: '100%', background: '#FFFFFF' }}>
+    // 1. GLOBAL LAYOUT (FULLSCREEN SPLIT ON DESKTOP, CLEAN FULL-WIDTH ON MOBILE)
+    <div className="w-full min-h-screen flex flex-col lg:flex-row bg-white">
       
-      {/* 2. SISI KIRI (BRANDING & IMAGE - 50% LAYAR) */}
+      {/* 2. SISI KIRI (BRANDING & IMAGE - HANYA DI DESKTOP 50%) */}
       <div 
-        className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12"
-        style={{
-          width: '50%',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '48px',
-          overflow: 'hidden'
-        }}
+        className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden"
       >
         {/* Background Image Perpustakaan */}
         <div 
@@ -156,7 +143,16 @@ export default function PublisherRegisterPage() {
 
         {/* Header Kiri Atas */}
         <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <img src="/logo.svg" alt="Digital Library" style={{ width: '36px', height: '36px' }} />
+          <img 
+            src="/publisher-icon.svg" 
+            alt="Digital Library" 
+            style={{ 
+              width: '36px', 
+              height: '36px',
+              objectFit: 'contain',
+              filter: 'brightness(0) saturate(100%) invert(67%) sepia(81%) saturate(2256%) hue-rotate(180deg) brightness(102%) contrast(98%) drop-shadow(0 0 10px rgba(56, 189, 248, 0.6))'
+            }} 
+          />
           <span className="text-white font-bold text-xl tracking-wider" style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '1.25rem', letterSpacing: '0.05em' }}>
             PERPUSTAKAAN DIGITAL
           </span>
@@ -193,27 +189,15 @@ export default function PublisherRegisterPage() {
         </div>
       </div>
 
-      {/* 3. SISI KANAN (AREA FORM AUTENTIKASI - 50% LAYAR) */}
+      {/* 3. SISI KANAN (AREA FORM AUTENTIKASI - FULL WIDTH DI MOBILE, 50% DI DESKTOP) */}
       <div 
-        className="w-full lg:w-1/2 flex items-center justify-center bg-white relative"
-        style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#FFFFFF',
-          position: 'relative',
-          padding: '48px 24px'
-        }}
+        className="w-full lg:w-1/2 min-h-screen flex flex-col justify-center items-center bg-white relative px-6 py-12 sm:px-12"
       >
         {/* Tombol Kembali ke Beranda */}
         <Link 
           href="/publisher"
-          className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+          className="absolute top-6 right-6 sm:top-8 sm:right-8 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
           style={{
-            position: 'absolute',
-            top: '32px',
-            right: '32px',
             fontSize: '0.875rem',
             fontWeight: 600,
             color: '#64748B',
@@ -228,8 +212,8 @@ export default function PublisherRegisterPage() {
           Kembali ke Beranda
         </Link>
 
-        {/* 4. DESAIN FORMULIR (CLEAN & TERPUSAT - NO CARD) */}
-        <div className="w-full max-w-md px-8" style={{ width: '100%', maxWidth: '440px', padding: '0 16px' }}>
+        {/* 4. DESAIN FORMULIR (CLEAN & TERPUSAT) */}
+        <div className="w-full max-w-md">
           
           <div style={{ marginBottom: '28px' }}>
             <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontSize: '1.875rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 6px' }}>
@@ -321,7 +305,7 @@ export default function PublisherRegisterPage() {
               </div>
 
               {/* Input Password */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
                     Password
@@ -330,7 +314,7 @@ export default function PublisherRegisterPage() {
                     type="password"
                     required
                     minLength={8}
-                    placeholder="Minimal 8 karakter"
+                    placeholder="Min. 8 char"
                     value={form.password}
                     onChange={e => setForm({ ...form, password: e.target.value })}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
@@ -353,7 +337,7 @@ export default function PublisherRegisterPage() {
                   <input
                     type="password"
                     required
-                    placeholder="Ulangi password"
+                    placeholder="Ulangi"
                     value={form.confirmPassword}
                     onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"

@@ -24,11 +24,11 @@ interface Trends {
 
 function TrendBadge({ value, label = '30 hari terakhir' }: { value: number | null; label?: string }) {
   if (value === null) {
-    return <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '4px' }}>Belum ada data pembanding</div>;
+    return <div className="pub-stat-trend" style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '4px' }}>Belum ada data pembanding</div>;
   }
   const isUp = value >= 0;
   return (
-    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: isUp ? '#059669' : '#DC2626', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
+    <div className="pub-stat-trend" style={{ fontSize: '0.75rem', fontWeight: 700, color: isUp ? '#059669' : '#DC2626', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '4px' }}>
       {isUp ? <TrendingUp size={13} /> : <TrendingDown size={13} />} {Math.abs(value)}% dari {label}
     </div>
   );
@@ -123,12 +123,15 @@ export default function PublisherDashboard() {
       if (analyticsRes && analyticsRes.ok) {
         const aJson = await analyticsRes.json();
         if (aJson.success && aJson.data) {
+          const s = aJson.data.stats || {};
           setStats({
-            totalEbooks: aJson.data.totalBooks ?? aJson.data.publishedBooks ?? 0,
-            pendingReviews: aJson.data.pendingBooks ?? 0,
-            recentViews: aJson.data.totalViews ?? 0,
-            averageRating: aJson.data.avgRating ?? 4.8,
+            totalEbooks: s.totalEbooks ?? 0,
+            pendingReviews: s.pendingReviews ?? 0,
+            recentViews: s.recentViews ?? 0,
+            averageRating: s.averageRating ?? 0,
           });
+          if (aJson.data.topBooks) setTopBooks(aJson.data.topBooks);
+          if (aJson.data.recentActivity) setRecentActivity(aJson.data.recentActivity);
           if (aJson.data.chartData) setChartData(aJson.data.chartData);
           if (aJson.data.trends) {
             setTrends({
@@ -140,24 +143,13 @@ export default function PublisherDashboard() {
         }
       }
 
-      if (booksRes && booksRes.ok) {
-        const bJson = await booksRes.json();
-        if (bJson.success && Array.isArray(bJson.data)) {
-          setTopBooks(bJson.data);
-          const recentActs: Activity[] = bJson.data.slice(0, 4).map((b: any) => ({
-            id: b.id,
-            title: b.title,
-            status: b.status,
-            createdAt: b.createdAt,
-          }));
-          setRecentActivity(recentActs);
-        }
-      }
-
       if (annRes && annRes.ok) {
         const annJson = await annRes.json();
-        if (annJson.success && Array.isArray(annJson.data)) {
+        if (annJson.success && Array.isArray(annJson.data) && annJson.data.length > 0) {
           setAnnouncements(annJson.data);
+        } else if (analyticsRes && analyticsRes.ok) {
+          const aJson = await analyticsRes.clone().json().catch(() => null);
+          if (aJson?.data?.announcements) setAnnouncements(aJson.data.announcements);
         }
       }
     } finally {
@@ -171,8 +163,93 @@ export default function PublisherDashboard() {
       {/* LIVE ADMIN BROADCAST BANNER (CONTROLLED BY GLOBAL NOTIFICATION CONTEXT) */}
       <AdminBroadcastBanner />
 
+      <style>{`
+        .pub-dashboard-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        .pub-dashboard-2col-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+          gap: 20px;
+          margin-bottom: 24px;
+        }
+        .pub-dashboard-activity-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+          gap: 20px;
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+          .pub-header-container {
+            flex-direction: column !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+          }
+          .pub-header-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 4px !important;
+          }
+          .pub-header-subtitle {
+            font-size: 0.813rem !important;
+            line-height: 1.4 !important;
+          }
+          
+          .pub-dashboard-stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px !important;
+            margin-bottom: 16px !important;
+          }
+          .pub-stat-card {
+            padding: 12px !important;
+            border-radius: 12px !important;
+          }
+          .pub-stat-value {
+            font-size: 1.5rem !important;
+            margin-bottom: 4px !important;
+          }
+          .pub-stat-icon-wrap {
+            width: 26px !important;
+            height: 26px !important;
+            border-radius: 8px !important;
+          }
+          .pub-stat-icon-wrap svg {
+            width: 14px;
+            height: 14px;
+          }
+          .pub-stat-title {
+            font-size: 0.625rem !important;
+          }
+          .pub-stat-trend {
+            font-size: 0.625rem !important;
+            margin-bottom: 2px !important;
+          }
+          .pub-stat-subtext {
+            font-size: 0.625rem !important;
+            line-height: 1.2 !important;
+          }
+
+          .pub-dashboard-2col-grid, .pub-dashboard-activity-grid {
+            grid-template-columns: 1fr;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+          }
+          .pub-card-wrapper {
+            padding: 16px !important;
+            border-radius: 14px !important;
+          }
+          .pub-topbooks-table th, .pub-topbooks-table td {
+            font-size: 0.75rem !important;
+            padding: 8px 4px !important;
+          }
+        }
+      `}</style>
+
       {/* TOP HEADER WITH QUICK ACTION */}
-      <div style={{
+      <div className="pub-header-container" style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
@@ -181,7 +258,7 @@ export default function PublisherDashboard() {
         marginBottom: '24px'
       }}>
         <div>
-          <h1 style={{
+          <h1 className="pub-header-title" style={{
             fontSize: '1.75rem', 
             fontWeight: 800, 
             color: '#0F172A', 
@@ -190,14 +267,14 @@ export default function PublisherDashboard() {
           }}>
             {t.dashboard.title}
           </h1>
-          <p style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
+          <p className="pub-header-subtitle" style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
             {userName ? `${t.dashboard.welcome}, ${userName}! ` : ''}{t.dashboard.subtitle}
           </p>
         </div>
 
         <Link
           href="/publisher/upload"
-          className="btn-primary"
+          className="btn-primary pub-header-btn"
           style={{
             padding: '10px 20px', 
             borderRadius: '10px', 
@@ -215,10 +292,10 @@ export default function PublisherDashboard() {
       </div>
 
       {/* STATS 4-COLUMN GRID */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+      <div className="pub-dashboard-stats-grid">
         
         {/* Total Ebooks */}
-        <div style={{
+        <div className="pub-stat-card" style={{
           background: '#FFFFFF',
           padding: '20px',
           borderRadius: '16px',
@@ -226,20 +303,20 @@ export default function PublisherDashboard() {
           boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.totalBooks}</span>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="pub-stat-title" style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.totalBooks}</span>
+            <div className="pub-stat-icon-wrap" style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <BookOpen size={18} />
             </div>
           </div>
-          <div style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
+          <div className="pub-stat-value" style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
             {loading ? '—' : stats.totalEbooks}
           </div>
           <TrendBadge value={trends.ebooks} label={t.dashboard.stats.comparedToLast30Days} />
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'All books uploaded by your publisher' : 'Semua buku yang telah Anda unggah'}</div>
+          <div className="pub-stat-subtext" style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'All books uploaded by your publisher' : 'Semua buku yang telah Anda unggah'}</div>
         </div>
 
         {/* Review Tertunda */}
-        <div style={{
+        <div className="pub-stat-card" style={{
           background: '#FFFFFF',
           padding: '20px',
           borderRadius: '16px',
@@ -247,22 +324,22 @@ export default function PublisherDashboard() {
           boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.pendingBooks}</span>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="pub-stat-title" style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.pendingBooks}</span>
+            <div className="pub-stat-icon-wrap" style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Clock size={18} />
             </div>
           </div>
-          <div style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
+          <div className="pub-stat-value" style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
             {loading ? '—' : stats.pendingReviews}
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '4px' }}>
+          <div className="pub-stat-subtext" style={{ fontSize: '0.75rem', color: '#94A3B8', marginBottom: '4px' }}>
             {stats.pendingReviews === 0 ? (lang === 'en' ? '✓ All books approved' : '✓ Semua buku telah disetujui') : (lang === 'en' ? 'In admin moderation queue' : 'Dalam antrean moderasi admin')}
           </div>
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Awaiting quality verification' : 'Menunggu verifikasi standar kualitas'}</div>
+          <div className="pub-stat-subtext" style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Awaiting quality verification' : 'Menunggu verifikasi standar kualitas'}</div>
         </div>
 
         {/* Tampilan Terbaru */}
-        <div style={{
+        <div className="pub-stat-card" style={{
           background: '#FFFFFF',
           padding: '20px',
           borderRadius: '16px',
@@ -270,20 +347,20 @@ export default function PublisherDashboard() {
           boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.totalViews}</span>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#ECFDF5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="pub-stat-title" style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.totalViews}</span>
+            <div className="pub-stat-icon-wrap" style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#ECFDF5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Eye size={18} />
             </div>
           </div>
-          <div style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
+          <div className="pub-stat-value" style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
             {loading ? '—' : (stats.recentViews ?? 0).toLocaleString()}
           </div>
           <TrendBadge value={trends.views} label={t.dashboard.stats.comparedToLast30Days} />
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Cumulative views across your catalog' : 'Total kumulatif views seluruh buku Anda'}</div>
+          <div className="pub-stat-subtext" style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Cumulative views across your catalog' : 'Total kumulatif views seluruh buku Anda'}</div>
         </div>
 
         {/* Rating Pembaca */}
-        <div style={{
+        <div className="pub-stat-card" style={{
           background: '#FFFFFF',
           padding: '20px',
           borderRadius: '16px',
@@ -291,25 +368,25 @@ export default function PublisherDashboard() {
           boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.avgRating}</span>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#FEF9C3', color: '#CA8A04', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="pub-stat-title" style={{ fontSize: '0.813rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.dashboard.stats.avgRating}</span>
+            <div className="pub-stat-icon-wrap" style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#FEF9C3', color: '#CA8A04', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Star size={18} />
             </div>
           </div>
-          <div style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
-            {loading ? '—' : (stats.averageRating ? stats.averageRating.toFixed(1) : '4.8')}
+          <div className="pub-stat-value" style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', lineHeight: 1, marginBottom: '8px' }}>
+            {loading ? '—' : (stats.averageRating && stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '0.0')}
           </div>
           <TrendBadge value={trends.rating} label={t.dashboard.stats.comparedToLast30Days} />
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Average reader reviews' : 'Rata-rata ulasan pembaca aktif'}</div>
+          <div className="pub-stat-subtext" style={{ fontSize: '0.75rem', color: '#94A3B8' }}>{lang === 'en' ? 'Average reader reviews' : 'Rata-rata ulasan pembaca aktif'}</div>
         </div>
 
       </div>
 
       {/* CHARTS & TOP BOOKS ROW */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+      <div className="pub-dashboard-2col-grid">
         
         {/* Chart */}
-        <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+        <div className="pub-card-wrapper" style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>{t.dashboard.chart.title}</h3>
             <select
@@ -362,7 +439,7 @@ export default function PublisherDashboard() {
         </div>
 
         {/* Top Books Table */}
-        <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column' }}>
+        <div className="pub-card-wrapper" style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>{t.dashboard.topBooks.title}</h3>
             <Link href="/publisher/my-ebooks" className="btn-outline" style={{ fontSize: '0.75rem', padding: '4px 10px', borderRadius: '6px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -371,7 +448,7 @@ export default function PublisherDashboard() {
           </div>
           
           <div style={{ overflowX: 'auto', flex: 1 }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table className="pub-topbooks-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #F1F5F9' }}>
                   <th style={{ textAlign: 'left', padding: '0 12px 10px 0', fontSize: '0.688rem', color: '#64748B', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.myEbooks.table.book}</th>
@@ -420,10 +497,10 @@ export default function PublisherDashboard() {
       </div>
 
       {/* RECENT ACTIVITY & ANNOUNCEMENTS */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '20px' }}>
+      <div className="pub-dashboard-activity-grid">
         
         {/* Recent Activity */}
-        <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+        <div className="pub-card-wrapper" style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <ActivityIcon size={18} color="#2563EB" />
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>{t.dashboard.activity.title}</h3>
@@ -453,7 +530,7 @@ export default function PublisherDashboard() {
         </div>
 
         {/* Announcements */}
-        <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
+        <div className="pub-card-wrapper" style={{ background: '#FFFFFF', padding: '24px', borderRadius: '18px', border: '1px solid #E2E8F0', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <Megaphone size={18} color="#2563EB" />
             <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>{t.dashboard.announcement.title}</h3>

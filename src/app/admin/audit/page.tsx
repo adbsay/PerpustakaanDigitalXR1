@@ -30,8 +30,9 @@ export default function AuditLogsPage() {
   // Debounced search trigger
   const fetchLogs = useCallback(async () => {
     setLoading(true);
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
     
     const params = new URLSearchParams();
     if (search.trim()) params.append('search', search.trim());
@@ -40,11 +41,9 @@ export default function AuditLogsPage() {
     if (endDate) params.append('endDate', endDate);
 
     try {
-      const res = await fetch(`/api/admin/audit?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`/api/admin/audit?${params.toString()}`, { headers });
       const json = await res.json();
-      if (json.success) setLogs(json.data);
+      if (json.success && json.data) setLogs(json.data);
     } catch (error) {
       console.error('Failed to fetch audit logs', error);
     } finally {

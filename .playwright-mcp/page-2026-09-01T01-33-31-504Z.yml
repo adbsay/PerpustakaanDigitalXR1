@@ -1,0 +1,38 @@
+- generic [ref=f21e3]:
+  - generic [ref=f21e6]:
+    - generic [ref=f21e7]: VISI & MISI KAMI
+    - heading "Mendemokrasikan Akses Pengetahuan Global" [level=1] [ref=f21e8]
+    - paragraph [ref=f21e9]: Satu platform komprehensif untuk menerbitkan, mengkurasi, dan menyebarkan literatur ilmiah dan edukatif Anda ke panggung dunia tanpa batasan fisik.
+  - generic [ref=f21e12]:
+    - generic [ref=f21e13]:
+      - generic [ref=f21e14]: 50+
+      - generic [ref=f21e15]: MITRA INSTITUSI
+    - generic [ref=f21e16]:
+      - generic [ref=f21e17]: 100K+
+      - generic [ref=f21e18]: PEMBACA AKTIF
+    - generic [ref=f21e19]:
+      - generic [ref=f21e20]: 15K+
+      - generic [ref=f21e21]: KOLEKSI EBOOK
+    - generic [ref=f21e22]:
+      - generic [ref=f21e23]: 24/7
+      - generic [ref=f21e24]: AKSES DIGITAL
+  - generic [ref=f21e26]:
+    - heading "Mengapa Memilih Platform Kami?" [level=2] [ref=f21e27]
+    - generic [ref=f21e28]:
+      - generic [ref=f21e29]:
+        - generic [ref=f21e36]: Judul
+        - heading "Ruang Baca Tanpa Batas" [level=3] [ref=f21e37]
+        - paragraph [ref=f21e38]: Dirancang sebagai perpustakaan digital global. Kami menyediakan koleksi referensi akademik dan bacaan populer dengan antarmuka yang sangat bersih dan navigasi super intuitif.
+      - generic [ref=f21e39]:
+        - generic [ref=f21e46]: Judul
+        - heading "Infrastruktur Kecepatan Tinggi" [level=3] [ref=f21e47]
+        - paragraph [ref=f21e48]: Pencarian literatur tidak boleh rumit. Sistem kami mengutamakan kecepatan query yang didesain untuk memberikan hasil akurat secara instan.
+      - generic [ref=f21e49]:
+        - generic [ref=f21e54]: Judul
+        - heading "Keamanan & Privasi Terjamin" [level=3] [ref=f21e55]
+        - paragraph [ref=f21e56]: Seluruh karya penulis yang diterbitkan terlindungi dengan enkripsi tingkat lanjut. Kami sangat menghargai hak cipta dan sepenuhnya melindungi karya literatur penerbit.
+  - generic [ref=f21e58]:
+    - heading "Siap Menjadi Bagian dari Kami?" [level=2] [ref=f21e59]
+    - paragraph [ref=f21e60]: Bergabunglah dengan ribuan penerbit lainnya untuk mendistribusikan karya terbaik Anda secara global.
+    - link "Daftar Sekarang" [ref=f21e61] [cursor=pointer]:
+      - /url: /publisher

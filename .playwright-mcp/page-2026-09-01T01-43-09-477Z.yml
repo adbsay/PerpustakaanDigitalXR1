@@ -1,0 +1,41 @@
+- main [ref=f25e3]:
+  - generic [ref=f25e5]:
+    - generic [ref=f25e6]:
+      - heading "Pertanyaan yang Sering Diajukan" [level=1] [ref=f25e7]
+      - paragraph [ref=f25e8]: Temukan jawaban atas pertanyaan umum seputar layanan Perpustakaan Digital kami.
+    - textbox "Cari pertanyaan atau kata kunci..." [ref=f25e10]
+    - generic [ref=f25e11]:
+      - button "Semua" [ref=f25e12] [cursor=pointer]
+      - button "Pendaftaran" [ref=f25e15] [cursor=pointer]
+      - button "Koleksi & Akses" [ref=f25e19] [cursor=pointer]
+      - button "Layanan" [ref=f25e22] [cursor=pointer]
+    - generic [ref=f25e25]:
+      - button "? Apakah saya wajib membuat akun untuk membaca buku?" [ref=f25e27] [cursor=pointer]:
+        - generic [ref=f25e28]:
+          - generic [ref=f25e29]: "?"
+          - generic [ref=f25e30]: Apakah saya wajib membuat akun untuk membaca buku?
+      - button "? Bagaimana cara menemukan buku yang saya inginkan?" [ref=f25e35] [cursor=pointer]:
+        - generic [ref=f25e36]:
+          - generic [ref=f25e37]: "?"
+          - generic [ref=f25e38]: Bagaimana cara menemukan buku yang saya inginkan?
+      - button "? Apakah saya harus mengunduh aplikasi untuk membaca?" [ref=f25e43] [cursor=pointer]:
+        - generic [ref=f25e44]:
+          - generic [ref=f25e45]: "?"
+          - generic [ref=f25e46]: Apakah saya harus mengunduh aplikasi untuk membaca?
+      - button "? Bisakah saya menyimpan buku untuk dibaca secara offline?" [ref=f25e51] [cursor=pointer]:
+        - generic [ref=f25e52]:
+          - generic [ref=f25e53]: "?"
+          - generic [ref=f25e54]: Bisakah saya menyimpan buku untuk dibaca secara offline?
+      - button "? Apakah saya bisa membagikan buku ke teman?" [ref=f25e59] [cursor=pointer]:
+        - generic [ref=f25e60]:
+          - generic [ref=f25e61]: "?"
+          - generic [ref=f25e62]: Apakah saya bisa membagikan buku ke teman?
+      - button "? Bagaimana cara memberikan ulasan pada buku yang sudah dibaca?" [ref=f25e67] [cursor=pointer]:
+        - generic [ref=f25e68]:
+          - generic [ref=f25e69]: "?"
+          - generic [ref=f25e70]: Bagaimana cara memberikan ulasan pada buku yang sudah dibaca?
+    - generic [ref=f25e74]:
+      - generic [ref=f25e79]:
+        - heading "Masih ada pertanyaan?" [level=3] [ref=f25e80]
+        - paragraph [ref=f25e81]: Tim kami siap membantu Anda kapan saja.
+      - button "Hubungi Kami" [ref=f25e82] [cursor=pointer]

@@ -1,0 +1,212 @@
+- generic [ref=f9e1]:
+  - navigation [ref=f9e78]:
+    - generic [ref=f9e79]:
+      - link [ref=f9e81] [cursor=pointer]:
+        - /url: /
+        - img "Digital Library Logo" [ref=f9e82]
+      - generic [ref=f9e84]:
+        - button "Tutup pencarian" [ref=f9e85] [cursor=pointer]
+        - textbox "Cari judul buku, penulis, penerbit..." [active] [ref=f9e94]: Sherlock
+      - button "Buka menu navigasi" [ref=f9e96] [cursor=pointer]
+  - generic [ref=f9e4]:
+    - generic [ref=f9e6]:
+      - generic [ref=f9e7]:
+        - generic [ref=f9e8]: ✨ Rekomendasi Minggu Ini
+        - heading "Jelajahi Ribuan Buku Tanpa Batas" [level=1] [ref=f9e322]
+        - paragraph [ref=f9e10]: Temukan literatur akademik dan novel populer langsung dari penerbit terpercaya dalam satu genggaman.
+        - button "Mulai Membaca" [ref=f9e323] [cursor=pointer]
+      - generic [ref=f9e14]:
+        - button "Slide Sebelumnya" [ref=f9e15] [cursor=pointer]
+        - generic [ref=f9e18]:
+          - button "Pilih Slide 1" [ref=f9e19] [cursor=pointer]
+          - button "Pilih Slide 2" [ref=f9e20] [cursor=pointer]
+          - button "Pilih Slide 3" [ref=f9e21] [cursor=pointer]
+        - button "Slide Berikutnya" [ref=f9e22] [cursor=pointer]
+    - generic [ref=f9e102]:
+      - generic [ref=f9e103]:
+        - heading "Jelajahi Kategori" [level=2] [ref=f9e105]
+        - link "Lihat Semua" [ref=f9e107] [cursor=pointer]:
+          - /url: /kategori
+      - generic [ref=f9e110]:
+        - generic [ref=f9e111] [cursor=pointer]:
+          - img "Anak-anak" [ref=f9e113]
+          - generic [ref=f9e114]: Anak-anak
+        - generic [ref=f9e115] [cursor=pointer]:
+          - img "Biografi" [ref=f9e117]
+          - generic [ref=f9e118]: Biografi
+        - generic [ref=f9e119] [cursor=pointer]:
+          - img "Fiksi" [ref=f9e121]
+          - generic [ref=f9e122]: Fiksi
+        - generic [ref=f9e123] [cursor=pointer]:
+          - img "Hukum" [ref=f9e125]
+          - generic [ref=f9e126]: Hukum
+        - generic [ref=f9e127] [cursor=pointer]:
+          - img "Kesehatan" [ref=f9e129]
+          - generic [ref=f9e130]: Kesehatan
+        - generic [ref=f9e131] [cursor=pointer]:
+          - img "Pendidikan" [ref=f9e133]
+          - generic [ref=f9e134]: Pendidikan
+        - generic [ref=f9e135] [cursor=pointer]:
+          - img "Politik" [ref=f9e137]
+          - generic [ref=f9e138]: Politik
+        - generic [ref=f9e139] [cursor=pointer]:
+          - img "Agama" [ref=f9e141]
+          - generic [ref=f9e142]: Agama
+        - generic [ref=f9e143] [cursor=pointer]:
+          - img "Bisnis & Ekonomi" [ref=f9e145]
+          - generic [ref=f9e146]: Bisnis & Ekonomi
+        - generic [ref=f9e147] [cursor=pointer]:
+          - img "Filsafat" [ref=f9e149]
+          - generic [ref=f9e150]: Filsafat
+        - generic [ref=f9e151] [cursor=pointer]:
+          - img "Non-Fiksi" [ref=f9e153]
+          - generic [ref=f9e154]: Non-Fiksi
+        - generic [ref=f9e155] [cursor=pointer]:
+          - img "psikologi" [ref=f9e157]
+          - generic [ref=f9e158]: psikologi
+        - generic [ref=f9e159] [cursor=pointer]:
+          - img "sains & teknologi" [ref=f9e161]
+          - generic [ref=f9e162]: sains & teknologi
+        - generic [ref=f9e163] [cursor=pointer]:
+          - img "sejarah" [ref=f9e165]
+          - generic [ref=f9e166]: sejarah
+        - generic [ref=f9e167] [cursor=pointer]:
+          - img "seni & budaya" [ref=f9e169]
+          - generic [ref=f9e170]: seni & budaya
+    - generic [ref=f9e25]:
+      - generic [ref=f9e26]:
+        - generic [ref=f9e27]:
+          - heading "Koleksi Unggulan" [level=2] [ref=f9e28]
+          - paragraph [ref=f9e29]: Menampilkan 1-10 dari 11 total ebook pilihan
+        - generic [ref=f9e30]:
+          - combobox [ref=f9e32] [cursor=pointer]:
+            - option "Semua Kategori" [selected]
+            - option "Anak-anak"
+            - option "Biografi"
+            - option "Fiksi"
+            - option "Hukum"
+            - option "Kesehatan"
+            - option "Pendidikan"
+            - option "Politik"
+            - option "Agama"
+            - option "Bisnis & Ekonomi"
+            - option "Filsafat"
+            - option "Non-Fiksi"
+            - option "psikologi"
+            - option "sains & teknologi"
+            - option "sejarah"
+            - option "seni & budaya"
+          - combobox [ref=f9e34] [cursor=pointer]:
+            - option "Terbaru" [selected]
+            - option "Terlama"
+          - combobox [ref=f9e36] [cursor=pointer]:
+            - option "Rating & Views" [selected]
+            - option "Rating 4.0+ Ke Atas"
+            - option "Rating 4.0- Ke Bawah"
+            - option "Views Terbanyak"
+            - option "Views Tersedikit"
+      - generic [ref=f9e37]:
+        - 'link "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes Peter Hollins 5.0 • 9 views" [ref=f9e171] [cursor=pointer]':
+          - /url: /books/cmtfpvuby0008okbvsdy2i3a4
+          - 'img "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes" [ref=f9e173]'
+          - generic [ref=f9e174]:
+            - 'heading "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes" [level=3] [ref=f9e175]'
+            - paragraph [ref=f9e176]: Peter Hollins
+            - generic [ref=f9e177]:
+              - generic [ref=f9e178]: "5.0"
+              - generic [ref=f9e182]: •
+              - generic [ref=f9e183]: 9 views
+        - link "The Book of Almost The Book of Almost Brian Khrisna 5.0 • 4 views" [ref=f9e184] [cursor=pointer]:
+          - /url: /books/cmtfpoem00006okbvxnjlqso2
+          - img "The Book of Almost" [ref=f9e186]
+          - generic [ref=f9e187]:
+            - heading "The Book of Almost" [level=3] [ref=f9e188]
+            - paragraph [ref=f9e189]: Brian Khrisna
+            - generic [ref=f9e190]:
+              - generic [ref=f9e191]: "5.0"
+              - generic [ref=f9e195]: •
+              - generic [ref=f9e196]: 4 views
+        - link "You've Reached Sam (Merelakan Sam) You've Reached Sam (Merelakan Sam) dustin thao 5.0 • 10 views" [ref=f9e197] [cursor=pointer]:
+          - /url: /books/cmtfpl47v0005okbvm3f6fz7z
+          - img "You've Reached Sam (Merelakan Sam)" [ref=f9e199]
+          - generic [ref=f9e200]:
+            - heading "You've Reached Sam (Merelakan Sam)" [level=3] [ref=f9e201]
+            - paragraph [ref=f9e202]: dustin thao
+            - generic [ref=f9e203]:
+              - generic [ref=f9e204]: "5.0"
+              - generic [ref=f9e208]: •
+              - generic [ref=f9e209]: 10 views
+        - link "PERGI PERGI Tere Liye 4.0 • 3 views" [ref=f9e210] [cursor=pointer]:
+          - /url: /books/cmtfpgyje0004okbv4lzn0opw
+          - img "PERGI" [ref=f9e212]
+          - generic [ref=f9e213]:
+            - heading "PERGI" [level=3] [ref=f9e214]
+            - paragraph [ref=f9e215]: Tere Liye
+            - generic [ref=f9e216]:
+              - generic [ref=f9e217]: "4.0"
+              - generic [ref=f9e221]: •
+              - generic [ref=f9e222]: 3 views
+        - link "BULAN BULAN Tere Liye 5.0 • 2 views" [ref=f9e223] [cursor=pointer]:
+          - /url: /books/cmtfpcsex0003okbvaiormzav
+          - img "BULAN" [ref=f9e225]
+          - generic [ref=f9e226]:
+            - heading "BULAN" [level=3] [ref=f9e227]
+            - paragraph [ref=f9e228]: Tere Liye
+            - generic [ref=f9e229]:
+              - generic [ref=f9e230]: "5.0"
+              - generic [ref=f9e234]: •
+              - generic [ref=f9e235]: 2 views
+        - link "BUMI BUMI Tere Liye 5.0" [ref=f9e236] [cursor=pointer]:
+          - /url: /books/cmtfp9auf0002okbvcs1p4aed
+          - img "BUMI" [ref=f9e238]
+          - generic [ref=f9e239]:
+            - heading "BUMI" [level=3] [ref=f9e240]
+            - paragraph [ref=f9e241]: Tere Liye
+            - generic [ref=f9e242]: "5.0"
+        - link "Mereka bilang disini tidak ada tuhan Mereka bilang disini tidak ada tuhan Subhan S.D 5.0 • 8 views" [ref=f9e247] [cursor=pointer]:
+          - /url: /books/cmtfp3tci0001okbvi2gk9z0q
+          - img "Mereka bilang disini tidak ada tuhan" [ref=f9e249]
+          - generic [ref=f9e250]:
+            - heading "Mereka bilang disini tidak ada tuhan" [level=3] [ref=f9e251]
+            - paragraph [ref=f9e252]: Subhan S.D
+            - generic [ref=f9e253]:
+              - generic [ref=f9e254]: "5.0"
+              - generic [ref=f9e258]: •
+              - generic [ref=f9e259]: 8 views
+        - link "Berani Tidak Disukai Berani Tidak Disukai Ichiro Kishimi dan Fumitake Koga 5.0" [ref=f9e260] [cursor=pointer]:
+          - /url: /books/cmtfo7nx90002dsbvz8jeql60
+          - img "Berani Tidak Disukai" [ref=f9e262]
+          - generic [ref=f9e263]:
+            - heading "Berani Tidak Disukai" [level=3] [ref=f9e264]
+            - paragraph [ref=f9e265]: Ichiro Kishimi dan Fumitake Koga
+            - generic [ref=f9e266]: "5.0"
+        - link "Filosofi Terras Filosofi Terras Henry Manampiring 5.0" [ref=f9e271] [cursor=pointer]:
+          - /url: /books/cmtfo2tvt0001dsbv4jqexdwg
+          - img "Filosofi Terras" [ref=f9e273]
+          - generic [ref=f9e274]:
+            - heading "Filosofi Terras" [level=3] [ref=f9e275]
+            - paragraph [ref=f9e276]: Henry Manampiring
+            - generic [ref=f9e277]: "5.0"
+        - link "Madilog tan malaka Madilog tan malaka Tan Malaka 4.0 • 43 views" [ref=f9e282] [cursor=pointer]:
+          - /url: /books/cmt2bgfmz0008jwbv53ywhuuo
+          - img "Madilog tan malaka" [ref=f9e284]
+          - generic [ref=f9e285]:
+            - heading "Madilog tan malaka" [level=3] [ref=f9e286]
+            - paragraph [ref=f9e287]: Tan Malaka
+            - generic [ref=f9e288]:
+              - generic [ref=f9e289]: "4.0"
+              - generic [ref=f9e293]: •
+              - generic [ref=f9e294]: 43 views
+      - generic [ref=f9e295]:
+        - button "Halaman Sebelumnya" [disabled] [ref=f9e296]
+        - button "1" [ref=f9e299] [cursor=pointer]
+        - button "2" [ref=f9e300] [cursor=pointer]
+        - button "Halaman Berikutnya" [ref=f9e301] [cursor=pointer]
+  - generic [ref=f9e309] [cursor=pointer]:
+    - button "Open issues overlay" [ref=f9e310]:
+      - generic [ref=f9e314]:
+        - generic [ref=f9e315]: "0"
+        - generic [ref=f9e316]: "1"
+      - generic [ref=f9e317]: Issue
+    - button "Collapse issues badge" [ref=f9e318]
+  - alert [ref=f9e321]

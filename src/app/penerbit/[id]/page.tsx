@@ -1,6 +1,23 @@
+import type { Metadata } from 'next';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import PublisherClientView from './PublisherClientView';
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const publisher = await prisma.publisher.findFirst({
+      where: { id, status: 'ACTIVE' },
+      select: { name: true }
+    });
+    if (!publisher) {
+      return { title: 'Penerbit tidak ditemukan' };
+    }
+    return { title: publisher.name };
+  } catch {
+    return { title: 'Penerbit tidak ditemukan' };
+  }
+}
 
 export default async function PublisherProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

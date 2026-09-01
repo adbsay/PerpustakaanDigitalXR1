@@ -1,0 +1,20 @@
+- main [ref=f8e4]:
+  - link "← Kembali ke Pencarian" [ref=f8e5] [cursor=pointer]:
+    - /url: /
+    - generic [ref=f8e6]: ←
+    - text: Kembali ke Pencarian
+  - generic [ref=f8e7]:
+    - generic [ref=f8e8]: ✍️
+    - generic [ref=f8e10]:
+      - generic [ref=f8e11]: Profil Penulis
+      - heading "Peter Hollins" [level=1] [ref=f8e12]
+      - generic [ref=f8e13]:
+        - strong [ref=f8e14]: "1"
+        - text: Ebook Tersedia
+  - heading "Koleksi Buku Peter Hollins" [level=2] [ref=f8e16]
+  - link [ref=f8e18] [cursor=pointer]:
+    - /url: /books/cmtfpvuby0008okbvsdy2i3a4
+    - 'img "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes" [ref=f8e20]'
+    - generic [ref=f8e21]:
+      - 'heading "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes" [level=3] [ref=f8e22]'
+      - paragraph [ref=f8e23]: adib ilyas

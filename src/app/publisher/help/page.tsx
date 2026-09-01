@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { 
   Search, BookOpen, BarChart3, Shield, Key, 
   ChevronDown, MessageSquare, Send, CheckCircle2, 
-  ArrowRight, X, LifeBuoy, HelpCircle
+  ArrowRight, ArrowLeft, X, LifeBuoy, HelpCircle
 } from 'lucide-react';
 import { usePublisherI18n } from '@/lib/publisherI18n';
 
@@ -176,14 +177,89 @@ export default function PublisherHelpPage() {
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '1080px', margin: '0 auto', padding: '8px 8px 64px' }}>
+    <div className="help-container" style={{ width: '100%', maxWidth: '1080px', margin: '0 auto', padding: '8px 8px 64px' }}>
       
+      {/* Top Back Navigation */}
+      <div style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link 
+          href="/publisher"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.813rem',
+            fontWeight: 700,
+            color: '#64748B',
+            textDecoration: 'none',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            background: '#F1F5F9',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <ArrowLeft size={14} />
+          <span>{lang === 'en' ? 'Back to Publisher Portal' : 'Kembali ke Portal Publisher'}</span>
+        </Link>
+      </div>
+
+      {/* 
+        =======================================================
+        CSS KHUSUS MOBILE UNTUK LAYOUT VERTIKAL & HEMAT RUANG 
+        =======================================================
+      */}
+      <style>{`
+        .pub-help-search-input { padding: 12px 75px 12px 44px; }
+        .pub-help-badge-shortcut { display: flex; }
+        
+        @media (max-width: 768px) {
+          /* Container Adjustments */
+          .help-container { padding: 8px 16px 64px !important; }
+          
+          /* Hero Section Compression */
+          .help-hero { padding: 24px 16px 20px !important; margin-bottom: 20px !important; }
+          .help-hero-title { font-size: 1.35rem !important; margin-bottom: 6px !important; }
+          .help-hero-subtitle { font-size: 0.8rem !important; margin-bottom: 16px !important; }
+          
+          /* Search Bar Adjustments */
+          .pub-help-search-input { padding: 10px 16px 10px 40px !important; font-size: 0.813rem !important; }
+          .pub-help-badge-shortcut { display: none !important; }
+          
+          /* 
+             KUNCI UTAMA: Kategori di-Grid jadi 2 Kolom agar sangat hemat ruang
+             dan tidak numpuk lurus memanjang ke bawah.
+          */
+          .help-category-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+          .help-category-card { padding: 12px !important; }
+          .help-category-icon { width: 32px !important; height: 32px !important; margin-bottom: 8px !important; }
+          .help-category-icon svg { width: 16px !important; height: 16px !important; }
+          .help-category-title { font-size: 0.813rem !important; margin-bottom: 4px !important; }
+          /* Potong deskripsi maks 2 baris agar ukuran card rapi & mungil */
+          .help-category-desc { font-size: 0.7rem !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4 !important; }
+          .help-category-footer { margin-top: 10px !important; padding-top: 8px !important; font-size: 0.7rem !important; }
+          
+          /* FAQ Section Compression */
+          .help-faq-section { padding: 20px 16px !important; margin-bottom: 20px !important; }
+          .help-faq-title { font-size: 1.15rem !important; }
+          .help-faq-btn { padding: 12px 14px !important; gap: 10px !important; }
+          .help-faq-btn span { font-size: 0.813rem !important; }
+          .help-faq-content { padding: 10px 14px 14px !important; font-size: 0.75rem !important; }
+          
+          /* Support Ticket Box Compression */
+          .help-support-box { padding: 24px 16px !important; }
+          .help-support-box h3 { font-size: 1rem !important; }
+          .help-support-box p { font-size: 0.75rem !important; margin-bottom: 16px !important; }
+          
+          /* Modal Overlay Compression */
+          .ticket-modal-card { padding: 20px !important; max-width: 90% !important; }
+        }
+      `}</style>
+
       {/* 1. HERO SECTION & SEARCH BAR */}
-      <div style={{
+      <div className="help-hero" style={{
         background: '#FFFFFF',
         borderRadius: '20px',
         border: '1px solid #E2E8F0',
-        padding: '40px 24px 36px',
+        padding: '36px 20px 32px',
         textAlign: 'center',
         boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
         marginBottom: '28px',
@@ -213,7 +289,7 @@ export default function PublisherHelpPage() {
         </div>
 
         {/* Title */}
-        <h1 style={{
+        <h1 className="help-hero-title" style={{
           fontSize: '1.75rem',
           fontWeight: 800,
           color: '#0F172A',
@@ -225,7 +301,7 @@ export default function PublisherHelpPage() {
         </h1>
 
         {/* Subtitle */}
-        <p style={{
+        <p className="help-hero-subtitle" style={{
           fontSize: '0.875rem',
           color: '#64748B',
           maxWidth: '540px',
@@ -259,12 +335,12 @@ export default function PublisherHelpPage() {
           <input
             ref={searchInputRef}
             type="text"
+            className="pub-help-search-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={lang === 'en' ? 'Search topics, curation guides, API...' : 'Cari topik, panduan kurasi, integrasi API...'}
             style={{
               width: '100%',
-              padding: '12px 75px 12px 44px',
               fontSize: '0.875rem',
               color: '#0F172A',
               background: '#F8FAFC',
@@ -286,13 +362,15 @@ export default function PublisherHelpPage() {
             }}
           />
 
-          <div style={{
-            position: 'absolute',
-            right: '12px',
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center'
-          }}>
+          <div 
+            className="pub-help-badge-shortcut"
+            style={{
+              position: 'absolute',
+              right: '12px',
+              pointerEvents: 'none',
+              alignItems: 'center'
+            }}
+          >
             <span style={{
               fontSize: '0.688rem',
               fontWeight: 700,
@@ -310,9 +388,9 @@ export default function PublisherHelpPage() {
 
       </div>
 
-      {/* 2. KNOWLEDGE BASE CATEGORIES (4-GRID CARDS) */}
+      {/* 2. KNOWLEDGE BASE CATEGORIES (GRID COMPRESSED IN MOBILE) */}
       <div style={{ marginBottom: '36px' }}>
-        <div style={{
+        <div className="help-category-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
           gap: '16px'
@@ -324,6 +402,7 @@ export default function PublisherHelpPage() {
               <div
                 key={cat.id}
                 onClick={() => setSelectedCategory(isSelected ? null : cat.id)}
+                className="help-category-card"
                 style={{
                   background: '#FFFFFF',
                   borderRadius: '16px',
@@ -352,7 +431,7 @@ export default function PublisherHelpPage() {
                 }}
               >
                 <div>
-                  <div style={{
+                  <div className="help-category-icon" style={{
                     width: '38px',
                     height: '38px',
                     borderRadius: '10px',
@@ -367,7 +446,7 @@ export default function PublisherHelpPage() {
                     <Icon size={20} />
                   </div>
 
-                  <h3 style={{
+                  <h3 className="help-category-title" style={{
                     fontSize: '0.938rem',
                     fontWeight: 800,
                     color: '#0F172A',
@@ -376,7 +455,7 @@ export default function PublisherHelpPage() {
                     {cat.title}
                   </h3>
 
-                  <p style={{
+                  <p className="help-category-desc" style={{
                     fontSize: '0.781rem',
                     color: '#64748B',
                     margin: 0,
@@ -386,7 +465,7 @@ export default function PublisherHelpPage() {
                   </p>
                 </div>
 
-                <div style={{
+                <div className="help-category-footer" style={{
                   marginTop: '16px',
                   paddingTop: '12px',
                   borderTop: '1px solid #F1F5F9',
@@ -440,7 +519,7 @@ export default function PublisherHelpPage() {
       </div>
 
       {/* 3. FAQ SECTION */}
-      <div style={{
+      <div className="help-faq-section" style={{
         background: '#FFFFFF',
         borderRadius: '20px',
         border: '1px solid #E2E8F0',
@@ -449,7 +528,7 @@ export default function PublisherHelpPage() {
         marginBottom: '28px'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <h2 style={{
+          <h2 className="help-faq-title" style={{
             fontSize: '1.25rem',
             fontWeight: 800,
             color: '#0F172A',
@@ -512,6 +591,7 @@ export default function PublisherHelpPage() {
                   }}
                 >
                   <button
+                    className="help-faq-btn"
                     onClick={() => toggleFaq(faq.id)}
                     style={{
                       width: '100%',
@@ -553,7 +633,7 @@ export default function PublisherHelpPage() {
                   </button>
 
                   {isOpen && (
-                    <div style={{
+                    <div className="help-faq-content" style={{
                       padding: '12px 18px 16px',
                       fontSize: '0.813rem',
                       color: '#475569',
@@ -572,7 +652,7 @@ export default function PublisherHelpPage() {
       </div>
 
       {/* 4. SUPPORT ESCALATION (TICKET BOX) */}
-      <div style={{
+      <div className="help-support-box" style={{
         background: 'linear-gradient(135deg, #EFF6FF 0%, #EEF2FF 100%)',
         borderRadius: '20px',
         border: '1px solid #DBEAFE',
@@ -657,7 +737,7 @@ export default function PublisherHelpPage() {
           justifyContent: 'center',
           padding: '16px'
         }}>
-          <div style={{
+          <div className="ticket-modal-card" style={{
             background: '#FFFFFF',
             borderRadius: '20px',
             border: '1px solid #E2E8F0',

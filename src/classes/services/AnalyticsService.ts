@@ -55,7 +55,6 @@ export class AnalyticsService {
     const path = require('path');
     let totalStorage = 0;
     try {
-      const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
       const getDirSize = async (dir: string): Promise<number> => {
         let size = 0;
         try {
@@ -74,7 +73,14 @@ export class AnalyticsService {
         }
         return size;
       };
-      totalStorage = await getDirSize(uploadsDir);
+
+      const privateDir = path.join(process.cwd(), 'private-uploads');
+      const publicDir = path.join(process.cwd(), 'public', 'uploads');
+      const [privSize, pubSize] = await Promise.all([
+        getDirSize(privateDir),
+        getDirSize(publicDir)
+      ]);
+      totalStorage = privSize + pubSize;
     } catch (e) {}
 
     return { totalBooks, totalPublishers, pendingReviews, totalVisits, totalStorage };
@@ -109,10 +115,13 @@ export class AnalyticsService {
 
   public async getTopPublishers(limit = 5) {
     const publishers = await this.publisherRepository.findAll();
-    return publishers.slice(0, limit).map(p => ({
-      id: p.id,
-      name: p.name,
-      totalBooks: p.totalBooks,
-    }));
+    return publishers
+      .sort((a, b) => (b.totalBooks || 0) - (a.totalBooks || 0))
+      .slice(0, limit)
+      .map(p => ({
+        id: p.id,
+        name: p.name,
+        totalBooks: p.totalBooks,
+      }));
   }
 }

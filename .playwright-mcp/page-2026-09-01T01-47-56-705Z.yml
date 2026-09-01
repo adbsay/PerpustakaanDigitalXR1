@@ -1,0 +1,40 @@
+- generic [ref=f26e4]:
+  - generic [ref=f26e5]:
+    - heading "Hubungi Kami" [level=1] [ref=f26e6]
+    - paragraph [ref=f26e7]: Punya pertanyaan mengenai koleksi perpustakaan, kemitraan, atau butuh bantuan teknis? Tim kami siap melayani Anda.
+  - generic [ref=f26e8]:
+    - generic [ref=f26e9]:
+      - link "Email Dukungan support@perpustakaandigital.com" [ref=f26e10] [cursor=pointer]:
+        - /url: mailto:support@perpustakaandigital.com
+        - generic [ref=f26e15]:
+          - generic [ref=f26e16]: Email Dukungan
+          - generic [ref=f26e17]: support@perpustakaandigital.com
+      - link "Nomor Telepon +62 811-2345-6789" [ref=f26e18] [cursor=pointer]:
+        - /url: tel:+6281123456789
+        - generic [ref=f26e22]:
+          - generic [ref=f26e23]: Nomor Telepon
+          - generic [ref=f26e24]: +62 811-2345-6789
+      - generic [ref=f26e30]:
+        - generic [ref=f26e31]: Alamat Kantor
+        - generic [ref=f26e32]: Gedung Pengetahuan Nusantara, Lt. 5, Jl. Sudirman No. 123, Jakarta, Indonesia
+      - link "Hubungi Admin (WhatsApp)" [ref=f26e34] [cursor=pointer]:
+        - /url: https://wa.me/6281234567890
+    - generic [ref=f26e38]:
+      - generic [ref=f26e39]:
+        - generic [ref=f26e40]:
+          - generic [ref=f26e41]: Nama Lengkap
+          - textbox "Nama Lengkap" [ref=f26e42]:
+            - /placeholder: Nama Anda
+        - generic [ref=f26e43]:
+          - generic [ref=f26e44]: Alamat Email
+          - textbox "Alamat Email" [ref=f26e45]:
+            - /placeholder: nama@email.com
+      - generic [ref=f26e46]:
+        - generic [ref=f26e47]: Subjek Pesan
+        - textbox "Subjek Pesan" [ref=f26e48]:
+          - /placeholder: "Contoh: Pertanyaan Koleksi Ebook"
+      - generic [ref=f26e49]:
+        - generic [ref=f26e50]: Isi Pesan
+        - textbox "Isi Pesan" [ref=f26e51]:
+          - /placeholder: Tuliskan pertanyaan, kendala, atau pesan detail Anda di sini...
+      - button "Kirim Pesan Sekarang" [ref=f26e52] [cursor=pointer]

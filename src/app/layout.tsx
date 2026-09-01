@@ -2,7 +2,17 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Digital Library — Free Ebooks for Everyone',
+  title: {
+    default: 'Digital Library — Free Ebooks for Everyone',
+    template: '%s | Digital Library',
+  },
+  icons: {
+    icon: [
+      { url: '/logo.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: ['/logo.svg'],
+    apple: ['/logo.svg'],
+  },
   description:
     'Perpustakaan digital gratis. Temukan, baca, dan unduh ribuan ebook pilihan tanpa perlu mendaftar. Akses langsung dari browser.',
   keywords: ['ebook', 'perpustakaan digital', 'buku gratis', 'baca online'],
@@ -24,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

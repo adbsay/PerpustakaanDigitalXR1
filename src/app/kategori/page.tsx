@@ -112,11 +112,67 @@ export default function KategoriPage() {
   return (
     <div style={{ width: '100%', minHeight: '100vh', background: '#FAFAF8', display: 'flex', justifyContent: 'center' }}>
       
+      <style>{`
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+          .cat-main-container {
+            padding: 20px 16px 60px !important;
+          }
+          .cat-header-wrapper {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 14px !important;
+            margin-bottom: 20px !important;
+            padding-bottom: 16px !important;
+          }
+          .cat-header-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 4px !important;
+          }
+          .cat-header-desc {
+            font-size: 0.813rem !important;
+            line-height: 1.4 !important;
+          }
+          .cat-search-box {
+            max-width: 100% !important;
+          }
+          .cat-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+          }
+          .cat-card {
+            padding: 14px 16px !important;
+            border-radius: 14px !important;
+            gap: 12px !important;
+          }
+          .cat-icon-wrap {
+            width: 44px !important;
+            height: 44px !important;
+            border-radius: 12px !important;
+          }
+          .cat-icon-wrap svg {
+            width: 22px !important;
+            height: 22px !important;
+          }
+          .cat-featured-section {
+            margin-top: 40px !important;
+            padding-top: 24px !important;
+          }
+          .cat-featured-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px 10px !important;
+          }
+          .cat-featured-title {
+            font-size: 1.25rem !important;
+          }
+        }
+      `}</style>
+
       {/* 1. GLOBAL CONTAINER PENENGAH TERKUNCI (MAX-WIDTH 1240PX & MARGIN AUTO) */}
-      <main style={{ width: '100%', maxWidth: '1240px', padding: '48px 24px 96px', margin: '0 auto', boxSizing: 'border-box' }}>
+      <main className="cat-main-container" style={{ width: '100%', maxWidth: '1240px', padding: '48px 24px 96px', margin: '0 auto', boxSizing: 'border-box' }}>
         
         {/* 2. HEADER HALAMAN KATEGORI ELEGAN & SEARCH FILTER */}
-        <div style={{
+        <div className="cat-header-wrapper" style={{
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
@@ -130,16 +186,16 @@ export default function KategoriPage() {
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#EFF6FF', color: '#2563EB', padding: '4px 12px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '8px' }}>
               <BookMarked size={14} /> Direktori Topik
             </div>
-            <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 6px' }}>
+            <h1 className="cat-header-title" style={{ fontSize: '2.25rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 6px' }}>
               Jelajahi Kategori
             </h1>
-            <p style={{ fontSize: '0.938rem', color: '#64748B', margin: 0, maxWidth: '600px', lineHeight: 1.5 }}>
+            <p className="cat-header-desc" style={{ fontSize: '0.938rem', color: '#64748B', margin: 0, maxWidth: '600px', lineHeight: 1.5 }}>
               Temukan ribuan karya berbobot berdasarkan bidang studi, minat baca, dan ragam genre literatur digital.
             </p>
           </div>
 
           {/* Quick Category Search */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
+          <div className="cat-search-box" style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
             <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94A3B8' }}>
               <Search size={16} />
             </div>
@@ -166,7 +222,7 @@ export default function KategoriPage() {
 
         {/* 3. GRID KARTU KATEGORI BERGAYA BENTO HORIZONTAL (PROPORSI PRESISI) */}
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px', width: '100%' }}>
+          <div className="cat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px', width: '100%' }}>
             {Array.from({ length: 9 }).map((_, i) => (
               <div key={i} style={{ background: '#FFFFFF', padding: '20px', borderRadius: '18px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: '#E2E8F0', animation: 'pulse 1.5s infinite', flexShrink: 0 }} />
@@ -190,7 +246,7 @@ export default function KategoriPage() {
             </button>
           </div>
         ) : (
-          <div style={{
+          <div className="cat-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
             gap: '16px',
@@ -202,6 +258,7 @@ export default function KategoriPage() {
                 <Link 
                   href={`/?q=${encodeURIComponent(cat.name)}`} 
                   key={cat.id}
+                  className="cat-card"
                   style={{
                     background: '#FFFFFF',
                     padding: '18px 20px',
@@ -228,7 +285,7 @@ export default function KategoriPage() {
                   }}
                 >
                   {/* Ikon Vektor Berwarna Identitas Tematik */}
-                  <div style={{
+                  <div className="cat-icon-wrap" style={{
                     width: '54px',
                     height: '54px',
                     borderRadius: '16px',
@@ -308,10 +365,10 @@ export default function KategoriPage() {
         {/* 4. SECTION REKOMENDASI: BUKU PILIHAN BULAN INI          */}
         {/* ======================================================== */}
         {featuredBooks.length > 0 && (
-          <section style={{ marginTop: '72px', paddingTop: '48px', borderTop: '1px solid #E2E8F0', width: '100%' }}>
+          <section className="cat-featured-section" style={{ marginTop: '72px', paddingTop: '48px', borderTop: '1px solid #E2E8F0', width: '100%' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 4px' }}>
+                <h2 className="cat-featured-title" style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 4px' }}>
                   Buku Pilihan Bulan Ini
                 </h2>
                 <p style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
@@ -324,7 +381,7 @@ export default function KategoriPage() {
               </Link>
             </div>
 
-            <div style={{
+            <div className="cat-featured-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))',
               gap: '40px 24px',

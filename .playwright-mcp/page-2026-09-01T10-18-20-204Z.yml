@@ -1,0 +1,31 @@
+- generic [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: ✨ Rekomendasi Minggu Ini
+      - heading "Jelajahi Ribuan Buku Tanpa Batas" [level=1] [ref=e9]
+      - paragraph [ref=e10]: Temukan literatur akademik dan novel populer langsung dari penerbit terpercaya dalam satu genggaman.
+      - button "Mulai Membaca" [ref=e11] [cursor=pointer]
+    - generic [ref=e14]: DIGITAL LIBRARY
+    - generic [ref=e31]:
+      - button "Slide Sebelumnya" [ref=e32] [cursor=pointer]
+      - generic [ref=e35]:
+        - button "Pilih Slide 1" [ref=e36] [cursor=pointer]
+        - button "Pilih Slide 2" [ref=e37] [cursor=pointer]
+        - button "Pilih Slide 3" [ref=e38] [cursor=pointer]
+      - button "Slide Berikutnya" [ref=e39] [cursor=pointer]
+  - generic [ref=e43]:
+    - generic [ref=e44]:
+      - heading "Koleksi Unggulan" [level=2] [ref=e45]
+      - paragraph [ref=e46]: Menampilkan 0 dari 0 total ebook pilihan
+    - generic [ref=e47]:
+      - combobox [ref=e49] [cursor=pointer]:
+        - option "Semua Kategori" [selected]
+      - combobox [ref=e51] [cursor=pointer]:
+        - option "Terbaru" [selected]
+        - option "Terlama"
+      - combobox [ref=e53] [cursor=pointer]:
+        - option "Rating & Views" [selected]
+        - option "Rating 4.0+ Ke Atas"
+        - option "Rating 4.0- Ke Bawah"
+        - option "Views Terbanyak"
+        - option "Views Tersedikit"

@@ -131,23 +131,173 @@ export default function UploadPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F8F9FA' }}>
+    <div className="pub-upload-container" style={{ minHeight: '100vh', background: '#F8F9FA', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
+      <style>{`
+        /* TAMBAHKAN 3 BARIS INI UNTUK MENCEGAH LUBER */
+        .pub-upload-container, .pub-upload-container * {
+          box-sizing: border-box !important;
+        }
+
+        .pub-upload-header {
+          padding: 16px 40px !important;
+        }
+        .pub-upload-main {
+          padding: 40px !important;
+          flex-direction: row;
+        }
+        .pub-upload-grid-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 24px;
+        }
+        .pub-upload-header-actions {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        /* --- SENIOR ENGINEER MOBILE OPTIMIZATION (APP-LIKE UI) --- */
+        @media (max-width: 768px) {
+          .pub-upload-header {
+            padding: 12px 16px !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+          }
+          .pub-upload-header > div:first-child {
+            width: 100%;
+            margin-bottom: 4px;
+          }
+          .pub-upload-header-actions {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            gap: 8px !important;
+            position: relative;
+          }
+          .pub-draft-text {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            font-size: 0.65rem !important;
+          }
+          .pub-btn-draft, .pub-btn-submit {
+            flex: 1;
+            padding: 12px 8px !important;
+            font-size: 0.813rem !important;
+            border-radius: 8px !important;
+            white-space: nowrap;
+          }
+          
+          .pub-upload-main {
+            padding: 12px !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+          }
+          
+          /* Form Kiri */
+          .pub-upload-left-col {
+            padding: 16px 12px !important;
+            border-radius: 12px !important;
+          }
+          .pub-upload-left-col h2 {
+            font-size: 1rem !important;
+            margin-bottom: 16px !important;
+          }
+          
+          /* MEMAKSA BERJEJER KESAMPING DI MOBILE */
+          .pub-upload-grid-row {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 10px !important;
+          }
+          .pub-form-group {
+            gap: 6px !important;
+          }
+          .pub-form-label {
+            font-size: 0.75rem !important; /* 12px */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .pub-form-label span {
+            display: none !important; /* Buang teks bantuan opsional di mobile agar bersih */
+          }
+          .pub-form-input {
+            padding: 10px 12px !important;
+            border-radius: 8px !important;
+            font-size: 0.813rem !important;
+            width: 100% !important;  /* Tambahkan ini */
+            min-width: 0 !important; /* Tambahkan ini agar grid tidak jebol */
+          }
+          textarea.pub-form-input {
+            min-height: 140px !important; /* Hemat ruang vertikal */
+          }
+
+          /* KOTAK VISUAL (KANAN): BERJEJER KESAMPING (COVER & PDF SEJAJAR) */
+          .pub-upload-right-col {
+            position: static !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important; /* Membagi 2 Cover dan PDF */
+            gap: 10px !important;
+          }
+          
+          /* Aturan untuk kotak Hak Cipta agar membentang penuh (2 kolom) */
+          .pub-upload-right-col > div:nth-child(3) {
+            grid-column: span 2 !important;
+            padding: 16px 12px !important;
+          }
+          
+          .pub-upload-right-col > div {
+            padding: 12px 10px !important;
+            border-radius: 12px !important;
+          }
+          .pub-upload-right-col h3 {
+            font-size: 0.813rem !important;
+            margin-bottom: 10px !important;
+            text-align: center;
+          }
+          
+          /* Mengunci tinggi dropzone sejajar */
+          .pub-cover-dropzone, .pub-pdf-dropzone {
+            height: 140px !important;
+          }
+          
+          /* Merapikan teks di dalam dropzone di layar sempit */
+          .pub-cover-dropzone > div, .pub-pdf-dropzone > div {
+            padding: 4px !important;
+          }
+          .pub-cover-dropzone > div > div:first-child, .pub-pdf-dropzone > div > div:first-child {
+            font-size: 26px !important; /* Ukuran Ikon/Emoji */
+            margin-bottom: 4px !important;
+          }
+          .pub-cover-dropzone > div > div:nth-child(2), .pub-pdf-dropzone > div > div:nth-child(2) {
+            font-size: 11px !important; /* Judul Area Drop */
+            line-height: 1.2 !important;
+          }
+          .pub-cover-dropzone > div > div:nth-child(3), .pub-pdf-dropzone > div > div:nth-child(3) {
+            display: none !important; /* Buang teks detail mb/resolusi agar tidak sesak */
+          }
+        }
+      `}</style>
+      
       {/* Sticky Header */}
-      <header style={{ 
+      <header className="pub-upload-header" style={{ 
         position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255, 255, 255, 0.9)', 
         backdropFilter: 'blur(10px)', borderBottom: '1px solid #EAEAEA', 
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-        padding: '16px 40px', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' 
+        boxShadow: '0 1px 2px rgba(0,0,0,0.02)' 
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Link href="/publisher/my-ebooks" style={{ textDecoration: 'none', color: '#666', fontSize: '20px', fontWeight: 'bold' }}>←</Link>
           <h1 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#1A1A1A' }}>Unggah Ebook Baru</h1>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ fontSize: '13px', color: '#34C759', opacity: draftSaved ? 1 : 0, transition: 'opacity 0.3s' }}>
+        <div className="pub-upload-header-actions">
+          <span className="pub-draft-text" style={{ fontSize: '13px', color: '#34C759', opacity: draftSaved ? 1 : 0, transition: 'opacity 0.3s' }}>
             ✓ Draft Disimpan
           </span>
           <button 
+            className="pub-btn-draft"
             onClick={handleSaveDraft}
             style={{ 
               background: '#F0F0F0', color: '#333', border: 'none', padding: '10px 20px', 
@@ -159,6 +309,7 @@ export default function UploadPage() {
             Simpan Draft
           </button>
           <button 
+            className="pub-btn-submit"
             onClick={handleSubmit}
             disabled={loading}
             style={{ 
@@ -175,7 +326,7 @@ export default function UploadPage() {
       </header>
 
       {/* Main Split-Screen Layout */}
-      <main style={{ padding: '40px', maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      <main className="pub-upload-main" style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
         
         {/* Error Banner */}
         {error && (
@@ -185,15 +336,16 @@ export default function UploadPage() {
         )}
 
         {/* Kolom Kiri: Fokus Teks & Detail (65%) */}
-        <div style={{ flex: '1 1 60%', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
+        <div className="pub-upload-left-col" style={{ flex: '1 1 60%', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
           <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1A1A1A', marginBottom: '32px' }}>Informasi Dasar</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Row 1: Title & Author */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Judul Buku *</label>
+            <div className="pub-upload-grid-row">
+              <div className="pub-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label className="pub-form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Judul Buku *</label>
                 <input 
+                  className="pub-form-input"
                   type="text" 
                   placeholder="Contoh: Belajar Next.js"
                   value={form.title}
@@ -203,9 +355,10 @@ export default function UploadPage() {
                   onBlur={e => e.target.style.borderColor = '#E0E0E0'}
                 />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Penulis / Author *</label>
+              <div className="pub-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label className="pub-form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Penulis / Author *</label>
                 <input 
+                  className="pub-form-input"
                   type="text" 
                   placeholder="Nama penulis"
                   value={form.author}
@@ -218,10 +371,11 @@ export default function UploadPage() {
             </div>
 
             {/* Row 2: Category & Tags */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Kategori</label>
+            <div className="pub-upload-grid-row">
+              <div className="pub-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label className="pub-form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Kategori</label>
                 <select 
+                  className="pub-form-input"
                   value={form.categoryId}
                   onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
                   style={{ padding: '12px 16px', borderRadius: '8px', border: '1px solid #E0E0E0', fontSize: '14px', outline: 'none', background: '#FAFAFA', cursor: 'pointer', appearance: 'none' }}
@@ -230,9 +384,10 @@ export default function UploadPage() {
                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Tag / Kata Kunci (Opsional)</label>
+              <div className="pub-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label className="pub-form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Tag / Kata Kunci (Opsional)</label>
                 <input 
+                  className="pub-form-input"
                   type="text" 
                   placeholder="Pisahkan dengan koma (contoh: bisnis, startup)"
                   value={form.tags}
@@ -245,8 +400,8 @@ export default function UploadPage() {
             </div>
 
             {/* Row 3: Description */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
-              <label style={{ fontSize: '14px', fontWeight: 600, color: '#333', display: 'flex', justifyContent: 'space-between' }}>
+            <div className="pub-form-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '16px' }}>
+              <label className="pub-form-label" style={{ fontSize: '14px', fontWeight: 600, color: '#333', display: 'flex', justifyContent: 'space-between' }}>
                 Deskripsi / Sinopsis
                 <span style={{ color: '#999', fontWeight: 400 }}>Gunakan paragraf untuk memperjelas</span>
               </label>
@@ -264,6 +419,7 @@ export default function UploadPage() {
               </div>
 
               <textarea 
+                className="pub-form-input"
                 placeholder="Ceritakan tentang buku ini..."
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
@@ -280,12 +436,13 @@ export default function UploadPage() {
         </div>
 
         {/* Kolom Kanan: Fokus Visual (35%) */}
-        <div style={{ flex: '1 1 30%', position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="pub-upload-right-col" style={{ flex: '1 1 30%', position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Cover Image Upload */}
           <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1A1A1A', marginBottom: '16px' }}>Cover Buku</h3>
             <div 
+              className="pub-cover-dropzone"
               onDragOver={e => { e.preventDefault(); setDragOver('cover'); }}
               onDragLeave={() => setDragOver(null)}
               onDrop={e => handleFileDrop(e, 'cover')}
@@ -320,6 +477,7 @@ export default function UploadPage() {
           <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1A1A1A', marginBottom: '16px' }}>File Ebook *</h3>
             <div 
+              className="pub-pdf-dropzone"
               onDragOver={e => { e.preventDefault(); setDragOver('pdf'); }}
               onDragLeave={() => setDragOver(null)}
               onDrop={e => handleFileDrop(e, 'pdf')}

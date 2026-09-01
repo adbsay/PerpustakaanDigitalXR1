@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Search, Filter, Ban, ChevronLeft, ChevronRight, CheckCircle2, Users, Phone, Mail, ShieldAlert } from 'lucide-react';
+import { Search, Filter, Ban, ChevronLeft, ChevronRight, CheckCircle2, Users, Phone, Mail, ShieldAlert, BookOpen } from 'lucide-react';
 
 interface Publisher {
   id: string;
@@ -34,15 +34,17 @@ export default function AdminPublishersPage() {
   }, []);
 
   const fetchPublishers = async () => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
     setLoading(true);
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     try {
-      const res = await fetch('/api/admin/publishers', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch('/api/admin/publishers', { headers });
       const json = await res.json();
-      if (json.success) setPublishers(json.data);
+      if (json.success && json.data) setPublishers(json.data);
+    } catch (e) {
+      console.error('Failed to fetch publishers', e);
     } finally {
       setLoading(false);
     }
@@ -80,16 +82,15 @@ export default function AdminPublishersPage() {
     if (!banModalUser) return;
     
     const action = banModalUser.status === 'ACTIVE' ? 'ban' : 'unban';
-    const token = localStorage.getItem('admin_token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
     
     setIsProcessing(true);
     try {
       const res = await fetch(`/api/admin/publishers/${banModalUser.id}`, {
         method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` 
-        },
+        headers,
         body: JSON.stringify({ action }),
       });
       const json = await res.json();
@@ -127,33 +128,27 @@ export default function AdminPublishersPage() {
       }}>
         
         {/* FILTER & SEARCH HEADER */}
-        <div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid #F1F5F9',
-          background: '#F8FAFC',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px'
-        }}>
-          {/* Left: Filter Pills */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.813rem', fontWeight: 800, color: '#64748B', marginRight: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+        <div className="p-3.5 sm:p-4 border-b border-slate-100 bg-slate-50 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4">
+          
+          {/* Left: Filter Pills (Horizontal single line on mobile & desktop) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflowX: 'auto', flexWrap: 'nowrap', paddingBottom: '2px' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748B', marginRight: '2px', textTransform: 'uppercase', letterSpacing: '0.04em', flexShrink: 0 }}>
               Filter:
             </span>
 
             <button
               onClick={() => setStatusFilter('ALL')}
               style={{
-                padding: '6px 14px',
+                padding: '6px 12px',
                 borderRadius: '8px',
-                fontSize: '0.813rem',
+                fontSize: '0.75rem',
                 fontWeight: 700,
-                border: statusFilter === 'ALL' ? '1px solid #0F172A' : '1px solid #E2E8F0',
+                border: statusFilter === 'ALL' ? '1px solid #0F172A' : '1px solid #CBD5E1',
                 background: statusFilter === 'ALL' ? '#0F172A' : '#FFFFFF',
-                color: statusFilter === 'ALL' ? '#FFFFFF' : '#64748B',
+                color: statusFilter === 'ALL' ? '#FFFFFF' : '#475569',
                 cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -163,14 +158,16 @@ export default function AdminPublishersPage() {
             <button
               onClick={() => setStatusFilter('ACTIVE')}
               style={{
-                padding: '6px 14px',
+                padding: '6px 12px',
                 borderRadius: '8px',
-                fontSize: '0.813rem',
+                fontSize: '0.75rem',
                 fontWeight: 700,
-                border: statusFilter === 'ACTIVE' ? '1px solid #059669' : '1px solid #E2E8F0',
+                border: statusFilter === 'ACTIVE' ? '1px solid #059669' : '1px solid #CBD5E1',
                 background: statusFilter === 'ACTIVE' ? '#ECFDF5' : '#FFFFFF',
-                color: statusFilter === 'ACTIVE' ? '#059669' : '#64748B',
+                color: statusFilter === 'ACTIVE' ? '#059669' : '#475569',
                 cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -180,14 +177,16 @@ export default function AdminPublishersPage() {
             <button
               onClick={() => setStatusFilter('BANNED')}
               style={{
-                padding: '6px 14px',
+                padding: '6px 12px',
                 borderRadius: '8px',
-                fontSize: '0.813rem',
+                fontSize: '0.75rem',
                 fontWeight: 700,
-                border: statusFilter === 'BANNED' ? '1px solid #DC2626' : '1px solid #E2E8F0',
+                border: statusFilter === 'BANNED' ? '1px solid #DC2626' : '1px solid #CBD5E1',
                 background: statusFilter === 'BANNED' ? '#FEF2F2' : '#FFFFFF',
-                color: statusFilter === 'BANNED' ? '#DC2626' : '#64748B',
+                color: statusFilter === 'BANNED' ? '#DC2626' : '#475569',
                 cursor: 'pointer',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -195,17 +194,18 @@ export default function AdminPublishersPage() {
             </button>
           </div>
 
-          {/* Right: Search Box */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
+          {/* Right: Search Box (Full width on mobile below filters, max 280px on desktop) */}
+          <div style={{ position: 'relative', width: '100%' }} className="lg:max-w-[280px]">
             <Search 
               size={15} 
               style={{
                 position: 'absolute',
-                left: '12px',
+                left: '14px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: '#94A3B8',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: 2
               }} 
             />
             <input 
@@ -215,7 +215,7 @@ export default function AdminPublishersPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                padding: '8px 12px 8px 36px',
+                padding: '9px 14px 9px 40px',
                 background: '#FFFFFF',
                 border: '1px solid #CBD5E1',
                 borderRadius: '10px',
@@ -230,14 +230,14 @@ export default function AdminPublishersPage() {
                 onClick={() => setSearchQuery('')}
                 style={{
                   position: 'absolute',
-                  right: '10px',
+                  right: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   background: 'none',
                   border: 'none',
                   color: '#94A3B8',
                   cursor: 'pointer',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700
                 }}
               >
@@ -247,8 +247,8 @@ export default function AdminPublishersPage() {
           </div>
         </div>
 
-        {/* TABLE */}
-        <div style={{ overflowX: 'auto', minHeight: '380px' }}>
+        {/* DESKTOP TABLE VIEW (hidden on mobile) */}
+        <div className="hidden lg:block" style={{ overflowX: 'auto', minHeight: '380px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
@@ -302,7 +302,7 @@ export default function AdminPublishersPage() {
                       transition: 'background 0.15s ease'
                     }}
                   >
-                    {/* Nama Publisher & No Telepon */}
+                    {/* Publisher Name & Phone */}
                     <td style={{ padding: '14px 20px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{
@@ -314,27 +314,28 @@ export default function AdminPublishersPage() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontSize: '0.75rem',
+                          fontSize: '0.813rem',
                           fontWeight: 800,
                           flexShrink: 0
                         }}>
-                          {pub.name.substring(0, 2).toUpperCase()}
+                          {pub.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+                          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
                             {pub.name}
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            <Phone size={11} color="#94A3B8" />
-                            {pub.phone || 'Tidak ada no telepon'}
-                          </div>
+                          {pub.phone && (
+                            <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                              <Phone size={11} /> {pub.phone}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>
 
                     {/* Email */}
                     <td style={{ padding: '14px 20px' }}>
-                      <div style={{ fontSize: '0.813rem', color: '#334155', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ fontSize: '0.813rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <Mail size={13} color="#94A3B8" />
                         {pub.email}
                       </div>
@@ -345,14 +346,16 @@ export default function AdminPublishersPage() {
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
+                        gap: '6px',
                         padding: '4px 10px',
                         background: '#F1F5F9',
                         color: '#0F172A',
+                        borderRadius: '6px',
                         fontSize: '0.75rem',
-                        fontWeight: 800,
-                        borderRadius: '6px'
+                        fontWeight: 800
                       }}>
-                        {pub.totalBooks} Ebook
+                        <BookOpen size={13} />
+                        {pub.totalBooks || 0} Ebook
                       </span>
                     </td>
 
@@ -452,6 +455,182 @@ export default function AdminPublishersPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* MOBILE CARD LIST VIEW (block on < 1024px) */}
+        <div className="block lg:hidden" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+              <div style={{
+                width: '28px',
+                height: '28px',
+                border: '2px solid #0F172A',
+                borderTopColor: 'transparent',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+                margin: '0 auto'
+              }} />
+            </div>
+          ) : paginatedPublishers.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 16px', color: '#94A3B8' }}>
+              <Users size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+              <p style={{ fontSize: '0.813rem', fontWeight: 600, margin: 0 }}>
+                Tidak ada data penerbit yang cocok.
+              </p>
+            </div>
+          ) : (
+            paginatedPublishers.map((pub) => (
+              <div 
+                key={pub.id}
+                style={{
+                  background: '#FFFFFF',
+                  borderRadius: '14px',
+                  border: '1px solid #E2E8F0',
+                  padding: '14px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px'
+                }}
+              >
+                {/* Top Row: Avatar + Name + Status */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: '#0F172A',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.813rem',
+                      fontWeight: 800,
+                      flexShrink: 0
+                    }}>
+                      {pub.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+                        {pub.name}
+                      </div>
+                      {pub.phone && (
+                        <div style={{ fontSize: '0.719rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '3px', marginTop: '2px' }}>
+                          <Phone size={10} /> {pub.phone}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    {pub.status === 'ACTIVE' ? (
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '3px 8px',
+                        background: '#ECFDF5',
+                        color: '#059669',
+                        border: '1px solid #A7F3D0',
+                        borderRadius: '6px',
+                        fontSize: '0.625rem',
+                        fontWeight: 800,
+                        textTransform: 'uppercase'
+                      }}>
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#10B981' }} />
+                        Aktif
+                      </span>
+                    ) : (
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '3px 8px',
+                        background: '#FEF2F2',
+                        color: '#DC2626',
+                        border: '1px solid #FECACA',
+                        borderRadius: '6px',
+                        fontSize: '0.625rem',
+                        fontWeight: 800,
+                        textTransform: 'uppercase'
+                      }}>
+                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#EF4444' }} />
+                        Diblokir
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Email info */}
+                <div style={{ fontSize: '0.781rem', color: '#475569', display: 'flex', alignItems: 'center', gap: '6px', background: '#F8FAFC', padding: '6px 10px', borderRadius: '8px' }}>
+                  <Mail size={13} color="#94A3B8" />
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{pub.email}</span>
+                </div>
+
+                {/* Bottom Row: Total Ebooks & Action Button */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '3px 8px',
+                    background: '#F1F5F9',
+                    color: '#0F172A',
+                    borderRadius: '6px',
+                    fontSize: '0.719rem',
+                    fontWeight: 800
+                  }}>
+                    <BookOpen size={12} />
+                    {pub.totalBooks || 0} Ebook
+                  </span>
+
+                  {pub.status === 'ACTIVE' ? (
+                    <button
+                      onClick={() => setBanModalUser(pub)}
+                      style={{
+                        padding: '6px 12px',
+                        background: '#FFFFFF',
+                        border: '1px solid #FECACA',
+                        color: '#DC2626',
+                        borderRadius: '8px',
+                        fontSize: '0.719rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <Ban size={12} />
+                      Blokir Akses
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setBanModalUser(pub)}
+                      style={{
+                        padding: '6px 12px',
+                        background: '#ECFDF5',
+                        border: '1px solid #A7F3D0',
+                        color: '#059669',
+                        borderRadius: '8px',
+                        fontSize: '0.719rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <CheckCircle2 size={12} />
+                      Pulihkan
+                    </button>
+                  )}
+                </div>
+
+              </div>
+            ))
+          )}
         </div>
 
         {/* Pagination & Count */}

@@ -26,17 +26,19 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    fetch('/api/admin/stats', { headers: { Authorization: `Bearer ${token}` } })
+    fetch('/api/admin/stats', { headers })
       .then(r => r.json())
       .then(j => {
-        if (j.success) {
-          setStats(j.data.stats);
-          setTopPublishers(j.data.topPublishers);
+        if (j.success && j.data) {
+          setStats(j.data.stats || { totalBooks: 0, totalPublishers: 0, pendingReviews: 0, totalVisits: 0, totalStorage: 0 });
+          setTopPublishers(j.data.topPublishers || []);
         }
       })
+      .catch(err => console.error('Failed to fetch admin stats', err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -87,12 +89,11 @@ export default function AdminDashboard() {
   ];
 
   const handleExport = (type: 'books' | 'publishers') => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
     
-    fetch(`/api/admin/export?type=${type}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    fetch(`/api/admin/export?type=${type}`, { headers })
     .then(res => res.blob())
     .then(blob => {
       const url = window.URL.createObjectURL(blob);
@@ -101,7 +102,8 @@ export default function AdminDashboard() {
       a.download = `${type}_export.csv`;
       a.click();
       window.URL.revokeObjectURL(url);
-    });
+    })
+    .catch(err => console.error('Export failed', err));
   };
 
   return (
@@ -173,52 +175,53 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* STAT CARDS ROW */}
+      {/* STAT CARDS ROW (2x2 on mobile, 4 columns on desktop) */}
       {loading ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} style={{ background: '#FFFFFF', borderRadius: '18px', padding: '24px', border: '1px solid #F1F5F9', minHeight: '140px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div className="skeleton" style={{ width: 36, height: 36, borderRadius: 8 }} />
-              <div className="skeleton" style={{ width: 80, height: 28, borderRadius: 4 }} />
-              <div className="skeleton" style={{ width: 120, height: 14, borderRadius: 4 }} />
+            <div key={i} style={{ background: '#FFFFFF', borderRadius: '14px', padding: '14px', border: '1px solid #F1F5F9', minHeight: '90px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="skeleton" style={{ width: 28, height: 28, borderRadius: 6 }} />
+              <div className="skeleton" style={{ width: 50, height: 20, borderRadius: 4 }} />
+              <div className="skeleton" style={{ width: 80, height: 10, borderRadius: 4 }} />
             </div>
           ))}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
           {statCards.map((card, idx) => (
             <div 
               key={idx} 
               style={{
                 background: '#FFFFFF',
-                borderRadius: '18px',
-                padding: '22px 24px',
+                borderRadius: '16px',
+                padding: '14px 16px',
                 border: card.isAlert ? '1px solid #FECDD3' : '1px solid #E2E8F0',
-                boxShadow: card.isAlert ? '0 4px 16px rgba(225, 29, 72, 0.06)' : '0 2px 10px rgba(0, 0, 0, 0.02)',
+                boxShadow: card.isAlert ? '0 4px 12px rgba(225, 29, 72, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.02)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                gap: '16px',
+                gap: '10px',
                 position: 'relative',
                 transition: 'all 0.2s ease'
               }}
             >
               {/* Card Top Row: Label & Icon */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <span style={{ fontSize: '0.688rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {card.label}
                 </span>
                 
                 <div style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   border: '1px solid',
                   background: card.isAlert ? '#FFF1F2' : '#F8FAFC',
-                  borderColor: card.isAlert ? '#FFE4E6' : '#E2E8F0'
+                  borderColor: card.isAlert ? '#FFE4E6' : '#E2E8F0',
+                  flexShrink: 0
                 }}>
                   {card.icon}
                 </div>
@@ -227,38 +230,38 @@ export default function AdminDashboard() {
               {/* Card Middle Row: Value */}
               <div>
                 <div style={{
-                  fontSize: '2.25rem',
+                  fontSize: '1.625rem',
                   fontWeight: 900,
                   color: card.isAlert ? '#E11D48' : '#0F172A',
                   lineHeight: 1.1,
-                  letterSpacing: '-0.03em'
+                  letterSpacing: '-0.02em'
                 }}>
                   {card.value}
                 </div>
               </div>
 
-              {/* Card Bottom Row: Subtitle & Trend badge */}
+              {/* Card Bottom Row: Dynamic Status / Subtitle */}
               <div style={{
+                paddingTop: '8px',
+                borderTop: '1px solid #F8FAFC',
+                fontSize: '0.688rem',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingTop: '12px',
-                borderTop: '1px solid #F1F5F9',
-                fontSize: '0.75rem'
+                justifyContent: 'space-between'
               }}>
-                <span style={{ color: '#94A3B8', fontWeight: 500 }}>
-                  {card.sub}
-                </span>
-
                 <span style={{
                   fontWeight: 700,
-                  color: card.isAlert ? '#E11D48' : (card.trendPositive ? '#10B981' : '#64748B'),
+                  color: card.isAlert ? '#E11D48' : (card.trendPositive ? '#059669' : '#64748B'),
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px'
                 }}>
-                  {card.trendPositive && <TrendingUp size={13} />}
+                  {card.trendPositive && <TrendingUp size={12} />}
                   {card.trendText}
+                </span>
+
+                <span style={{ color: '#94A3B8', fontWeight: 500, fontSize: '0.625rem' }} className="hidden sm:inline">
+                  {card.sub}
                 </span>
               </div>
 
@@ -268,14 +271,14 @@ export default function AdminDashboard() {
       )}
 
       {/* TWO COLUMNS: TOP PUBLISHERS & QUICK ACTIONS */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.8fr) minmax(300px, 1.2fr)', gap: '24px', alignItems: 'start' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.2fr] gap-6 items-start">
         
         {/* LEFT COLUMN: TOP PUBLISHERS TABLE */}
         <div style={{
           background: '#FFFFFF',
-          borderRadius: '18px',
+          borderRadius: '16px',
           border: '1px solid #E2E8F0',
-          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.02)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
           overflow: 'hidden'
         }}>
           {/* Header Table */}

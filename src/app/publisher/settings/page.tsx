@@ -248,7 +248,7 @@ export default function PublisherSettingsPage() {
 
   const { prefs: globalNotifPrefs, updateNotificationPrefs } = useNotificationContext();
   
-  // Draft State for Notifications (Changes do NOT mutate Global State until saved)
+  // Draft State for Notifications
   const [draftNotifs, setDraftNotifs] = useState({
     ebookCuration: globalNotifPrefs.ebookCuration,
     weeklyAnalytics: globalNotifPrefs.weeklyAnalytics,
@@ -306,7 +306,6 @@ export default function PublisherSettingsPage() {
   };
 
   useEffect(() => {
-    // 0. Restore Active Tab
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get('tab') as TabType;
@@ -319,7 +318,7 @@ export default function PublisherSettingsPage() {
         setActiveTab(storedTab);
       }
     }
-    // 1. Fetch Profile
+    
     const fetchProfile = async () => {
       const token = localStorage.getItem('publisher_token');
       if (!token) return;
@@ -343,7 +342,6 @@ export default function PublisherSettingsPage() {
     };
     fetchProfile();
 
-    // 2. Load Local Preferences
     try {
       const savedPrefs = localStorage.getItem('publisher_preferences');
       if (savedPrefs) {
@@ -356,7 +354,6 @@ export default function PublisherSettingsPage() {
       }
     } catch {}
 
-    // 3. Extract Device Info
     if (typeof window !== 'undefined') {
       const ua = window.navigator.userAgent;
       let browser = 'Chrome';
@@ -455,7 +452,6 @@ export default function PublisherSettingsPage() {
     }
   };
 
-  // Instant Change Handlers (No Button Needed, Instant Reload and Application)
   const handleLanguageChange = (newLang: 'id' | 'en') => {
     setLanguage(newLang);
     const updated = { language: newLang, timeZone, dateFormat };
@@ -597,7 +593,6 @@ export default function PublisherSettingsPage() {
     }, 1200);
   };
 
-  // Sidebar Menu Items Definition
   const menuItems: { id: TabType; label: string; icon: any }[] = [
     { id: 'profil', label: t.tabs.profil, icon: User },
     { id: 'akun', label: t.tabs.akun, icon: Shield },
@@ -619,7 +614,63 @@ export default function PublisherSettingsPage() {
   return (
     <div style={{ width: '100%', padding: '0 0 64px' }}>
       
-      {/* FLOATING TOAST NOTIFICATION (TOP-RIGHT B2B NOTIFICATION) */}
+      {/* 
+        =======================================================
+        CSS KHUSUS MOBILE UNTUK LAYOUT VERTIKAL & HEMAT RUANG 
+        =======================================================
+      */}
+      <style>{`
+        @media (max-width: 768px) {
+          /* Bagian Header Page */
+          .settings-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+          .settings-header-badge { align-self: flex-start !important; }
+          
+          /* Container Utama menjadi Susun Bawah (Vertikal) */
+          .settings-layout { flex-direction: column !important; gap: 16px !important; }
+          
+          /* Sidebar menjadi Menu Horizontal yang bisa di-Swipe/Scroll (Sangat hemat ruang) */
+          .settings-sidebar { 
+            width: 100% !important; 
+            flex-direction: row !important; 
+            overflow-x: auto !important; 
+            position: static !important; 
+            padding: 8px !important; 
+            white-space: nowrap !important;
+            -webkit-overflow-scrolling: touch;
+          }
+          /* Sembunyikan scrollbar agar terlihat modern */
+          .settings-sidebar::-webkit-scrollbar { display: none; }
+          .settings-sidebar { -ms-overflow-style: none; scrollbar-width: none; }
+          .settings-sidebar-btn { flex-shrink: 0 !important; padding: 8px 16px !important; font-size: 0.813rem !important; }
+          
+          /* Area Konten Form menjadi 100% Lebar Layar */
+          .settings-main { width: 100% !important; }
+          
+          /* Semua Input Form yang 2 Kolom (Grid) menjadi 1 Kolom Vertikal */
+          .form-grid-2 { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .form-grid-auto { grid-template-columns: 1fr !important; gap: 16px !important; }
+          
+          /* Area Zona Bahaya (Akun) */
+          .danger-zone-body { flex-direction: column !important; align-items: stretch !important; gap: 16px !important; }
+          .danger-zone-body button { width: 100% !important; justify-content: center !important; }
+          
+          /* Sesi Masuk (Keamanan) */
+          .session-info { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; }
+          .session-info button { width: 100% !important; justify-content: center !important; }
+          
+          /* API Keys */
+          .apikeys-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+          .apikeys-header button { width: 100% !important; justify-content: center !important; }
+          .apikeys-input-group { flex-direction: column !important; align-items: stretch !important; }
+          
+          /* Modal Hapus Akun */
+          .delete-modal { width: 90% !important; max-width: 90% !important; padding: 20px !important; }
+          .delete-modal-actions { flex-direction: column-reverse !important; }
+          .delete-modal-actions button { width: 100% !important; }
+        }
+      `}</style>
+
+      {/* FLOATING TOAST NOTIFICATION */}
       {toast && (
         <div style={{
           position: 'fixed',
@@ -645,7 +696,7 @@ export default function PublisherSettingsPage() {
       )}
 
       {/* 1. PROFESSIONAL HEADER SECTION */}
-      <div style={{
+      <div className="settings-header" style={{
         marginBottom: '28px',
         paddingBottom: '20px',
         borderBottom: '1px solid #E2E8F0',
@@ -697,7 +748,7 @@ export default function PublisherSettingsPage() {
           </p>
         </div>
 
-        <div style={{
+        <div className="settings-header-badge" style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
@@ -721,11 +772,11 @@ export default function PublisherSettingsPage() {
         </div>
       </div>
 
-      {/* 2. SPLIT LAYOUT (SIDEBAR PINNED AT TOP-LEFT + EXPANSIVE CONTENT ON RIGHT) */}
-      <div style={{ display: 'flex', gap: '28px', alignItems: 'flex-start', width: '100%' }}>
+      {/* 2. SPLIT LAYOUT (SIDEBAR & CONTENT) */}
+      <div className="settings-layout" style={{ display: 'flex', gap: '28px', alignItems: 'flex-start', width: '100%' }}>
         
-        {/* SIDEBAR KIRI (POJOK KIRI ATAS / STICKY DI BAWAH NAVBAR) */}
-        <aside style={{
+        {/* SIDEBAR */}
+        <aside className="settings-sidebar" style={{
           width: '230px',
           background: '#FFFFFF',
           borderRadius: '16px',
@@ -747,6 +798,7 @@ export default function PublisherSettingsPage() {
               <button
                 key={item.id}
                 onClick={() => switchTab(item.id)}
+                className="settings-sidebar-btn"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -783,7 +835,7 @@ export default function PublisherSettingsPage() {
         </aside>
 
         {/* AREA KONTEN KANAN */}
-        <main style={{ flex: 1, minWidth: 0 }}>
+        <main className="settings-main" style={{ flex: 1, minWidth: 0 }}>
           
           {/* ======================================================== */}
           {/* TAB 1: PROFIL */}
@@ -872,8 +924,8 @@ export default function PublisherSettingsPage() {
                   </div>
                 </div>
 
-                {/* 2 Kolom: Situs Web & Telepon */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                {/* 2 Kolom: Situs Web & Telepon (Akan jadi 1 Kolom di Mobile) */}
+                <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   
                   {/* Situs Web Resmi */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -913,7 +965,8 @@ export default function PublisherSettingsPage() {
                           fontSize: '0.875rem',
                           color: '#111827',
                           outline: 'none',
-                          background: 'transparent'
+                          background: 'transparent',
+                          width: '100%'
                         }}
                       />
                     </div>
@@ -1014,7 +1067,7 @@ export default function PublisherSettingsPage() {
                     <label style={{ fontSize: '0.813rem', fontWeight: 700, color: '#1F2937' }}>
                       {t.akun.emailLabel}
                     </label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div className="apikeys-input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <input
                         type="email"
                         value={publisher?.email || ''}
@@ -1035,12 +1088,13 @@ export default function PublisherSettingsPage() {
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
+                        justifyContent: 'center',
                         gap: '4px',
-                        padding: '4px 10px',
+                        padding: '6px 10px',
                         background: '#ECFDF5',
                         color: '#059669',
                         border: '1px solid #A7F3D0',
-                        borderRadius: '99px',
+                        borderRadius: '8px',
                         fontSize: '0.75rem',
                         fontWeight: 800
                       }}>
@@ -1054,13 +1108,14 @@ export default function PublisherSettingsPage() {
                     <label style={{ fontSize: '0.813rem', fontWeight: 700, color: '#1F2937' }}>
                       {t.akun.idLabel}
                     </label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', maxWidth: '480px' }}>
+                    <div className="apikeys-input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', maxWidth: '480px' }}>
                       <input
                         type="text"
                         value={publisher?.id || ''}
                         disabled
                         style={{
                           flex: 1,
+                          width: '100%',
                           padding: '9px 14px',
                           background: '#F9FAFB',
                           border: '1px solid #E5E7EB',
@@ -1085,6 +1140,7 @@ export default function PublisherSettingsPage() {
                           cursor: 'pointer',
                           display: 'inline-flex',
                           alignItems: 'center',
+                          justifyContent: 'center',
                           gap: '6px'
                         }}
                       >
@@ -1110,7 +1166,7 @@ export default function PublisherSettingsPage() {
                   </h2>
                 </div>
 
-                <div style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                <div className="danger-zone-body" style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                   <div style={{ maxWidth: '480px' }}>
                     <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: '#111827', margin: '0 0 2px' }}>{t.akun.closeAccount}</h3>
                     <p style={{ fontSize: '0.813rem', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
@@ -1128,7 +1184,9 @@ export default function PublisherSettingsPage() {
                       borderRadius: '8px',
                       fontWeight: 700,
                       fontSize: '0.813rem',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center'
                     }}
                   >
                     {t.akun.deleteButton}
@@ -1140,7 +1198,7 @@ export default function PublisherSettingsPage() {
           )}
 
           {/* ======================================================== */}
-          {/* TAB 3: TAMPILAN (NO BUTTON - AUTO RELOAD ON CHANGE) */}
+          {/* TAB 3: TAMPILAN */}
           {/* ======================================================== */}
           {activeTab === 'tampilan' && (
             <div style={{
@@ -1158,7 +1216,7 @@ export default function PublisherSettingsPage() {
               </div>
 
               <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+                <div className="form-grid-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
                   
                   {/* Bahasa Antarmuka */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -1251,7 +1309,7 @@ export default function PublisherSettingsPage() {
                   alignItems: 'center',
                   gap: '8px'
                 }}>
-                  <Sparkles size={16} color="#3B82F6" />
+                  <Sparkles size={16} color="#3B82F6" style={{ flexShrink: 0 }} />
                   <span>{t.tampilan.autoSavedNotice}</span>
                 </div>
               </div>
@@ -1292,7 +1350,7 @@ export default function PublisherSettingsPage() {
                       border: `1px solid ${passwordStatus.type === 'success' ? '#A7F3D0' : '#FECACA'}`,
                       color: passwordStatus.type === 'success' ? '#065F46' : '#991B1B'
                     }}>
-                      {passwordStatus.type === 'success' ? <CheckCircle2 size={16} color="#059669" /> : <AlertTriangle size={16} color="#DC2626" />}
+                      {passwordStatus.type === 'success' ? <CheckCircle2 size={16} color="#059669" style={{ flexShrink: 0 }} /> : <AlertTriangle size={16} color="#DC2626" style={{ flexShrink: 0 }} />}
                       <span>{passwordStatus.message}</span>
                     </div>
                   )}
@@ -1302,7 +1360,7 @@ export default function PublisherSettingsPage() {
                     <label style={{ fontSize: '0.813rem', fontWeight: 700, color: '#1F2937' }}>
                       {t.keamanan.currentPasswordLabel}
                     </label>
-                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
                       <input
                         type={showCurrentPassword ? 'text' : 'password'}
                         value={currentPassword}
@@ -1336,7 +1394,7 @@ export default function PublisherSettingsPage() {
                     <label style={{ fontSize: '0.813rem', fontWeight: 700, color: '#1F2937' }}>
                       {t.keamanan.newPasswordLabel}
                     </label>
-                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
                       <input
                         type={showNewPassword ? 'text' : 'password'}
                         value={newPassword}
@@ -1370,7 +1428,7 @@ export default function PublisherSettingsPage() {
                     <label style={{ fontSize: '0.813rem', fontWeight: 700, color: '#1F2937' }}>
                       {t.keamanan.confirmPasswordLabel}
                     </label>
-                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
                       <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         value={confirmPassword}
@@ -1428,7 +1486,7 @@ export default function PublisherSettingsPage() {
               </form>
 
               {/* Sesi Masuk */}
-              <div style={{
+              <div className="session-info" style={{
                 background: '#FFFFFF',
                 borderRadius: '16px',
                 border: '1px solid #F1F5F9',
@@ -1441,12 +1499,12 @@ export default function PublisherSettingsPage() {
                 gap: '14px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     {sessionInfo.isMobile ? <Smartphone size={18} /> : <Monitor size={18} />}
                   </div>
                   <div>
                     <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#111827' }}>
-                      {sessionInfo.browser} {language === 'en' ? 'on' : 'di'} {sessionInfo.os} <span style={{ fontSize: '0.625rem', padding: '1px 6px', background: '#ECFDF5', color: '#059669', borderRadius: '4px', border: '1px solid #A7F3D0', textTransform: 'uppercase', fontWeight: 800 }}>{t.keamanan.sessionActive}</span>
+                      {sessionInfo.browser} {language === 'en' ? 'on' : 'di'} {sessionInfo.os} <span style={{ fontSize: '0.625rem', padding: '1px 6px', background: '#ECFDF5', color: '#059669', borderRadius: '4px', border: '1px solid #A7F3D0', textTransform: 'uppercase', fontWeight: 800, marginLeft: '4px' }}>{t.keamanan.sessionActive}</span>
                     </div>
                     <div style={{ fontSize: '0.75rem', color: '#6B7280' }}>{sessionInfo.location} • IP: {sessionInfo.ip}</div>
                   </div>
@@ -1462,7 +1520,9 @@ export default function PublisherSettingsPage() {
                     border: '1px solid #FECACA',
                     padding: '6px 12px',
                     borderRadius: '8px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center'
                   }}
                 >
                   {t.keamanan.logoutSession}
@@ -1473,7 +1533,7 @@ export default function PublisherSettingsPage() {
           )}
 
           {/* ======================================================== */}
-          {/* TAB 5: NOTIFIKASI (GLOBAL STATE CONTROLLER) */}
+          {/* TAB 5: NOTIFIKASI */}
           {/* ======================================================== */}
           {activeTab === 'notifikasi' && (
             <form onSubmit={handleSaveNotifs} style={{
@@ -1493,12 +1553,12 @@ export default function PublisherSettingsPage() {
               <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 
                 {/* Item 1: Status Kurasi Ebook */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6', gap: '12px' }}>
                   <div>
                     <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827' }}>{t.notifikasi.curationStatus}</div>
                     <div style={{ fontSize: '0.75rem', color: '#6B7280', marginTop: '2px' }}>{t.notifikasi.curationDesc}</div>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                     <input
                       type="checkbox"
                       checked={draftNotifs.ebookCuration}
@@ -1510,12 +1570,12 @@ export default function PublisherSettingsPage() {
                 </div>
 
                 {/* Item 2: Laporan Ringkasan Mingguan */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6', gap: '12px' }}>
                   <div>
                     <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827' }}>{t.notifikasi.analyticsReport}</div>
                     <div style={{ fontSize: '0.75rem', color: '#6B7280', marginTop: '2px' }}>{t.notifikasi.analyticsDesc}</div>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                     <input
                       type="checkbox"
                       checked={draftNotifs.weeklyAnalytics}
@@ -1527,12 +1587,12 @@ export default function PublisherSettingsPage() {
                 </div>
 
                 {/* Item 3: Pengumuman & Siaran Admin */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: '1px solid #F3F4F6', gap: '12px' }}>
                   <div>
                     <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827' }}>{t.notifikasi.adminBroadcast}</div>
                     <div style={{ fontSize: '0.75rem', color: '#6B7280', marginTop: '2px' }}>{t.notifikasi.adminDesc}</div>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                     <input
                       type="checkbox"
                       checked={draftNotifs.adminBroadcasts}
@@ -1544,12 +1604,12 @@ export default function PublisherSettingsPage() {
                 </div>
 
                 {/* Item 4: Peringatan Keamanan & Login */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
                   <div>
                     <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#111827' }}>{t.notifikasi.securityAlert}</div>
                     <div style={{ fontSize: '0.75rem', color: '#6B7280', marginTop: '2px' }}>{t.notifikasi.securityDesc}</div>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                     <input
                       type="checkbox"
                       checked={draftNotifs.securityAlerts}
@@ -1614,7 +1674,7 @@ export default function PublisherSettingsPage() {
                 boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
                 padding: '24px'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div className="apikeys-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <div>
                     <h2 style={{ fontSize: '1.063rem', fontWeight: 800, color: '#111827', margin: '0 0 2px' }}>{t.apikeys.title}</h2>
                     <p style={{ fontSize: '0.813rem', color: '#6B7280', margin: 0 }}>{t.apikeys.subtitle}</p>
@@ -1640,13 +1700,14 @@ export default function PublisherSettingsPage() {
                   </button>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div className="apikeys-input-group" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={apiKey}
                     readOnly
                     style={{
                       flex: 1,
+                      width: '100%',
                       padding: '9px 14px',
                       background: '#F9FAFB',
                       border: '1px solid #E5E7EB',
@@ -1654,7 +1715,8 @@ export default function PublisherSettingsPage() {
                       fontSize: '0.875rem',
                       fontFamily: 'monospace',
                       color: '#111827',
-                      outline: 'none'
+                      outline: 'none',
+                      boxSizing: 'border-box'
                     }}
                   />
                   <button
@@ -1671,6 +1733,7 @@ export default function PublisherSettingsPage() {
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
+                      justifyContent: 'center',
                       gap: '6px'
                     }}
                   >
@@ -1760,7 +1823,7 @@ export default function PublisherSettingsPage() {
           justifyContent: 'center',
           padding: '20px'
         }}>
-          <div style={{
+          <div className="delete-modal" style={{
             background: '#FFFFFF',
             borderRadius: '20px',
             maxWidth: '440px',
@@ -1805,7 +1868,7 @@ export default function PublisherSettingsPage() {
               />
             </div>
 
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+            <div className="delete-modal-actions" style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
               <button
                 type="button"
                 onClick={() => {
@@ -1820,7 +1883,9 @@ export default function PublisherSettingsPage() {
                   color: '#4B5563',
                   fontSize: '0.813rem',
                   fontWeight: 700,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center'
                 }}
               >
                 {t.modal.cancel}
@@ -1837,7 +1902,9 @@ export default function PublisherSettingsPage() {
                   color: '#FFFFFF',
                   fontSize: '0.813rem',
                   fontWeight: 700,
-                  cursor: deleteConfirmText.trim() === 'HAPUS AKUN' ? 'pointer' : 'not-allowed'
+                  cursor: deleteConfirmText.trim() === 'HAPUS AKUN' ? 'pointer' : 'not-allowed',
+                  display: 'flex',
+                  justifyContent: 'center'
                 }}
               >
                 {isDeletingAccount ? t.modal.processing : t.modal.confirmDelete}

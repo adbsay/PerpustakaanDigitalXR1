@@ -1,0 +1,17 @@
+- generic [ref=f14e3]:
+  - navigation [ref=f14e4]:
+    - generic [ref=f14e6]:
+      - link "Digital Library Logo PERPUSTAKAAN DIGITAL Publisher" [ref=f14e7] [cursor=pointer]:
+        - /url: /publisher/dashboard
+        - img "Digital Library Logo" [ref=f14e8]
+        - generic [ref=f14e9]:
+          - text: PERPUSTAKAAN DIGITAL
+          - generic [ref=f14e10]: Publisher
+      - generic [ref=f14e11]:
+        - link "Dashboard" [ref=f14e12] [cursor=pointer]:
+          - /url: /publisher/dashboard
+        - link "Katalog Ebook" [ref=f14e18] [cursor=pointer]:
+          - /url: /publisher/my-ebooks
+        - link "Analitik" [ref=f14e21] [cursor=pointer]:
+          - /url: /publisher/analytics
+  - main [ref=f14e25]

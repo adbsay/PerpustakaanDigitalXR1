@@ -24,11 +24,20 @@ export default function CategoriesPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchCategories = async () => {
-    const token = localStorage.getItem('admin_token');
-    const res = await fetch('/api/admin/categories', { headers: { Authorization: `Bearer ${token}` } });
-    const json = await res.json();
-    if (json.success) setCategories(json.data);
-    setLoading(false);
+    setLoading(true);
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    try {
+      const res = await fetch('/api/admin/categories', { headers });
+      const json = await res.json();
+      if (json.success && json.data) setCategories(json.data);
+    } catch (e) {
+      console.error('Failed to fetch categories', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchCategories(); }, []);
@@ -57,7 +66,9 @@ export default function CategoriesPage() {
     if (!newName.trim()) return;
     
     setIsSubmitting(true);
-    const token = localStorage.getItem('admin_token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
     
     const formData = new FormData();
     formData.append('name', newName);
@@ -75,7 +86,7 @@ export default function CategoriesPage() {
       
       const res = await fetch(url, {
         method: method,
-        headers: { Authorization: `Bearer ${token}` },
+        headers,
         body: formData
       });
       const json = await res.json();
@@ -97,11 +108,17 @@ export default function CategoriesPage() {
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Hapus kategori "${name}"? Kategori yang dihapus tidak bisa dikembalikan.`)) return;
-    const token = localStorage.getItem('admin_token');
-    await fetch(`/api/admin/categories?id=${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
-    
-    if (editingId === id) handleCancelEdit();
-    fetchCategories();
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    try {
+      await fetch(`/api/admin/categories?id=${id}`, { method: 'DELETE', headers });
+      if (editingId === id) handleCancelEdit();
+      fetchCategories();
+    } catch (e) {
+      alert('Gagal menghapus kategori');
+    }
   };
 
   return (
@@ -118,21 +135,16 @@ export default function CategoriesPage() {
       </div>
 
       {/* TWO COLUMNS: TABLE (LEFT) & FORM (RIGHT) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1.8fr) minmax(320px, 1.2fr)',
-        gap: '24px',
-        alignItems: 'start'
-      }}>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.2fr] gap-6 items-start">
         
         {/* ======================================================== */}
         {/* LEFT COLUMN: CATEGORIES TABLE                            */}
         {/* ======================================================== */}
         <div style={{
           background: '#FFFFFF',
-          borderRadius: '18px',
+          borderRadius: '16px',
           border: '1px solid #E2E8F0',
-          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.02)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column'
@@ -140,7 +152,7 @@ export default function CategoriesPage() {
           
           {/* Header Bar with Search & Total Count */}
           <div style={{
-            padding: '16px 20px',
+            padding: '14px 18px',
             borderBottom: '1px solid #F1F5F9',
             background: '#F8FAFC',
             display: 'flex',
@@ -149,14 +161,14 @@ export default function CategoriesPage() {
             flexWrap: 'wrap',
             gap: '12px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '0.938rem', fontWeight: 800, color: '#0F172A' }}>Daftar Kategori</span>
               <span style={{
-                fontSize: '0.688rem',
+                fontSize: '0.625rem',
                 fontWeight: 700,
                 background: '#E2E8F0',
                 color: '#334155',
-                padding: '2px 8px',
+                padding: '2px 7px',
                 borderRadius: '6px'
               }}>
                 {categories.length} Total
@@ -164,16 +176,17 @@ export default function CategoriesPage() {
             </div>
 
             {/* Search Input */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: '240px' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '280px', flexShrink: 0 }}>
               <Search 
                 size={15} 
                 style={{
                   position: 'absolute',
-                  left: '12px',
+                  left: '14px',
                   top: '50%',
                   transform: 'translateY(-50%)',
                   color: '#94A3B8',
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
+                  zIndex: 2
                 }} 
               />
               <input 
@@ -183,7 +196,7 @@ export default function CategoriesPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '8px 12px 8px 36px',
+                  padding: '9px 14px 9px 40px',
                   background: '#FFFFFF',
                   border: '1px solid #CBD5E1',
                   borderRadius: '10px',
@@ -198,14 +211,14 @@ export default function CategoriesPage() {
                   onClick={() => setSearchQuery('')}
                   style={{
                     position: 'absolute',
-                    right: '10px',
+                    right: '12px',
                     top: '50%',
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
                     color: '#94A3B8',
                     cursor: 'pointer',
-                    fontSize: '11px',
+                    fontSize: '12px',
                     fontWeight: 700
                   }}
                 >
@@ -215,8 +228,8 @@ export default function CategoriesPage() {
             </div>
           </div>
 
-          {/* Table */}
-          <div style={{ overflowX: 'auto', minHeight: '380px' }}>
+          {/* DESKTOP TABLE (hidden on mobile) */}
+          <div className="hidden lg:block" style={{ overflowX: 'auto', minHeight: '340px' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr style={{ background: '#FFFFFF', borderBottom: '1px solid #F1F5F9' }}>
@@ -264,7 +277,6 @@ export default function CategoriesPage() {
                         transition: 'background 0.15s ease'
                       }}
                     >
-                      {/* Nama Kategori with Icon */}
                       <td style={{ padding: '14px 20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                           <div style={{
@@ -290,8 +302,6 @@ export default function CategoriesPage() {
                           </span>
                         </div>
                       </td>
-
-                      {/* Total Ebooks */}
                       <td style={{ padding: '14px 20px' }}>
                         <span style={{
                           display: 'inline-flex',
@@ -306,8 +316,6 @@ export default function CategoriesPage() {
                           {cat._count?.books || 0} Ebook
                         </span>
                       </td>
-
-                      {/* Aksi (Edit & Delete) */}
                       <td style={{ padding: '14px 20px', textAlign: 'right' }}>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                           <button 
@@ -319,7 +327,7 @@ export default function CategoriesPage() {
                               borderRadius: '8px',
                               background: '#FFFFFF',
                               border: '1px solid #E2E8F0',
-                              color: '#475569',
+                              color: '#334155',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -327,7 +335,7 @@ export default function CategoriesPage() {
                               transition: 'all 0.15s ease'
                             }}
                           >
-                            <Edit2 size={14} />
+                            <Edit2 size={13} />
                           </button>
                           
                           <button 
@@ -347,7 +355,7 @@ export default function CategoriesPage() {
                               transition: 'all 0.15s ease'
                             }}
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={13} />
                           </button>
                         </div>
                       </td>
@@ -358,6 +366,119 @@ export default function CategoriesPage() {
             </table>
           </div>
 
+          {/* MOBILE CARD LIST VIEW (block on < 1024px) */}
+          <div className="block lg:hidden" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  border: '2px solid #0F172A',
+                  borderTopColor: 'transparent',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite',
+                  margin: '0 auto'
+                }} />
+              </div>
+            ) : filteredCategories.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px 16px', color: '#94A3B8' }}>
+                <FolderOpen size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+                <p style={{ fontSize: '0.813rem', fontWeight: 600, margin: 0 }}>
+                  {searchQuery ? 'Tidak ada kategori yang cocok.' : 'Belum ada kategori.'}
+                </p>
+              </div>
+            ) : (
+              filteredCategories.map((cat) => (
+                <div 
+                  key={cat.id}
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '14px',
+                    border: '1px solid #E2E8F0',
+                    padding: '14px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '12px'
+                  }}
+                >
+                  {/* Left: Icon + Name & Count */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0, flex: 1 }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '10px',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      color: '#475569'
+                    }}>
+                      {cat.icon ? (
+                        <img src={cat.icon} alt={cat.name} style={{ width: '18px', height: '18px', objectFit: 'contain' }} />
+                      ) : (
+                        <FolderOpen size={16} />
+                      )}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {cat.name}
+                      </div>
+                      <div style={{ fontSize: '0.719rem', color: '#64748B', fontWeight: 600, marginTop: '2px' }}>
+                        {cat._count?.books || 0} Ebook
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Action Buttons */}
+                  <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                    <button 
+                      onClick={() => handleEditClick(cat)}
+                      style={{
+                        padding: '6px 10px',
+                        borderRadius: '7px',
+                        background: '#F1F5F9',
+                        border: '1px solid #E2E8F0',
+                        color: '#334155',
+                        fontSize: '0.719rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <Edit2 size={12} />
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(cat.id, cat.name)}
+                      style={{
+                        padding: '6px 10px',
+                        borderRadius: '7px',
+                        background: '#FEF2F2',
+                        border: '1px solid #FECACA',
+                        color: '#DC2626',
+                        fontSize: '0.719rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <Trash2 size={12} />
+                      Hapus
+                    </button>
+                  </div>
+
+                </div>
+              ))
+            )}
+          </div>
         </div>
 
         {/* ======================================================== */}

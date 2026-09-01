@@ -141,27 +141,126 @@ export default function AnalyticsPage() {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
       
+      <style>{`
+        .pub-analytics-stats {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 20px;
+          margin-bottom: 28px;
+        }
+        .pub-analytics-table-wrapper { display: block; }
+        .pub-analytics-mobile-list { display: none; }
+
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+          .pub-page-header {
+            margin-bottom: 20px !important;
+            gap: 8px !important;
+          }
+          .pub-page-title {
+            font-size: 1.35rem !important;
+            margin-bottom: 4px !important;
+          }
+          .pub-page-subtitle {
+            font-size: 0.75rem !important;
+            line-height: 1.4 !important;
+          }
+
+          .pub-analytics-stats {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 12px !important;
+            margin-bottom: 20px !important;
+          }
+          .pub-analytics-stat-card {
+            padding: 14px 12px !important;
+            border-radius: 14px !important;
+          }
+          .pub-stat-card-header {
+            margin-bottom: 8px !important;
+          }
+          .pub-analytics-stat-val {
+            font-size: 1.35rem !important;
+          }
+          .pub-analytics-stat-label {
+            font-size: 0.65rem !important;
+          }
+          .pub-stat-icon {
+            padding: 4px 6px !important;
+            font-size: 12px !important;
+            border-radius: 8px !important;
+          }
+
+          .pub-chart-card {
+            padding: 16px !important;
+            border-radius: 16px !important;
+            margin-bottom: 20px !important;
+          }
+          .pub-chart-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+          }
+          .pub-chart-title-area {
+            margin-bottom: 0px !important;
+          }
+          .pub-chart-title {
+            font-size: 1rem !important;
+          }
+          .pub-chart-subtitle {
+            font-size: 0.75rem !important;
+          }
+          .pub-chart-toggles-wrapper {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 10px !important;
+            width: 100%;
+          }
+          .pub-toggle-group {
+            width: fit-content !important;
+          }
+          
+          .pub-analytics-table-wrapper { display: none !important; }
+          .pub-analytics-mobile-list { 
+            display: flex !important; 
+            flex-direction: column; 
+            gap: 12px; 
+            padding: 12px !important;
+          }
+          .pub-list-card {
+            padding: 16px 12px !important;
+            border-radius: 16px !important;
+          }
+          .pub-list-header {
+            padding: 16px 16px 0 16px !important;
+          }
+          .pub-list-title {
+            font-size: 1rem !important;
+          }
+        }
+      `}</style>
+
       {/* Header */}
-      <div style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="pub-page-header" style={{ marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.title}</h1>
-          <p style={{ color: '#6B7280', fontSize: '0.875rem', marginTop: '4px', margin: 0 }}>
+          <h1 className="pub-page-title" style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.title}</h1>
+          <p className="pub-page-subtitle" style={{ color: '#6B7280', fontSize: '0.875rem', marginTop: '4px', margin: 0 }}>
             {t.analytics.subtitle}
           </p>
         </div>
       </div>
 
       {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginBottom: '28px' }}>
+      <div className="pub-analytics-stats">
         {statCards.map((card) => (
-          <div key={card.label} style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <div style={{ fontSize: '0.813rem', color: '#6B7280', fontWeight: 500 }}>{card.label}</div>
+          <div key={card.label} className="pub-analytics-stat-card" style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+            <div className="pub-stat-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <div className="pub-analytics-stat-label" style={{ fontSize: '0.813rem', color: '#6B7280', fontWeight: 500 }}>{card.label}</div>
               {card.icon && (
-                <div style={{ background: card.bg, borderRadius: '8px', padding: '6px 8px', fontSize: '16px' }}>{card.icon}</div>
+                <div className="pub-stat-icon" style={{ background: card.bg, borderRadius: '8px', padding: '6px 8px', fontSize: '16px' }}>{card.icon}</div>
               )}
             </div>
-            <div style={{ fontSize: '2rem', fontWeight: 800, color: '#111827', lineHeight: 1 }}>
+            <div className="pub-analytics-stat-val" style={{ fontSize: '2rem', fontWeight: 800, color: '#111827', lineHeight: 1 }}>
               {loading ? <div style={{ height: '36px', background: '#F3F4F6', borderRadius: '6px', width: '60%', animation: 'pulse 1.5s infinite' }} /> : card.value}
             </div>
           </div>
@@ -169,17 +268,18 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Chart Card */}
-      <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: '28px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.chartTitle}</h3>
-            <p style={{ color: '#6B7280', fontSize: '0.813rem', margin: '4px 0 0' }}>
+      <div className="pub-chart-card" style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', marginBottom: '28px' }}>
+        <div className="pub-chart-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="pub-chart-title-area">
+            <h3 className="pub-chart-title" style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.chartTitle}</h3>
+            <p className="pub-chart-subtitle" style={{ color: '#6B7280', fontSize: '0.813rem', margin: '4px 0 0' }}>
               Total {chartData.reduce((s, d) => s + (d.views ?? 0), 0).toLocaleString()} {t.dashboard.topBooks.reads} ({periodLabels[period]})
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          
+          <div className="pub-chart-toggles-wrapper" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {/* Chart type toggle */}
-            <div style={{ display: 'flex', background: '#F3F4F6', borderRadius: '8px', padding: '3px' }}>
+            <div className="pub-toggle-group" style={{ display: 'flex', background: '#F3F4F6', borderRadius: '8px', padding: '3px' }}>
               {(['area', 'bar', 'line'] as ChartType[]).map(ct => (
                 <button
                   key={ct}
@@ -198,7 +298,7 @@ export default function AnalyticsPage() {
               ))}
             </div>
             {/* Period toggle */}
-            <div style={{ display: 'flex', background: '#F3F4F6', borderRadius: '8px', padding: '3px' }}>
+            <div className="pub-toggle-group" style={{ display: 'flex', background: '#F3F4F6', borderRadius: '8px', padding: '3px' }}>
               {(['7d', '30d', '6m', '1y'] as Period[]).map(p => (
                 <button
                   key={p}
@@ -223,7 +323,7 @@ export default function AnalyticsPage() {
             {lang === 'en' ? 'Loading chart data...' : 'Memuat data grafik...'}
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={260}>
             {renderChart()}
           </ResponsiveContainer>
         )}
@@ -236,12 +336,12 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Top Books Table */}
-      <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.topBooksTitle}</h3>
+      <div className="pub-list-card" style={{ background: 'white', borderRadius: '16px', border: '1px solid #E5E7EB', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+        <div className="pub-list-header" style={{ padding: '20px 24px', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3 className="pub-list-title" style={{ fontSize: '1.125rem', fontWeight: 700, color: '#111827', margin: 0 }}>{t.analytics.topBooksTitle}</h3>
         </div>
 
-        <div style={{ overflowX: 'auto' }}>
+        <div className="pub-analytics-table-wrapper" style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ background: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
@@ -310,6 +410,47 @@ export default function AnalyticsPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Vertical List */}
+        <div className="pub-analytics-mobile-list">
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '24px', color: '#9CA3AF', fontSize: '0.875rem' }}>{lang === 'en' ? 'Loading data...' : 'Memuat data...'}</div>
+          ) : topBooks.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '24px', color: '#9CA3AF' }}>
+              <div style={{ fontSize: '28px', marginBottom: '8px' }}>📚</div>
+              <div style={{ fontWeight: 600, marginBottom: '4px' }}>{t.myEbooks.empty}</div>
+            </div>
+          ) : (
+            topBooks.map((book, idx) => {
+              const s = statusMap[book.status] ?? statusMap['BANNED'];
+              return (
+                <div key={book.id} style={{ display: 'flex', gap: '16px', background: '#F9FAFB', padding: '16px', borderRadius: '12px', border: '1px solid #F3F4F6', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: '12px', right: '12px', fontWeight: 800, color: '#D1D5DB', fontSize: '1.25rem' }}>#{idx + 1}</div>
+                  <div style={{ width: '60px', height: '80px', borderRadius: '6px', background: '#F3F4F6', flexShrink: 0, overflow: 'hidden', border: '1px solid #E5E7EB' }}>
+                    {book.coverImage
+                      ? <img src={book.coverImage} alt={book.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '18px' }}>📘</div>}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: '20px' }}>
+                    <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem', marginBottom: '2px', lineHeight: 1.3 }}>{book.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#6B7280', marginBottom: '8px' }}>{book.author}</div>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: 'auto' }}>
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '99px', fontSize: '0.65rem', fontWeight: 700, background: s.bg, color: s.color,
+                      }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: s.dot }} /> {s.label}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#4B5563', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}><span style={{fontSize: '14px'}}>👁</span> {(book.views ?? 0).toLocaleString()}</span>
+                      <span style={{ fontSize: '0.75rem', color: '#4B5563', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}><span style={{color: '#F59E0B'}}>★</span> {book.averageRating ? book.averageRating.toFixed(1) : '4.8'}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
 

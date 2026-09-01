@@ -59,21 +59,12 @@ export default function PublisherLoginPage() {
   };
 
   return (
-    // 1. GLOBAL LAYOUT (FULLSCREEN SPLIT)
-    <div className="w-full min-h-screen flex bg-white" style={{ minHeight: '100vh', display: 'flex', width: '100%', background: '#FFFFFF' }}>
+    // 1. GLOBAL LAYOUT (FULLSCREEN SPLIT ON DESKTOP, CLEAN FULL-WIDTH ON MOBILE)
+    <div className="w-full min-h-screen flex flex-col lg:flex-row bg-white">
       
-      {/* 2. SISI KIRI (BRANDING & IMAGE - 50% LAYAR) */}
+      {/* 2. SISI KIRI (BRANDING & IMAGE - HANYA DI DESKTOP 50%) */}
       <div 
-        className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12"
-        style={{
-          width: '50%',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '48px',
-          overflow: 'hidden'
-        }}
+        className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden"
       >
         {/* Background Image Perpustakaan */}
         <div 
@@ -100,7 +91,16 @@ export default function PublisherLoginPage() {
 
         {/* Header Kiri Atas */}
         <div style={{ position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <img src="/logo.svg" alt="Digital Library" style={{ width: '36px', height: '36px' }} />
+          <img 
+            src="/publisher-icon.svg" 
+            alt="Digital Library" 
+            style={{ 
+              width: '36px', 
+              height: '36px',
+              objectFit: 'contain',
+              filter: 'brightness(0) saturate(100%) invert(67%) sepia(81%) saturate(2256%) hue-rotate(180deg) brightness(102%) contrast(98%) drop-shadow(0 0 10px rgba(56, 189, 248, 0.6))'
+            }} 
+          />
           <span className="text-white font-bold text-xl tracking-wider" style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '1.25rem', letterSpacing: '0.05em' }}>
             PERPUSTAKAAN DIGITAL
           </span>
@@ -137,27 +137,15 @@ export default function PublisherLoginPage() {
         </div>
       </div>
 
-      {/* 3. SISI KANAN (AREA FORM AUTENTIKASI - 50% LAYAR) */}
+      {/* 3. SISI KANAN (AREA FORM AUTENTIKASI - FULL WIDTH DI MOBILE, 50% DI DESKTOP) */}
       <div 
-        className="w-full lg:w-1/2 flex items-center justify-center bg-white relative"
-        style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#FFFFFF',
-          position: 'relative',
-          padding: '40px 24px'
-        }}
+        className="w-full lg:w-1/2 min-h-screen flex flex-col justify-center items-center bg-white relative px-6 py-12 sm:px-12"
       >
         {/* Tombol Kembali ke Beranda */}
         <Link 
           href="/publisher"
-          className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+          className="absolute top-6 right-6 sm:top-8 sm:right-8 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
           style={{
-            position: 'absolute',
-            top: '32px',
-            right: '32px',
             fontSize: '0.875rem',
             fontWeight: 600,
             color: '#64748B',
@@ -172,8 +160,8 @@ export default function PublisherLoginPage() {
           Kembali ke Beranda
         </Link>
 
-        {/* 4. DESAIN FORMULIR (CLEAN & TERPUSAT - NO CARD) */}
-        <div className="w-full max-w-md px-8" style={{ width: '100%', maxWidth: '420px', padding: '0 16px' }}>
+        {/* 4. DESAIN FORMULIR (CLEAN & TERPUSAT) */}
+        <div className="w-full max-w-md">
           
           <div style={{ marginBottom: '32px' }}>
             <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{ fontSize: '1.875rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: '0 0 6px' }}>

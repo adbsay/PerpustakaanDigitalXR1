@@ -32,6 +32,9 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [bookId, setBookId] = useState('');
   const [toast, setToast] = useState('');
   const [fromUrl, setFromUrl] = useState<string | null>(null);
+  
+  // STATE BARU UNTUK FITUR BACA ONLINE
+  const [isReading, setIsReading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -46,6 +49,16 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       fetchBook(p.id);
     });
   }, []);
+
+  // Kunci Scroll Body saat Mode Baca Aktif
+  useEffect(() => {
+    if (isReading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isReading]);
 
   const handleBack = () => {
     if (fromUrl) {
@@ -123,7 +136,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#111' }}>
-        <div className="loading-spinner" />
+        <div className="loading-spinner" style={{ width: '40px', height: '40px', border: '3px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
@@ -457,13 +471,158 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           color: #666;
         }
 
+        /* 
+         =======================================================
+         CSS KHUSUS MOBILE UNTUK KOMPRESI TAMPILAN
+         =======================================================
+        */
         @media (max-width: 768px) {
-          .hero { grid-template-columns: 1fr; gap: 40px; }
-          .hero-cover { max-width: 240px; margin: 0 auto; }
-          .hero-info { text-align: center; align-items: center; }
-          .content-split { grid-template-columns: 1fr; gap: 48px; }
-          .bdp-container { padding: 0 24px 80px; }
-          .rec-grid { grid-template-columns: repeat(2, 1fr); }
+          .bdp-nav { 
+            padding: 16px 20px !important; 
+            font-size: 0.75rem !important;
+            flex-wrap: wrap; /* Mengizinkan teks memanjang dengan elegan */
+          }
+          .bdp-container { padding: 0 20px 40px !important; }
+          .divider { margin: 32px 0 !important; }
+          
+          /* Hero Compression */
+          .hero { 
+            grid-template-columns: 1fr !important; 
+            gap: 24px !important; 
+            margin-top: 16px !important; 
+          }
+          .hero-cover { 
+            max-width: 170px !important; /* Dikecilkan drastis agar tidak raksasa */
+            margin: 0 auto !important; 
+            border-radius: 8px !important;
+          }
+          .hero-info { 
+            text-align: center !important; 
+            align-items: center !important; 
+          }
+          .hero-title { 
+            font-size: 1.6rem !important; 
+            margin-bottom: 6px !important; 
+          }
+          .hero-author { 
+            font-size: 0.95rem !important; 
+            margin-bottom: 16px !important; 
+          }
+          .hero-meta { 
+            justify-content: center !important; 
+            margin-bottom: 16px !important; 
+            font-size: 0.75rem !important;
+          }
+          .hero-stats { 
+            justify-content: center !important; 
+            margin-bottom: 24px !important; 
+          }
+
+          /* Buttons Compression (Full Width Vertikal) */
+          .action-btns { 
+            flex-direction: column !important; 
+            width: 100% !important; 
+            gap: 12px !important; 
+          }
+          .action-btns button { 
+            width: 100% !important; 
+            justify-content: center !important; 
+            border-radius: 8px !important;
+          }
+
+          /* Content Split Compression */
+          .content-split { 
+            grid-template-columns: 1fr !important; 
+            gap: 32px !important; 
+            text-align: left !important;
+          }
+          .section-title { margin-bottom: 16px !important; }
+          .desc-text { font-size: 0.95rem !important; }
+          
+          /* Recommended Compression */
+          .recommended-section { padding-top: 24px !important; }
+          .rec-grid { 
+            grid-template-columns: repeat(2, 1fr) !important; /* 2 Kolom */
+            gap: 16px 12px !important; 
+            margin-top: 20px !important;
+          }
+        }
+
+        /* 
+         =======================================================
+         CSS PDF READER OVERLAY (BACA ONLINE)
+         =======================================================
+        */
+        .pdf-reader-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 999999;
+          background: #F8FAFC;
+          display: flex;
+          flex-direction: column;
+          animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .pdf-reader-header {
+          background: #FFFFFF;
+          border-bottom: 1px solid #E2E8F0;
+          padding: 12px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+          flex-shrink: 0;
+        }
+        .pdf-reader-title {
+          font-weight: 800;
+          font-size: 0.95rem;
+          color: #0F172A;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 60vw;
+        }
+        .pdf-reader-actions {
+          display: flex;
+          gap: 12px;
+        }
+        .pdf-btn-download {
+          background: #F1F5F9;
+          color: #0F172A;
+          border: 1px solid #E2E8F0;
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .pdf-btn-close {
+          background: #EF4444;
+          color: #FFFFFF;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .pdf-iframe-container {
+          flex: 1;
+          width: 100%;
+          height: 100%;
+          background: #E2E8F0;
+        }
+        .pdf-iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+        @media (max-width: 768px) {
+          .pdf-reader-header { padding: 12px 16px; }
+          .pdf-btn-download span { display: none; } /* Sembunyikan teks di HP, sisa icon kalau ada */
         }
       `}</style>
 
@@ -540,9 +699,16 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
 
               <div className="action-btns">
                 {book.pdfFile && (
-                  <button className="btn-black" onClick={handleDownload}>
-                    <span>↓</span> BACA GRATIS
-                  </button>
+                  <>
+                    {/* BACA ONLINE SEBAGAI PRIMARY ACTION */}
+                    <button className="btn-black" onClick={() => setIsReading(true)}>
+                      <span>📖</span> BACA ONLINE
+                    </button>
+                    {/* UNDUH SEBAGAI SECONDARY ACTION */}
+                    <button className="btn-outline" onClick={handleDownload}>
+                      <span>↓</span> UNDUH BUKU
+                    </button>
+                  </>
                 )}
                 <button className="btn-outline" onClick={handleShare}>
                   <span>🔗</span> BAGIKAN
@@ -659,6 +825,38 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           
         </div>
       </div>
+      
+      {/* ======================================================== */}
+      {/* FITUR BACA ONLINE (PDF READER OVERLAY)                   */}
+      {/* ======================================================== */}
+      {isReading && book.pdfFile && (
+        <div className="pdf-reader-overlay">
+          {/* Header Reader */}
+          <div className="pdf-reader-header">
+            <div className="pdf-reader-title" title={book.title}>
+              {book.title}
+            </div>
+            <div className="pdf-reader-actions">
+              <button className="pdf-btn-download" onClick={handleDownload} title="Unduh PDF">
+                ↓ <span>Unduh</span>
+              </button>
+              <button className="pdf-btn-close" onClick={() => setIsReading(false)} title="Tutup Papan Baca">
+                ✕ <span>Tutup</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Iframe Reader (Clean View) */}
+          <div className="pdf-iframe-container">
+            <iframe 
+              src={`${book.pdfFile}#toolbar=0&navpanes=0&scrollbar=0`} 
+              className="pdf-iframe"
+              title={`Membaca ${book.title}`}
+            />
+          </div>
+        </div>
+      )}
+
       {toast && <div className="toast-container"><div className="toast success">{toast}</div></div>}
     </>
   );

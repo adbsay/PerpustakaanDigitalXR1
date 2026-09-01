@@ -1,0 +1,31 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e3]:
+    - generic [ref=f4e6]:
+      - img "Digital Library" [ref=f4e7]
+      - generic [ref=f4e8]: PERPUSTAKAAN DIGITAL
+    - generic [ref=f4e9]:
+      - generic [ref=f4e10]: RUANG PENERBIT DIGITAL
+      - heading "Gerbang Menuju Pengetahuan Global" [level=2] [ref=f4e14]
+      - paragraph [ref=f4e15]: Publikasikan, kelola katalog, dan jangkau ratusan ribu pembaca akademik di seluruh penjuru dunia.
+    - generic [ref=f4e16]: © Perpustakaan Digital. All rights reserved.
+  - generic [ref=f4e17]:
+    - link "Kembali ke Beranda" [ref=f4e18] [cursor=pointer]:
+      - /url: /publisher
+    - generic [ref=f4e21]:
+      - generic [ref=f4e22]:
+        - heading "Publisher Portal" [level=1] [ref=f4e23]
+        - paragraph [ref=f4e24]: Masuk ke dashboard publisher Anda
+      - generic [ref=f4e25]:
+        - generic [ref=f4e26]:
+          - generic [ref=f4e27]: Email Akun
+          - textbox "Email Akun" [ref=f4e28]:
+            - /placeholder: publisher@email.com
+        - generic [ref=f4e29]:
+          - generic [ref=f4e30]: Password
+          - textbox "Password" [ref=f4e32]:
+            - /placeholder: ••••••••
+        - button "Masuk Sekarang" [ref=f4e33] [cursor=pointer]
+      - generic [ref=f4e34]:
+        - text: Belum punya akun?
+        - link "Daftar sekarang" [ref=f4e35] [cursor=pointer]:
+          - /url: /publisher/auth/register

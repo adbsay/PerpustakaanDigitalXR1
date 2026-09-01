@@ -60,15 +60,29 @@ export async function GET(req: NextRequest) {
       createPublisherRepository(),
     );
 
-    const stats = await analyticsService.getPublisherStats(publisher.id);
-    const topBooks = await analyticsService.getTopPublisherBooks(publisher.id);
-
     // Get publisher's book IDs
     const publisherBooks = await prisma.book.findMany({
       where: { publisherId: publisher.id },
       select: { id: true },
     });
     const bookIds = publisherBooks.map(b => b.id);
+
+    // Calculate real stats from Prisma DB
+    const allPublisherRatings = bookIds.length > 0
+      ? await prisma.rating.findMany({ where: { bookId: { in: bookIds } }, select: { score: true } })
+      : [];
+    const directAvgRating = allPublisherRatings.length > 0
+      ? Math.round((allPublisherRatings.reduce((s, r) => s + r.score, 0) / allPublisherRatings.length) * 10) / 10
+      : 0;
+
+    const stats = {
+      totalEbooks: publisherBooks.length,
+      pendingReviews: await prisma.book.count({ where: { publisherId: publisher.id, status: 'PENDING' } }),
+      recentViews: bookIds.length > 0 ? await prisma.bookView.count({ where: { bookId: { in: bookIds } } }) : 0,
+      averageRating: directAvgRating,
+    };
+
+    const topBooks = await analyticsService.getTopPublisherBooks(publisher.id);
 
     // Get real chart data from BookView
     let chartData: { label: string; views: number }[] = [];

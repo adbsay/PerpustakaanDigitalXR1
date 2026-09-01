@@ -1,7 +1,17 @@
+import type { Metadata } from 'next';
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata({ params }: { params: Promise<{ name: string }> }): Promise<Metadata> {
+  const { name } = await params;
+  const authorName = decodeURIComponent(name);
+  if (!authorName) {
+    return { title: 'Penulis tidak ditemukan' };
+  }
+  return { title: `Buku Karya ${authorName}` };
+}
 
 export default async function AuthorProfilePage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = await params;

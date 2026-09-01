@@ -143,8 +143,29 @@ export default function EditEbookPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#F8F9FA' }}>
+      <style>{`
+        /* MOBILE OPTIMIZATION UNTUK EDIT EBOOK */
+        @media (max-width: 768px) {
+          .edit-header { padding: 16px 20px !important; }
+          .edit-header h1 { font-size: 1.125rem !important; }
+          .edit-header-btn { padding: 8px 16px !important; font-size: 13px !important; }
+          
+          /* Menyusun layout split-screen menjadi susun bawah vertikal */
+          .edit-main { padding: 16px !important; flex-direction: column !important; gap: 24px !important; }
+          
+          /* Kolom Kiri Full Width */
+          .edit-left { flex: 1 1 100% !important; width: 100% !important; padding: 20px !important; box-sizing: border-box !important; }
+          
+          /* Grid Inputan menjadi vertikal 1 baris */
+          .edit-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+          
+          /* Kolom Kanan Full Width dan hilangkan posisi melayang (sticky) */
+          .edit-right { flex: 1 1 100% !important; width: 100% !important; position: static !important; box-sizing: border-box !important; }
+        }
+      `}</style>
+
       {/* Sticky Header */}
-      <header style={{ 
+      <header className="edit-header" style={{ 
         position: 'sticky', top: 0, zIndex: 50, background: 'rgba(255, 255, 255, 0.9)', 
         backdropFilter: 'blur(10px)', borderBottom: '1px solid #EAEAEA', 
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
@@ -155,7 +176,7 @@ export default function EditEbookPage() {
           <h1 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700, color: '#1A1A1A' }}>Edit Ebook</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button 
+          <button className="edit-header-btn"
             onClick={handleSubmit}
             disabled={submitting}
             style={{ 
@@ -172,7 +193,7 @@ export default function EditEbookPage() {
       </header>
 
       {/* Main Split-Screen Layout */}
-      <main style={{ padding: '40px', maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      <main className="edit-main" style={{ padding: '40px', maxWidth: '1400px', margin: '0 auto', display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
         
         {/* Error Banner */}
         {error && (
@@ -181,13 +202,13 @@ export default function EditEbookPage() {
           </div>
         )}
 
-        {/* Kolom Kiri: Fokus Teks & Detail (65%) */}
-        <div style={{ flex: '1 1 60%', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
+        {/* Kolom Kiri: Fokus Teks & Detail */}
+        <div className="edit-left" style={{ flex: '1 1 60%', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #EAEAEA', boxShadow: '0 4px 24px rgba(0,0,0,0.02)' }}>
           <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: '#1A1A1A', marginBottom: '32px' }}>Informasi Dasar</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Row 1: Title & Author */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="edit-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Judul Buku *</label>
                 <input 
@@ -215,7 +236,7 @@ export default function EditEbookPage() {
             </div>
 
             {/* Row 2: Category & Tags */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div className="edit-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <label style={{ fontSize: '14px', fontWeight: 600, color: '#333' }}>Kategori</label>
                 <select 
@@ -276,8 +297,8 @@ export default function EditEbookPage() {
           </div>
         </div>
 
-        {/* Kolom Kanan: Fokus Visual (35%) */}
-        <div style={{ flex: '1 1 30%', position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {/* Kolom Kanan: Fokus Visual */}
+        <div className="edit-right" style={{ flex: '1 1 30%', position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           <div style={{ padding: '16px', background: '#FFF9F2', border: '1px solid #FFE4C4', borderRadius: '8px', color: '#B36B00', fontSize: '13px' }}>
             💡 <strong>Penting:</strong> Mengunggah Cover atau PDF baru di sini akan menimpa file Anda yang sebelumnya. Biarkan kosong jika tidak ingin diubah.

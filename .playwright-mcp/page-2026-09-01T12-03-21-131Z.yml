@@ -1,0 +1,74 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - navigation [ref=f2e7]:
+      - generic [ref=f2e8]:
+        - link "Digital Library Logo":
+          - /url: /publisher
+          - img "Digital Library Logo"
+        - link "PERPUSTAKAAN DIGITAL" [ref=f2e9] [cursor=pointer]:
+          - /url: /publisher
+          - text: PERPUSTAKAANDIGITAL
+      - generic [ref=f2e10]:
+        - generic [ref=f2e11]:
+          - button "Beranda" [ref=f2e12] [cursor=pointer]
+          - button "Tentang Kami" [ref=f2e13] [cursor=pointer]
+          - button "FAQ" [ref=f2e14] [cursor=pointer]
+          - button "Kontak" [ref=f2e15] [cursor=pointer]
+        - generic [ref=f2e16]:
+          - button "Masuk" [ref=f2e17] [cursor=pointer]
+          - button "Daftar" [ref=f2e18] [cursor=pointer]
+    - main [ref=f2e19]:
+      - generic:
+        - generic: RUANG PENERBIT DIGITAL
+        - heading "Gerbang Menuju Pengetahuan Global" [level=2]
+        - paragraph: Publikasikan, kelola katalog, dan jangkau ratusan ribu pembaca akademik di seluruh penjuru dunia.
+        - generic:
+          - generic: © Perpustakaan Digital
+          - generic: •
+          - generic: Sistem Kurasi Mandiri
+      - generic [ref=f2e22]:
+        - button "Kembali ke Beranda" [ref=f2e23] [cursor=pointer]
+        - generic [ref=f2e26]:
+          - generic [ref=f2e27]:
+            - heading "Publisher Portal" [level=1] [ref=f2e28]
+            - paragraph [ref=f2e29]: Masuk ke dashboard publisher Anda
+          - generic [ref=f2e30]:
+            - generic [ref=f2e31]:
+              - generic [ref=f2e32]: Email Akun
+              - textbox "publisher@email.com" [ref=f2e33]
+            - generic [ref=f2e34]:
+              - generic [ref=f2e35]: Password
+              - textbox "••••••••" [ref=f2e36]
+            - button "Masuk Sekarang" [ref=f2e37] [cursor=pointer]
+            - generic [ref=f2e38]:
+              - text: Belum punya akun?
+              - button "Daftar sekarang" [ref=f2e39] [cursor=pointer]
+      - generic [ref=f2e41]:
+        - generic [ref=f2e42]:
+          - generic [ref=f2e43]: PUBLISHER PORTAL PERPUSTAKAAN DIGITAL
+          - heading "Gerbang Menuju Pengetahuan Global" [level=1] [ref=f2e47]
+          - paragraph [ref=f2e48]: Satu platform komprehensif untuk menerbitkan, mengkurasi, dan menyebarkan literatur ilmiah serta edukatif Anda ke panggung dunia tanpa batasan fisik.
+          - button "MULAI MENULIS" [ref=f2e49] [cursor=pointer]
+        - generic:
+          - generic: TENTANG KAMI
+          - heading "Membangun Ekosistem Literasi Digital Nusantara" [level=1]
+          - paragraph: Menghubungkan jutaan pembaca cerdas dengan karya tulis ilmiah, buku ajar, dan literatur bermutu dari penerbit terpercaya.
+        - generic:
+          - generic: PUSAT BANTUAN & FAQ
+          - heading "Pertanyaan yang Sering Diajukan" [level=1]
+          - paragraph: Temukan jawaban komprehensif seputar proses penerbitan, panduan berkas, hak cipta, dan pengelolaan akun.
+        - generic:
+          - generic: HUBUNGI KAMI
+          - heading "Mari Berkolaborasi Bersama" [level=1]
+          - paragraph: Tim kurator dan kemitraan kami siap membantu Anda mendistribusikan karya secara maksimal.
+    - contentinfo [ref=f2e52]:
+      - generic [ref=f2e53]:
+        - generic [ref=f2e54]: Copyright © Perpustakaan Digital. All rights reserved.
+        - generic [ref=f2e55]:
+          - link "Kebijakan Privasi" [ref=f2e56] [cursor=pointer]:
+            - /url: "#"
+          - link "Syarat & Ketentuan" [ref=f2e57] [cursor=pointer]:
+            - /url: "#"
+          - link "Bantuan" [ref=f2e58] [cursor=pointer]:
+            - /url: "#"
+  - alert [ref=f2e59]

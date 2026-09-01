@@ -1,0 +1,14 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e4]:
+    - link "Kembali ke Beranda" [ref=f11e5] [cursor=pointer]:
+      - /url: /publisher
+    - generic [ref=f11e8]:
+      - generic [ref=f11e9]:
+        - heading "Lengkapi Profil Anda" [level=1] [ref=f11e35]
+        - paragraph [ref=f11e11]: Tambahkan foto profil penerbit untuk verifikasi
+      - generic [ref=f11e36]:
+        - generic [ref=f11e37] [cursor=pointer]: Pilih Foto
+        - generic [ref=f11e43]:
+          - button "Simpan & Masuk ke Dashboard" [disabled] [ref=f11e44]
+          - button "Lewati untuk Sekarang" [ref=f11e45] [cursor=pointer]
+  - alert [ref=f11e46]
