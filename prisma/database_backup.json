@@ -1,0 +1,975 @@
+{
+  "admins": [
+    {
+      "id": "cmszpqe4o0000p4bvv2h6jzdn",
+      "email": "admin@libra.com",
+      "password": "$2b$12$nVeckmorAUU9l2NKakrMr.ZUlskKJSg2Iic1Khdamp9JZnCuqhNGW",
+      "name": "Super Admin",
+      "createdAt": "2026-08-19T06:30:53.450Z",
+      "updatedAt": "2026-08-19T06:30:53.450Z"
+    }
+  ],
+  "publishers": [
+    {
+      "id": "cmszpu8f30000xcbvzqazz40u",
+      "email": "adibwrkplus@gmail.com",
+      "password": "$2b$12$ijdnpkEVvqHcyZ7mBvOxueXMlZ0KEdF2O48rd0xVVgE/fZ8M7F/Cq",
+      "name": "Saylix-adb",
+      "phone": "087770743707",
+      "avatar": null,
+      "bio": null,
+      "website": null,
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-08-19T06:33:52.672Z",
+      "updatedAt": "2026-08-19T06:51:24.855Z"
+    },
+    {
+      "id": "cmtfnh96l0000dsbvxxzw0vrt",
+      "email": "adibilyas100@gmail.com",
+      "password": "$2b$12$HpY4R45lFKCdIy8VKgKMzODAdBytxsLY1YmcGKBPkAmQPJkPvpgbe",
+      "name": "Rahel",
+      "phone": "089956778",
+      "avatar": "/uploads/avatars/1788086737882-lat6s2.png",
+      "bio": "welcome to my post ",
+      "website": "wa.me/087770743707",
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-08-30T10:12:06.718Z",
+      "updatedAt": "2026-08-30T10:46:10.621Z"
+    },
+    {
+      "id": "cmtfpppsd0007okbvp4gkjeji",
+      "email": "adibilyas@icloud.com",
+      "password": "$2b$12$CaWJ454dlrz5uXxE1RUO/ubjzNdKfcHezgrQcfJdkqrUNxzaqc9Mi",
+      "name": "adib ilyas",
+      "phone": "086675843244",
+      "avatar": "/uploads/avatars/1788088522982-fxjofd.png",
+      "bio": "watashi no nawa ayonokoji kiyokata\r\nwelcome to my library \r\nenjoy reading your",
+      "website": "",
+      "banner": "/uploads/banners/1788089791372-ytqk4j.png",
+      "status": "ACTIVE",
+      "createdAt": "2026-08-30T11:14:40.717Z",
+      "updatedAt": "2026-08-30T11:36:31.393Z"
+    },
+    {
+      "id": "cmtfoq8if0000okbvt1rraaog",
+      "email": "abdulgani@gmail.com",
+      "password": "$2b$12$/.63bw6tKVjntYLDl3c2dOqiVGCdoIINQzXixmPUQ3JrCvhxWeBy2",
+      "name": "Abdul ghani",
+      "phone": "0899876789",
+      "avatar": "/uploads/avatars/1788086990041-zccbx0.png",
+      "bio": "welcome to my library\r\n",
+      "website": "",
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-08-30T10:47:05.367Z",
+      "updatedAt": "2026-08-31T09:52:49.904Z"
+    },
+    {
+      "id": "cmth5xlqd00006sbvbuaeug82",
+      "email": "demo.publisher@libra.id",
+      "password": "$2b$12$Wn5ERd9kxSz6kEujhCEu5u0woypEEI1f01BBdAYe7WU3/nVfKKFMK",
+      "name": "Adib Ilyas Publisher",
+      "phone": "081298765432",
+      "avatar": null,
+      "bio": null,
+      "website": null,
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-08-31T11:36:28.741Z",
+      "updatedAt": "2026-08-31T11:36:28.741Z"
+    },
+    {
+      "id": "cmti0s8mz000ch8bvz1l8iiw3",
+      "email": "vccgndaaps@gmail.com",
+      "password": "$2b$12$GcWdoQTaRRQ2SFcQJE4j4ev5xWt7SvzTq1TqHKg11m6mCLjBFW2ou",
+      "name": "LVbooks",
+      "phone": "08993243271",
+      "avatar": "/api/files/avatars/1788228066408-lyr4t3.png",
+      "bio": null,
+      "website": null,
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-09-01T02:00:06.587Z",
+      "updatedAt": "2026-09-01T02:01:06.416Z"
+    },
+    {
+      "id": "cmti1au65000dh8bv4pzqco8e",
+      "email": "namaeeee123@gmail.com",
+      "password": "$2b$12$Rv17SdZPMLyi6NAQDMG3K.lc2643iKWBFq9LeN5DeDmMrsuwoV7le",
+      "name": "Namaeeeeeee",
+      "phone": "08762122189",
+      "avatar": "/api/files/avatars/1788228921155-htpwmg.png",
+      "bio": null,
+      "website": null,
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-09-01T02:14:34.301Z",
+      "updatedAt": "2026-09-01T02:15:21.158Z"
+    },
+    {
+      "id": "cmszrdcpo0000ksbvpzjf7d22",
+      "email": "reyfhian@gmail.com",
+      "password": "$2b$12$OsPEtbu8MhRnO3UwmDXtUO8QffnTIzR4Ob1Chk/fh00j0ieHr8LFC",
+      "name": "adib ilyas",
+      "phone": "085805205830",
+      "avatar": "/uploads/avatars/1787997513865-mmeq57.png",
+      "bio": "SAJKSNSKNSK",
+      "website": "",
+      "banner": null,
+      "status": "ACTIVE",
+      "createdAt": "2026-08-19T07:16:44.317Z",
+      "updatedAt": "2026-09-01T17:01:32.623Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cmtcuahxt0000gobv9zv5z9ft",
+      "name": "seni & budaya",
+      "icon": "/uploads/categories/seni---budaya-1787914770242.svg",
+      "createdAt": "2026-08-28T10:59:30.257Z",
+      "updatedAt": "2026-08-28T10:59:30.257Z"
+    },
+    {
+      "id": "cmtcub1570003gobvt40rib0l",
+      "name": "sejarah",
+      "icon": "/uploads/categories/sejarah-1787914795112.svg",
+      "createdAt": "2026-08-28T10:59:55.147Z",
+      "updatedAt": "2026-08-28T10:59:55.147Z"
+    },
+    {
+      "id": "cmtcubglr0006gobv7jr984a1",
+      "name": "sains & teknologi",
+      "icon": "/uploads/categories/sains---teknologi-1787914815180.svg",
+      "createdAt": "2026-08-28T11:00:15.183Z",
+      "updatedAt": "2026-08-28T11:00:15.183Z"
+    },
+    {
+      "id": "cmtcubrv30009gobvhkvl7p0b",
+      "name": "psikologi",
+      "icon": "/uploads/categories/psikologi-1787914829773.svg",
+      "createdAt": "2026-08-28T11:00:29.775Z",
+      "updatedAt": "2026-08-28T11:00:29.775Z"
+    },
+    {
+      "id": "cmtcuc38t000bgobvh9gepagx",
+      "name": " Politik",
+      "icon": "/uploads/categories/-politik-1787914844524.svg",
+      "createdAt": "2026-08-28T11:00:44.526Z",
+      "updatedAt": "2026-08-28T11:00:44.526Z"
+    },
+    {
+      "id": "cmtcucjv8000fgobvciotnxrl",
+      "name": " Pendidikan",
+      "icon": "/uploads/categories/-pendidikan-1787914866066.svg",
+      "createdAt": "2026-08-28T11:01:06.068Z",
+      "updatedAt": "2026-08-28T11:01:06.068Z"
+    },
+    {
+      "id": "cmtcucvqx000igobvofo24thl",
+      "name": "Non-Fiksi",
+      "icon": "/uploads/categories/non-fiksi-1787914881464.svg",
+      "createdAt": "2026-08-28T11:01:21.465Z",
+      "updatedAt": "2026-08-28T11:01:21.465Z"
+    },
+    {
+      "id": "cmtcud6lu000lgobv3fi9rk8x",
+      "name": " Kesehatan",
+      "icon": "/uploads/categories/-kesehatan-1787914895536.svg",
+      "createdAt": "2026-08-28T11:01:35.538Z",
+      "updatedAt": "2026-08-28T11:01:35.538Z"
+    },
+    {
+      "id": "cmtcudj6a000ogobvfover1ce",
+      "name": " Hukum",
+      "icon": "/uploads/categories/-hukum-1787914911824.svg",
+      "createdAt": "2026-08-28T11:01:51.826Z",
+      "updatedAt": "2026-08-28T11:01:51.826Z"
+    },
+    {
+      "id": "cmtcudvfm000rgobvjxujyrem",
+      "name": "Filsafat",
+      "icon": "/uploads/categories/filsafat-1787914927712.svg",
+      "createdAt": "2026-08-28T11:02:07.714Z",
+      "updatedAt": "2026-08-28T11:02:07.714Z"
+    },
+    {
+      "id": "cmtcue7j1000ugobvxg8w5yhu",
+      "name": " Fiksi",
+      "icon": "/uploads/categories/-fiksi-1787914943387.svg",
+      "createdAt": "2026-08-28T11:02:23.389Z",
+      "updatedAt": "2026-08-28T11:02:23.389Z"
+    },
+    {
+      "id": "cmtcueldy000xgobvcbbn9bev",
+      "name": "Bisnis & Ekonomi",
+      "icon": "/uploads/categories/bisnis---ekonomi-1787914961348.svg",
+      "createdAt": "2026-08-28T11:02:41.350Z",
+      "updatedAt": "2026-08-28T11:02:41.350Z"
+    },
+    {
+      "id": "cmtcueswf000zgobvuehi6lku",
+      "name": " Biografi",
+      "icon": "/uploads/categories/-biografi-1787914971085.svg",
+      "createdAt": "2026-08-28T11:02:51.087Z",
+      "updatedAt": "2026-08-28T11:02:51.087Z"
+    },
+    {
+      "id": "cmtcuffcu0016gobvi52r30sf",
+      "name": "Agama",
+      "icon": "/uploads/categories/agama-1787915000188.svg",
+      "createdAt": "2026-08-28T11:03:20.190Z",
+      "updatedAt": "2026-08-28T11:03:20.190Z"
+    },
+    {
+      "id": "cmtcuf4450012gobv94da5nx6",
+      "name": " Anak-anak",
+      "icon": "/uploads/categories/-anak-anak-1787914985619.svg",
+      "createdAt": "2026-08-28T11:03:05.621Z",
+      "updatedAt": "2026-08-29T12:11:07.774Z"
+    }
+  ],
+  "books": [
+    {
+      "id": "cmszrz4wg0001ksbvjxfh0z01",
+      "title": "Book of philosopy",
+      "author": "Abdul ",
+      "categoryId": "cmtcudvfm000rgobvjxujyrem",
+      "description": "Book of Philosophy adalah kumpulan renungan dan pemikiran filosofis yang mengajak pembaca untuk memahami kehidupan secara lebih mendalam melalui berbagai pembahasan tentang kebahagiaan, cinta, nafsu, kesederhanaan, keserakahan, moralitas, kesunyian, dan makna hidup. Disampaikan melalui kisah serta dialog yang penuh makna, buku ini mengajak pembaca untuk berhenti sejenak, merenungkan diri, memahami hubungan antara keinginan dan penderitaan, serta melihat kehidupan dengan sudut pandang yang lebih bijaksana dan mendalam.",
+      "coverImage": "/uploads/covers/1787124820567-y619o3.png",
+      "pdfFile": "/uploads/pdfs/1787124820571-at27xi.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmszrdcpo0000ksbvpzjf7d22",
+      "createdAt": "2026-08-19T07:33:40.624Z",
+      "updatedAt": "2026-08-28T12:26:50.967Z"
+    },
+    {
+      "id": "cmt2bgfmz0008jwbv53ywhuuo",
+      "title": "Madilog tan malaka",
+      "author": "Tan Malaka",
+      "categoryId": "cmtcudvfm000rgobvjxujyrem",
+      "description": "Madilog (Materialisme, Dialektika, Logika) karya Tan Malaka membahas cara berpikir kritis dan rasional dengan menggunakan materialisme, dialektika, dan logika. Buku ini mengajak pembaca meninggalkan pola pikir mistis dan takhayul serta memahami berbagai persoalan berdasarkan nalar, ilmu pengetahuan, dan hubungan sebab-akibat.",
+      "coverImage": "/uploads/covers/1787278472682-0xi79j.png",
+      "pdfFile": "/uploads/pdfs/1787278472686-ys434m.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmszrdcpo0000ksbvpzjf7d22",
+      "createdAt": "2026-08-21T02:14:32.747Z",
+      "updatedAt": "2026-08-29T04:19:07.564Z"
+    },
+    {
+      "id": "cmtfpl47v0005okbvm3f6fz7z",
+      "title": "You've Reached Sam (Merelakan Sam)",
+      "author": "dustin thao",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Novel ini menceritakan kisah duka dan keajaiban yang dialami oleh Julie, seorang remaja berusia tujuh belas tahun yang hidupnya hancur setelah kekasihnya, Sam, meninggal dunia secara tragis. Di tengah rasa putus asa dan kerinduan yang mendalam, Julie mencoba menelepon nomor ponsel Sam sekadar untuk mendengarkan pesan suara di kotak suaranya, tetapi secara mengejutkan Sam justru mengangkat telepon tersebut. Melalui sambungan telepon rahasia dan ajaib yang menghubungkan dua dunia berbeda ini, Julie mendapatkan kesempatan kedua untuk mengucapkan selamat tinggal, sambil berjuang melepaskan kenangan pahit dan belajar merelakan seseorang yang sangat dicintainya.",
+      "coverImage": "/uploads/covers/1788088266102-n3cbp3.png",
+      "pdfFile": "/uploads/pdfs/1788088266105-wgrf2e.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T11:11:06.139Z",
+      "updatedAt": "2026-08-30T11:25:34.488Z"
+    },
+    {
+      "id": "cmtfpgyje0004okbv4lzn0opw",
+      "title": "PERGI",
+      "author": "Tere Liye",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Novel ini menceritakan kelanjutan kisah Bujang (Si Babi Hutan) yang kini memegang tampuk kepemimpinan sebagai Tauke Besar Keluarga Tong. Di tengah ancaman Peperangan antar-keluarga shadow economy yang dipicu oleh konflik dengan Master Dragon serta pencurian teknologi anti-serangan siber, Bujang harus menghadapi persaingan dunia hitam, pencarian jawaban atas masa lalu keluarganya, dan pertemuannya dengan sosok tukang pukul misterius bertopeng yang ternyata memiliki keterkaitan erat dengan dirinya.",
+      "coverImage": "/uploads/covers/1788088072120-gmp0gc.png",
+      "pdfFile": "/uploads/pdfs/1788088072123-p89lio.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T11:07:52.154Z",
+      "updatedAt": "2026-08-30T11:25:38.253Z"
+    },
+    {
+      "id": "cmtfpcsex0003okbvaiormzav",
+      "title": "BULAN",
+      "author": "Tere Liye",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Novel ini menceritakan petualangan tiga sahabat—Raib, Seli, dan Ali—bersama Ily di Klan Matahari untuk mengikuti kompetisi Festival Bunga Matahari. Di tengah perjalanan yang penuh teka-teki, bahaya hutan belukar, dan persaingan antarkontingen, mereka berjuang menemukan bunga matahari pertama mekar demi menjaga perdamaian antardunia paralel.",
+      "coverImage": "/uploads/covers/1788087877542-djsjul.png",
+      "pdfFile": "/uploads/pdfs/1788087877546-btoh27.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T11:04:37.593Z",
+      "updatedAt": "2026-08-30T11:25:42.196Z"
+    },
+    {
+      "id": "cmtfp9auf0002okbvcs1p4aed",
+      "title": "BUMI",
+      "author": "Tere Liye",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Buku \"Bumi\" bercerita tentang Raib, seorang remaja perempuan berusia lima belas tahun yang sekilas tampak biasa, namun sebenarnya memiliki kemampuan rahasia untuk dapat menghilang sejak masih kecil. Kehidupan normal Raib yang terbiasa menyimpan rahasia ajaibnya tersebut mendadak berubah seratus delapan puluh derajat ketika sosok tinggi kurus yang misterius hadir dari balik cermin kamarnya, disusul terbukanya portal ke dunia asing dan konflik besar yang mengungkap bahwa dirinya serta teman-temannya merupakan bagian dari klan pemilik kekuatan di dunia lain.",
+      "coverImage": "/uploads/covers/1788087714777-q5hmp9.png",
+      "pdfFile": "/uploads/pdfs/1788087714785-5takwc.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T11:01:54.855Z",
+      "updatedAt": "2026-08-30T11:25:46.471Z"
+    },
+    {
+      "id": "cmtfp3tci0001okbvi2gk9z0q",
+      "title": "Mereka bilang disini tidak ada tuhan",
+      "author": " Subhan S.D",
+      "categoryId": "cmtcub1570003gobvt40rib0l",
+      "description": "Buku \"Mereka Bilang di Sini Tidak Ada Tuhan: Suara Korban Tragedi Priok\" karya gabungan tulisan korban yang disunting oleh Subhan S.D. dan FX Rudy Gunawan merangkum kesaksian langsung, penderitaan, serta perjuangan para korban dan keluarga korban tragedi berdarah Tanjung Priok 12 September 1984. Melalui metode penulisan mandiri dan wawancara bersama Kontras, buku ini mengungkap fakta penembakan massal, penyiksaan fisik dan mental oleh aparat militer, stigma negatif yang melekat bertahun-tahun, serta berbagai manipulasi penyelesaian kasus seperti isu islah demi meluruskan sejarah kebenaran dan menuntut keadilan hak asasi manusia.",
+      "coverImage": "/uploads/covers/1788087458848-8ew8f3.png",
+      "pdfFile": "/uploads/pdfs/1788087458850-f0lct7.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T10:57:38.898Z",
+      "updatedAt": "2026-08-30T11:25:50.657Z"
+    },
+    {
+      "id": "cmtfo7nx90002dsbvz8jeql60",
+      "title": "Berani Tidak Disukai",
+      "author": "Ichiro Kishimi dan Fumitake Koga",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Berani Tidak Disukai membahas cara mencapai kebebasan dan kebahagiaan dengan melepaskan diri dari penilaian orang lain serta memahami bahwa kita memiliki kendali atas pilihan dan cara kita menjalani hidup. Berdasarkan pemikiran psikologi Alfred Adler, buku ini mengajak pembaca untuk berhenti terjebak dalam masa lalu, tidak terlalu bergantung pada pengakuan sosial, dan berani menjalani kehidupan sesuai dengan nilai yang diyakini.",
+      "coverImage": "/uploads/covers/1788085958840-muad1q.png",
+      "pdfFile": "/uploads/pdfs/1788085958842-r49pcp.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfnh96l0000dsbvxxzw0vrt",
+      "createdAt": "2026-08-30T10:32:38.878Z",
+      "updatedAt": "2026-08-30T11:25:54.257Z"
+    },
+    {
+      "id": "cmtfo2tvt0001dsbv4jqexdwg",
+      "title": "Filosofi Terras",
+      "author": "Henry Manampiring",
+      "categoryId": "cmtcudvfm000rgobvjxujyrem",
+      "description": "Atomic Habits karya James Clear adalah buku pengembangan diri yang membahas bagaimana perubahan kecil dan konsisten dapat menghasilkan dampak besar dalam kehidupan. Buku ini menjelaskan cara membangun kebiasaan baik, menghilangkan kebiasaan buruk, serta menciptakan sistem yang membantu seseorang menjadi lebih produktif dan disiplin. Dengan pendekatan yang praktis dan mudah diterapkan, Atomic Habits membantu pembaca memahami bahwa kesuksesan bukan hanya tentang tujuan besar, tetapi tentang kebiasaan-kebiasaan kecil yang dilakukan setiap hari.",
+      "coverImage": "/uploads/covers/1788085733213-mu2jtd.png",
+      "pdfFile": "/uploads/pdfs/1788085733218-qd14oj.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfnh96l0000dsbvxxzw0vrt",
+      "createdAt": "2026-08-30T10:28:53.322Z",
+      "updatedAt": "2026-08-30T11:25:57.820Z"
+    },
+    {
+      "id": "cmtfpvuby0008okbvsdy2i3a4",
+      "title": "How To Think Like Sherlock Holmes: Tip Menyelesaikan Masalah Sehari-hari dan Berpikir Kreatif ala Sherlock Holmes",
+      "author": "Peter Hollins",
+      "categoryId": "cmtcucvqx000igobvofo24thl",
+      "description": "Buku ini membedah metode dan kebiasaan berpikir karakter detektif fiktif Sherlock Holmes untuk diterapkan dalam kehidupan sehari-hari. Melalui pendekatan psikologi dan sains kognitif, penulis menjelaskan cara meningkatkan keterampilan observasi, berpikir kritis, serta pengambilan kesimpulan (deduksi) dengan jernih. Selain itu, buku ini menghadirkan berbagai kerangka kerja dan teknik berpikir kreatif—seperti metode SCAMPER, model Osborn-Parnes, pembuatan hambatan buatan, hingga penyesuaian sudut pandang—untuk membantu pembaca menyelesaikan masalah secara efektif dan inovatif",
+      "coverImage": "/uploads/covers/1788088766505-qn06uy.png",
+      "pdfFile": "/uploads/pdfs/1788088766508-yongu2.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfpppsd0007okbvp4gkjeji",
+      "createdAt": "2026-08-30T11:19:26.542Z",
+      "updatedAt": "2026-08-30T11:25:25.678Z"
+    },
+    {
+      "id": "cmtfpoem00006okbvxnjlqso2",
+      "title": "The Book of Almost",
+      "author": "Brian Khrisna",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Buku ini merupakan kumpulan prosa, puisi, dan kisah sentimental yang merangkum pergelutan rasa atas hubungan-hubungan yang berakhir sebatas \"hampir\". Lewat untaian tulisan yang emosional dan jujur, penulis menyuarakan kebingungan, luka patah hati, kerinduan, serta rasa penyesalan dari mereka yang pernah saling mencintai tetapi gagal untuk ditakdirkan bersama. Buku ini hadir sebagai bentuk penerimaan dan ungkapan terima kasih atas setiap kenangan yang sempat singgah, mengajarkan pembaca untuk belajar merelakan seseorang yang tak pernah benar-benar bisa dimiliki.",
+      "coverImage": "/uploads/covers/1788088419521-szbqaa.png",
+      "pdfFile": "/uploads/pdfs/1788088419524-thczi9.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmtfoq8if0000okbvt1rraaog",
+      "createdAt": "2026-08-30T11:13:39.576Z",
+      "updatedAt": "2026-08-30T11:25:30.033Z"
+    },
+    {
+      "id": "cmti2khe8000oh8bvafhrqkdg",
+      "title": "Modul Parenting: Panduan Praktis untuk Orangtua dan Pendidik",
+      "author": "Jazariyah, M.Pd",
+      "categoryId": "cmtcucjv8000fgobvciotnxrl",
+      "description": "Modul edukatif yang dirancang untuk membimbing orang tua dan pendidik dalam menerapkan pola pengasuhan positif bagi anak usia dini. Menyajikan panduan praktis perkembangan emosional, stimulasi kognitif, pembentukan karakter mulia, serta komunikasi efektif berbasis lingkungan keluarga yang harmonis.",
+      "coverImage": "/api/files/covers/1788231003900-9et5nd.png",
+      "pdfFile": "/api/files/pdfs/1788231003902-nnnckm.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.920Z",
+      "updatedAt": "2026-09-01T09:50:41.433Z"
+    },
+    {
+      "id": "cmti2khc1000nh8bvtep3klkr",
+      "title": "Jack Ma & Alibaba: Sebuah Biografi Tentang Bisnis dan Kehidupan",
+      "author": "Yan Qicheng",
+      "categoryId": "cmtcueswf000zgobvuehi6lku",
+      "description": "Menelusuri kisah inspiratif perjalanan hidup Jack Ma dari seorang guru bahasa Inggris sederhana hingga menjadi pendiri raksasa e-commerce global Alibaba. Buku ini memaparkan filosofi kepemimpinan, strategi bertahan di tengah persaingan ketat teknologi, serta keberanian bermimpi besar dalam membangun ekosistem perdagangan digital dunia.",
+      "coverImage": "/api/files/covers/1788231003823-ylakja.png",
+      "pdfFile": "/api/files/pdfs/1788231003825-xaoy7g.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.841Z",
+      "updatedAt": "2026-09-01T09:50:46.498Z"
+    },
+    {
+      "id": "cmti2kh9q000mh8bvm5qk6kob",
+      "title": "How to Talk to Anyone: 92 Trik Jitu Berkomunikasi Efektif dan Sukses Membangun Hubungan",
+      "author": "Leil Lowndes",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Buku ini menyajikan 92 teknik praktis dan rahasia psikologis dalam berkomunikasi untuk membangun hubungan yang hangat, percaya diri, dan berwibawa dengan siapa saja. Leil Lowndes membagikan kiat-kiat bahasa tubuh, seni mendengarkan, serta cara membuat kesan pertama yang tak terlupakan dalam berbagai situasi sosial maupun bisnis.",
+      "coverImage": "/api/files/covers/1788231003736-abdx75.png",
+      "pdfFile": "/api/files/pdfs/1788231003739-pftj32.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.758Z",
+      "updatedAt": "2026-09-01T09:50:53.475Z"
+    },
+    {
+      "id": "cmti2kh7j000lh8bv3lkoyvlo",
+      "title": "Grit: Kekuatan Passion dan Kegigihan",
+      "author": "Angela Duckworth",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Berdasarkan riset ilmiah mendalam, Angela Duckworth membuktikan bahwa kunci utama kesuksesan bukan sekadar bakat alami atau kecerdasan tinggi, melainkan kombinasi antara hasrat (passion) dan ketekunan jangka panjang (grit). Buku ini memberikan strategi praktis untuk menumbuhkan ketangguhan mental dalam meraih impian tertinggi.",
+      "coverImage": "/api/files/covers/1788231003658-9f9qy5.png",
+      "pdfFile": "/api/files/pdfs/1788231003660-92owge.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.679Z",
+      "updatedAt": "2026-09-01T09:50:57.552Z"
+    },
+    {
+      "id": "cmti2kh4i000kh8bvywvvljps",
+      "title": "Fiqih Nikah",
+      "author": "H. Ahmad Sarwat, Lc",
+      "categoryId": "cmtcuffcu0016gobvi52r30sf",
+      "description": "Panduan lengkap seputar hukum dan tata cara pernikahan dalam syariat Islam yang disusun secara ringkas dan mudah dipahami. Buku ini mengupas kriteria memilih pasangan hidup, syarat dan rukun nikah, mahar, hak serta kewajiban suami-istri, hingga solusi hukum Islam dalam membina rumah tangga yang harmonis dan penuh berkah.",
+      "coverImage": "/api/files/covers/1788231003554-c7gpxx.png",
+      "pdfFile": "/api/files/pdfs/1788231003555-k9a5sw.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.570Z",
+      "updatedAt": "2026-09-01T09:51:00.403Z"
+    },
+    {
+      "id": "cmti2kh3g000jh8bvoy5w7hzn",
+      "title": "Filsafat Feminisme: Studi Kritis Terhadap Gerakan Pembaharuan Perempuan di Dunia Barat dan Islam",
+      "author": "Dr. Saidul Amin, MA",
+      "categoryId": "cmtcudvfm000rgobvjxujyrem",
+      "description": "Sebuah kajian akademis komprehensif yang membedah akar filosofis gerakan feminisme di dunia Barat serta perkembangannya dalam khazanah pemikiran Islam. Penulis menyajikan analisis kritis terhadap diskursus hak-hak perempuan, kesetaraan gender, dan dinamika sosial pembaharuan peran wanita dalam bingkai nilai-nilai teologis dan sosiologis.",
+      "coverImage": "/api/files/covers/1788231003480-bfv3iy.png",
+      "pdfFile": "/api/files/pdfs/1788231003484-rf4xxe.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.532Z",
+      "updatedAt": "2026-09-01T09:51:03.496Z"
+    },
+    {
+      "id": "cmti2kh0k000ih8bvpg5kknn8",
+      "title": "Filsafat Agama",
+      "author": "Magdalena Pranata Santoso",
+      "categoryId": "cmtcudvfm000rgobvjxujyrem",
+      "description": "Buku ini mengulas kajian mendalam mengenai titik temu antara pemikiran filosofis dan keyakinan spiritual keagamaan. Melalui penalaran kritis dan reflektif, pembaca diajak untuk memahami esensi keberadaan Tuhan, kebenaran wahyu, moralitas, serta relevansi nilai-nilai keagamaan dalam memandu kehidupan manusia modern.",
+      "coverImage": "/api/files/covers/1788231003402-ayw8zi.png",
+      "pdfFile": "/api/files/pdfs/1788231003404-q668wq.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.428Z",
+      "updatedAt": "2026-09-01T09:51:06.969Z"
+    },
+    {
+      "id": "cmti2kgxu000hh8bvzcyrhmob",
+      "title": "Elon Musk: Pria di Balik PayPal, Tesla, SpaceX, dan Masa Depan yang Fantastis",
+      "author": "Ashlee Vance",
+      "categoryId": "cmtcueswf000zgobvuehi6lku",
+      "description": "Buku ini mengisahkan perjalanan hidup dan karier Elon Musk, sosok inovator visioner di balik keberhasilan perusahaan-perusahaan revolusioner seperti PayPal, Tesla Motors, dan SpaceX. Ashlee Vance menyajikan potret mendalam mengenai dinamika kepemimpinan, ambisi eksplorasi ruang angkasa, serta kegigihan Musk dalam mengubah lanskap energi global dan transportasi masa depan.",
+      "coverImage": "/api/files/covers/1788231003302-vmw6i6.png",
+      "pdfFile": "/api/files/pdfs/1788231003304-6mn7id.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:03.330Z",
+      "updatedAt": "2026-09-01T09:51:10.223Z"
+    },
+    {
+      "id": "cmti2kisr0010h8bvxjh5zblj",
+      "title": "Get Anyone to Do Anything: Psychological Secrets to Control and Influence Every Situation",
+      "author": "David J. Lieberman, Ph.D.",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Buku terlaris New York Times yang merangkum strategi psikologis teruji untuk memengaruhi situasi sosial, membangun daya tarik interpersonal, memenangkan argumen tanpa konflik, hingga mengarahkan orang lain untuk bekerja sama secara sukarela dan positif dalam segala situasi.",
+      "coverImage": "/api/files/covers/1788231005721-cfergi.png",
+      "pdfFile": "/api/files/pdfs/1788231005723-jczaob.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.739Z",
+      "updatedAt": "2026-09-01T09:49:57.470Z"
+    },
+    {
+      "id": "cmti2kira000zh8bvq15rpg5r",
+      "title": "The Psychology of Money: Pelajaran Abadi tentang Kekayaan, Ketamakan, dan Kebahagiaan",
+      "author": "Morgan Housel",
+      "categoryId": "cmtcueldy000xgobvcbbn9bev",
+      "description": "Morgan Housel membagikan 19 cerita pendek bernas yang menelusuri bagaimana perilaku, ego, emosi, dan bias psikologis manusia memengaruhi keputusan keuangan mereka. Buku ini mengajarkan bahwa kesuksesan mengelola uang bukan soal seberapa pintar seseorang, melainkan tentang bagaimana ia mengendalikan perilakunya sendiri.",
+      "coverImage": "/api/files/covers/1788231005642-wx0n9f.png",
+      "pdfFile": "/api/files/pdfs/1788231005644-u4dbz1.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.686Z",
+      "updatedAt": "2026-09-01T09:50:01.363Z"
+    },
+    {
+      "id": "cmti2kinh000yh8bv6zaxo53p",
+      "title": "Semangat Muda",
+      "author": "Tan Malaka",
+      "categoryId": "cmtcuc38t000bgobvh9gepagx",
+      "description": "Risalah pemikiran revolusioner karya pahlawan nasional Tan Malaka yang ditulis pada tahun 1926 di Tokyo. Karya ini menggelorakan semangat pergerakan kaum muda dan buruh dalam memperjuangkan kemerdekaan Indonesia, membongkar belenggu feodalisme serta kolonialisme melalui kesadaran kritis dan persatuan massa.",
+      "coverImage": "/api/files/covers/1788231005530-lc37m3.png",
+      "pdfFile": "/api/files/pdfs/1788231005533-qfi88e.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.549Z",
+      "updatedAt": "2026-09-01T09:50:04.551Z"
+    },
+    {
+      "id": "cmti2kilm000xh8bv5mn4vcgr",
+      "title": "Sejarah Dunia Kuno: Dari Cerita-Cerita Tertua Sampai Jatuhnya Roma",
+      "author": "Susan Wise Bauer",
+      "categoryId": "cmtcub1570003gobvt40rib0l",
+      "description": "Buku babon narasi sejarah karya Susan Wise Bauer yang mendokumentasikan evolusi peradaban manusia dari era awal Mesopotamia, Dinasti Mesir Kuno, peradaban Sungai Indus dan Tiongkok, hingga keruntuhan Imperium Romawi. Disajikan dengan gaya bercerita yang hidup, dinamis, dan kaya akan fakta sejarah.",
+      "coverImage": "/api/files/covers/1788231005457-y3pypj.png",
+      "pdfFile": "/api/files/pdfs/1788231005460-17ddue.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.482Z",
+      "updatedAt": "2026-09-01T09:50:08.602Z"
+    },
+    {
+      "id": "cmti2kiif000wh8bvmqp4r9yx",
+      "title": "Sejarah Dunia yang Disembunyikan",
+      "author": "Jonathan Black",
+      "categoryId": "cmtcub1570003gobvt40rib0l",
+      "description": "Buku kontroversial dan memikat yang mengeksplorasi narasi sejarah dunia dari sudut pandang tradisi esoteris dan misteri peradaban masa lampau. Jonathan Black mengajak pembaca menjelajahi keterkaitan antara mitologi, filsafat rahasia, simbol-simbol kuno, dan tokoh-tokoh besar yang memengaruhi arah peradaban manusia dari zaman kuno hingga modern.",
+      "coverImage": "/api/files/covers/1788231005313-r53w9r.png",
+      "pdfFile": "/api/files/pdfs/1788231005324-rlhxgz.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.367Z",
+      "updatedAt": "2026-09-01T09:50:13.056Z"
+    },
+    {
+      "id": "cmti2ki9c000vh8bvzo8l82kg",
+      "title": "Rahasia Bisnis Rasulullah yang Selalu Untung",
+      "author": "Nurul Fitri Fatkhani",
+      "categoryId": "cmtcueldy000xgobvcbbn9bev",
+      "description": "Mengupas prinsip-prinsip emas berniaga yang diajarkan dan dipraktikkan langsung oleh Nabi Muhammad SAW dalam membangun perniagaan yang jujur, amanah, dan berkah. Buku ini memberikan teladan bagaimana integritas moral, transparansi transaksi, dan kepuasan pelanggan menjadi kunci keberlimpahan rezeki yang berkelanjutan.",
+      "coverImage": "/api/files/covers/1788231004967-r8a49e.png",
+      "pdfFile": "/api/files/pdfs/1788231004970-d8t8xw.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:05.040Z",
+      "updatedAt": "2026-09-01T09:50:18.198Z"
+    },
+    {
+      "id": "cmti2khxu000uh8bv54lu6enm",
+      "title": "Quiet Impact: Tak Masalah Jadi Orang Introver",
+      "author": "Sylvia Loehken",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Sylvia Loehken membongkar stereotip bahwa kesuksesan hanya milik mereka yang ekstrover. Melalui buku ini, para introver diajarkan cara memaksimalkan kekuatan bawaan mereka—seperti kemampuan analitis, ketenangan berpikir, dan empati mendalam—untuk memberikan pengaruh besar dalam dunia kerja, negosiasi, dan kehidupan sosial tanpa harus berpura-pura menjadi orang lain.",
+      "coverImage": "/api/files/covers/1788231004589-hlqnx9.png",
+      "pdfFile": "/api/files/pdfs/1788231004591-e9asn2.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.626Z",
+      "updatedAt": "2026-09-01T09:50:21.412Z"
+    },
+    {
+      "id": "cmti2khrj000th8bv4cu0pkxt",
+      "title": "Pemrograman Web dengan Menggunakan PHP dan Framework Codeigniter",
+      "author": "Supono dan Virdiandry Putratama",
+      "categoryId": "cmtcubglr0006gobv7jr984a1",
+      "description": "Buku panduan komprehensif bagi mahasiswa dan pengembang web yang ingin menguasai pembuatan aplikasi web modern menggunakan PHP murni dan Framework CodeIgniter. Dilengkapi dengan konsep MVC (Model-View-Controller), integrasi database MySQL, pembuatan modul CRUD, hingga teknik keamanan aplikasi web.",
+      "coverImage": "/api/files/covers/1788231004354-a8n4zi.png",
+      "pdfFile": "/api/files/pdfs/1788231004356-vbtk3j.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.400Z",
+      "updatedAt": "2026-09-01T09:50:24.762Z"
+    },
+    {
+      "id": "cmti2khn6000sh8bvvhfd6vd9",
+      "title": "Perempuan di Titik Nol",
+      "author": "Nawal El-Saadawi",
+      "categoryId": "cmtcue7j1000ugobvxg8w5yhu",
+      "description": "Novel sastra klasik karya Nawal El-Saadawi yang mengangkat kisah nyata Firdaus, seorang wanita yang menentang penindasan sistem patriarki hingga detik-detik terakhir di hadapan vonis eksekusi. Sebuah karya sastra yang menggugah nurani mengenai keberanian, martabat kemanusiaan, dan perlawanan terhadap ketidakadilan gender.",
+      "coverImage": "/api/files/covers/1788231004223-ktpqnv.png",
+      "pdfFile": "/api/files/pdfs/1788231004225-cis36e.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.242Z",
+      "updatedAt": "2026-09-01T09:50:27.963Z"
+    },
+    {
+      "id": "cmti2khkx000rh8bvzxvai6fr",
+      "title": "Nanti Juga Sembuh Sendiri",
+      "author": "Helobagas (Bagas Ali Prasetyo)",
+      "categoryId": "cmtcucvqx000igobvofo24thl",
+      "description": "Sebuah buku reflektif dan penuh kehangatan yang menemani siapa pun yang sedang berjuang melewati masa-masa sulit, patah hati, atau kelelahan mental. Dengan gaya penulisan yang santai dan menyentuh, buku ini mengajak pembaca untuk berdamai dengan luka, memvalidasi perasaan diri, dan percaya bahwa waktu akan menyembuhkan.",
+      "coverImage": "/api/files/covers/1788231004140-qrnu8j.png",
+      "pdfFile": "/api/files/pdfs/1788231004142-mgyg32.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.161Z",
+      "updatedAt": "2026-09-01T09:50:31.632Z"
+    },
+    {
+      "id": "cmti2khjo000qh8bvp8z36gcw",
+      "title": "My Public Speaking",
+      "author": "Hilbram Dunar",
+      "categoryId": "cmtcucvqx000igobvofo24thl",
+      "description": "Panduan aplikatif seni berbicara di depan publik yang disusun oleh praktisi dan presenter berpengalaman, Hilbram Dunar. Buku ini mengupas tuntas teknik mengontrol rasa gugup, mengolah intonasi suara, memanfaatkan bahasa tubuh, serta bonus keterampilan dasar menjadi Master of Ceremonies (MC), penyiar radio, dan presenter televisi.",
+      "coverImage": "/api/files/covers/1788231004098-zi8g1f.png",
+      "pdfFile": "/api/files/pdfs/1788231004100-d0n2dl.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.116Z",
+      "updatedAt": "2026-09-01T09:50:35.029Z"
+    },
+    {
+      "id": "cmti2khh7000ph8bvl2n6e1nn",
+      "title": "Mindset: Mengubah Pola Pikir untuk Memaksimalkan Potensi Anda",
+      "author": "Dr. Carol S. Dweck",
+      "categoryId": "cmtcubrv30009gobvhkvl7p0b",
+      "description": "Karya monumental Dr. Carol S. Dweck yang mengungkap kekuatan luar biasa dari pola pikir (mindset). Buku ini membedakan antara fixed mindset dan growth mindset, serta menunjukkan bagaimana mengubah cara berpikir dapat memicu pertumbuhan kapasitas intelektual, ketahanan saat menghadapi kegagalan, dan pencapaian prestasi puncak dalam karier dan kehidupan.",
+      "coverImage": "/api/files/covers/1788231004004-ty2anv.png",
+      "pdfFile": "/api/files/pdfs/1788231004007-i5hu0j.pdf",
+      "status": "PUBLISHED",
+      "publisherId": "cmti1au65000dh8bv4pzqco8e",
+      "createdAt": "2026-09-01T02:50:04.027Z",
+      "updatedAt": "2026-09-01T09:50:38.549Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "cmtcqx9mi0001gobv4n8w2nc2",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_ANNOUNCEMENT",
+      "details": "Created announcement: WOY",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T09:25:14.106Z"
+    },
+    {
+      "id": "cmtcsjtzl0003gobv6agbhz3o",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: p",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:10:46.545Z"
+    },
+    {
+      "id": "cmtcsjxh20004gobvkn71d9d6",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: p",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:10:51.062Z"
+    },
+    {
+      "id": "cmtcsq3hu0006gobv8x380ia1",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: p",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:15:38.802Z"
+    },
+    {
+      "id": "cmtcsq8vp0007gobv1kaq0b98",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: p",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:15:45.781Z"
+    },
+    {
+      "id": "cmtctybzi0008gobveirx7auk",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Seni dan Budaya",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:50:02.670Z"
+    },
+    {
+      "id": "cmtcuahy90001gobvvarz2ah4",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: seni & budaya",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:59:30.273Z"
+    },
+    {
+      "id": "cmtcuatw70002gobvb1smxfkd",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Sejarah",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:59:45.751Z"
+    },
+    {
+      "id": "cmtcub15h0004gobv03pe2v9f",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: sejarah",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T10:59:55.157Z"
+    },
+    {
+      "id": "cmtcub68t0005gobvuh26rasp",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Sains dan Teknologi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:01.758Z"
+    },
+    {
+      "id": "cmtcubgm30007gobvhuflna13",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: sains & teknologi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:15.195Z"
+    },
+    {
+      "id": "cmtcubkpw0008gobvg6quotw5",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Psikologi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:20.516Z"
+    },
+    {
+      "id": "cmtcubrv5000agobv9tc36ngi",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: psikologi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:29.777Z"
+    },
+    {
+      "id": "cmtcuc38w000cgobvm663o0bu",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Politik",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:44.528Z"
+    },
+    {
+      "id": "cmtcuc725000dgobvwq5duthl",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Politik",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:49.469Z"
+    },
+    {
+      "id": "cmtcucbla000egobv4l5s6u2w",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Pendidikan",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:00:55.343Z"
+    },
+    {
+      "id": "cmtcucjva000ggobvmtmdpaey",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Pendidikan",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:06.070Z"
+    },
+    {
+      "id": "cmtcucp8w000hgobvkhojz6hc",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Non-Fiksi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:13.040Z"
+    },
+    {
+      "id": "cmtcucvqz000jgobvvdtu2apv",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: Non-Fiksi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:21.467Z"
+    },
+    {
+      "id": "cmtcud0qe000kgobv4t09zohc",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Kesehatan",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:27.926Z"
+    },
+    {
+      "id": "cmtcud6lv000mgobvfi11o478",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Kesehatan",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:35.539Z"
+    },
+    {
+      "id": "cmtcudbru000ngobv4b9bwbjo",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Hukum",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:42.234Z"
+    },
+    {
+      "id": "cmtcudj6c000pgobv4ac9rspp",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Hukum",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:51.828Z"
+    },
+    {
+      "id": "cmtcudo0o000qgobvdb2esyib",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Filsafat",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:01:58.104Z"
+    },
+    {
+      "id": "cmtcudvfo000sgobvgh1dsgyq",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: Filsafat",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:07.716Z"
+    },
+    {
+      "id": "cmtcudzx2000tgobvl58rm83u",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Fiksi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:13.526Z"
+    },
+    {
+      "id": "cmtcue7j3000vgobv72evji83",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Fiksi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:23.391Z"
+    },
+    {
+      "id": "cmtcueby3000wgobvjmzmcmn9",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Bisnis dan Ekonomi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:29.115Z"
+    },
+    {
+      "id": "cmtcuele1000ygobvt9wfmdfs",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: Bisnis & Ekonomi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:41.353Z"
+    },
+    {
+      "id": "cmtcueswh0010gobvbxlu956i",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Biografi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:51.089Z"
+    },
+    {
+      "id": "cmtcueuxq0011gobv772wprbs",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Biografi",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:02:53.726Z"
+    },
+    {
+      "id": "cmtcuf4480013gobvcrkuv1rb",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category:  Anak-anak",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:03:05.624Z"
+    },
+    {
+      "id": "cmtcuf6h90014gobv5gznebnh",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Anak-anak",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:03:08.685Z"
+    },
+    {
+      "id": "cmtcufahu0015gobvddpfage2",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_CATEGORY",
+      "details": "Deleted category: Agama",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:03:13.890Z"
+    },
+    {
+      "id": "cmtcuffcw0017gobv69zxrm3c",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "CREATE_CATEGORY",
+      "details": "Created category: Agama",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-28T11:03:20.192Z"
+    },
+    {
+      "id": "cmtecagls0000lkbvjsaddtpz",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "UPDATE_CATEGORY",
+      "details": "Updated category:  Anak-anak",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-08-29T12:11:07.793Z"
+    },
+    {
+      "id": "cmtihmbgo000084bvjk8w590a",
+      "adminId": "cmszpqe4o0000p4bvv2h6jzdn",
+      "action": "DELETE_ANNOUNCEMENT",
+      "details": "Deleted announcement cmtcqx9m60000gobveave9qwh",
+      "ipAddress": null,
+      "userAgent": null,
+      "createdAt": "2026-09-01T09:51:23.784Z"
+    }
+  ],
+  "announcements": [],
+  "reports": []
+}
